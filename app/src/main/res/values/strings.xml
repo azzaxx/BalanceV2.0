@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Balance</string>
+    <string name="profit">Profit</string>
+    <string name="lose">Lose</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+</resources>
