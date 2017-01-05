@@ -28,5 +28,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0' //butter knife
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0' //butter knife
     compile 'com.android.support:recyclerview-v7:25.1.0' //recycler view
+    compile 'net.cachapa.expandablelayout:expandablelayout:2.6' //Expandable layout
     testCompile 'junit:junit:4.12'
 }
