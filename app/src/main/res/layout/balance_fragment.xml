@@ -202,14 +202,14 @@
             android:orientation="horizontal"
             android:paddingLeft="56dp"
             android:paddingRight="56dp"
-            app:el_duration="300"
+            app:el_duration="200"
             app:el_expanded="false">
 
             <EditText
                 android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#22FFFFFF"
+                android:background="@drawable/solid_light_round_corners"
                 android:gravity="center"
                 android:hint="Type notes here"
                 android:inputType="text"
@@ -223,7 +223,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            app:el_duration="300"
+            app:el_duration="200"
             app:el_expanded="true">
 
             <RelativeLayout

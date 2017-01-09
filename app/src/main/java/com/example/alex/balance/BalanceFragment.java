@@ -3,6 +3,8 @@ package com.example.alex.balance;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -72,6 +74,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
         mPresenter.bindView(this);
+//        Drawable drawable = getActivity().getResources().getDrawable(R.drawable.round_corners);
+//        ((GradientDrawable) drawable).setColor(getResources().getColor(R.color.white));
+//        view.findViewById(R.id.text_container).setBackgroundDrawable(drawable);
 
         mRlDelOne.setOnClickListener(this);
         view.findViewById(R.id.button_cancel).setOnClickListener(this);
