@@ -75,6 +75,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
         mRlDelOne.setOnClickListener(this);
         view.findViewById(R.id.button_cancel).setOnClickListener(this);
+        view.findViewById(R.id.button_done).setOnClickListener(this);
         view.findViewById(R.id.date_container).setOnClickListener(this);
         for (int i : mSwitchButtons) {
             view.findViewById(i).setOnClickListener(this);
@@ -115,6 +116,13 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             case R.id.button_cancel:
                 getActivity().onBackPressed();
                 break;
+            case R.id.button_done:
+                mPresenter.addBalanceData(
+                        mTvTotalSum.getText().toString(),
+                        mTvDateDay.getText().toString(),
+                        mTvDateMonth.getText().toString(),
+                        mTvDateYear.getText().toString());
+                break;
             case R.id.date_container:
                 DateDialog dateDialog = new DateDialog();
                 dateDialog.setTargetFragment(this, DATE_DIALOG_REQ_CODE);
@@ -146,6 +154,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         mKeyboardExpand.collapse();
         mEditExpand.collapse();
         expand.expand();
+    }
+
+    public StartActivity getAct() {
+        return (StartActivity) getActivity();
     }
 
     @Override

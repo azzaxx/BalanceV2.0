@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.example.alex.balance.BalanceFragment;
+import com.example.alex.balance.custom.BalanceData;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+
+import io.realm.Realm;
 
 import static com.example.alex.balance.BalanceFragment.DATE_DIALOG_REQ_CODE;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_DAY_KEY;
@@ -46,5 +49,19 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         if (requestCode == DATE_DIALOG_REQ_CODE) {
             setDate(data);
         }
+    }
+
+    public void addBalanceData(String totalSum, String day, String month, String year) {
+        Realm realmObj = mView.getAct().getRealm();
+
+        realmObj.beginTransaction();
+
+        BalanceData data = realmObj.createObject(BalanceData.class);
+        data.setTotalSum(totalSum);
+        data.setDay(day);
+        data.setMonth(month);
+        data.setYear(year);
+
+        realmObj.commitTransaction();
     }
 }
