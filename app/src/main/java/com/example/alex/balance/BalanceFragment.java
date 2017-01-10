@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,6 +55,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     RelativeLayout mRlEdit;
     @BindView(R.id.del_one_button)
     RelativeLayout mRlDelOne;
+    @BindView(R.id.et_comments)
+    EditText mEtComments;
 
     private int[] mSwitchButtons = {
             R.id.category_button,
@@ -74,9 +77,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
         mPresenter.bindView(this);
-//        Drawable drawable = getActivity().getResources().getDrawable(R.drawable.round_corners);
-//        ((GradientDrawable) drawable).setColor(getResources().getColor(R.color.white));
-//        view.findViewById(R.id.text_container).setBackgroundDrawable(drawable);
 
         mRlDelOne.setOnClickListener(this);
         view.findViewById(R.id.button_cancel).setOnClickListener(this);
@@ -126,7 +126,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                         mTvTotalSum.getText().toString(),
                         mTvDateDay.getText().toString(),
                         mTvDateMonth.getText().toString(),
-                        mTvDateYear.getText().toString());
+                        mTvDateYear.getText().toString(),
+                        mEtComments.getText().toString());
+                getAct().getSupportFragmentManager().popBackStack();
                 break;
             case R.id.date_container:
                 DateDialog dateDialog = new DateDialog();

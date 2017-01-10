@@ -2,22 +2,29 @@ package com.example.alex.balance;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.BalanceData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.button_profit)
     Button btnProfit;
     @BindView(R.id.button_lose)
     Button btnLose;
+    @BindView(R.id.recycler_view_list)
+    RecyclerView mRVList;
     private Realm mRealm;
+    private MainListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +36,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         btnProfit.setOnClickListener(this);
         btnLose.setOnClickListener(this);
+
+        mRVList.setHasFixedSize(true);
+        mRVList.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted("mTotalSum", Sort.DESCENDING), this);
+        mRVList.setAdapter(mAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        RealmResults<BalanceData> list = mRealm.where(BalanceData.class).findAll();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
