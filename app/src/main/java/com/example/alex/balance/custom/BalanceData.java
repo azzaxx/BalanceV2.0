@@ -13,6 +13,7 @@ public class BalanceData extends RealmObject {
     private String mYear;
     private String mComment;
     private long mTimeStamp;
+    private boolean mIsProfit;
 
     public String getTotalSum() {
         return mTotalSum;
@@ -60,6 +61,14 @@ public class BalanceData extends RealmObject {
 
     public void setTimeStamp(long mTimeStamp) {
         this.mTimeStamp = mTimeStamp;
+    }
+
+    public boolean isProfit() {
+        return mIsProfit;
+    }
+
+    public void setIsProfit(boolean mIsProfit) {
+        this.mIsProfit = mIsProfit;
     }
 
     @Override

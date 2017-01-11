@@ -51,7 +51,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         }
     }
 
-    public void addBalanceData(String totalSum, String day, String month, String year, String comment) {
+    public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean mIsProfit) {
         Realm realmObj = mView.getAct().getRealm();
 
         realmObj.beginTransaction();
@@ -63,6 +63,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setYear(year);
         data.setComment(comment);
         data.setTimeStamp(System.currentTimeMillis());
+        data.setIsProfit(mIsProfit);
 
         realmObj.commitTransaction();
     }

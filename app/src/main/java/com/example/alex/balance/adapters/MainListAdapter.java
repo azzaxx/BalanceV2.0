@@ -38,24 +38,31 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
         BalanceData data = mList.get(position);
-        boolean isProfit = Double.valueOf(data.getTotalSum()) > 0;
-        int color = mContext.getResources().getColor(isProfit ? R.color.green : R.color.red);
 
+        setBackgroundColor(data, holder);
+        addDate(data, holder);
+        addComments(data, holder);
+        holder.tvProfitOrLose.setText(data.isProfit() ? mContext.getString(R.string.profit) : mContext.getString(R.string.lose));
+        holder.tvTotalSum.setText(data.getTotalSum());
+    }
+
+    private void setBackgroundColor(BalanceData data, MainViewHolder holder) {
         Drawable drawable = holder.llContainer.getBackground();
-        ((GradientDrawable) drawable).setStroke(1, color);
+        ((GradientDrawable) drawable).setStroke(1, mContext.getResources().getColor(data.isProfit() ? R.color.green : R.color.red));
         holder.llContainer.setBackgroundDrawable(drawable);
+    }
 
+    private void addComments(BalanceData data, MainViewHolder holder) {
+        holder.tvComments.setVisibility(data.getComment().isEmpty() ? View.GONE : View.VISIBLE);
+        holder.tvComments.setText(data.getComment());
+    }
+
+    private void addDate(BalanceData data, MainViewHolder holder) {
         StringBuilder builder = new StringBuilder();
         builder.append(data.getDay()).append(" ");
         builder.append(data.getMonth()).append(" ");
         builder.append(data.getYear());
         holder.tvDate.setText(builder);
-
-        holder.tvComments.setVisibility(data.getComment().isEmpty() ? View.GONE : View.VISIBLE);
-        holder.tvComments.setText(data.getComment());
-
-        holder.tvProfitOrLose.setText(isProfit ? "Profit" : "Lose");
-        holder.tvTotalSum.setText(data.getTotalSum());
     }
 
     @Override

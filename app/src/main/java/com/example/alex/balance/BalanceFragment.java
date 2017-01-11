@@ -3,8 +3,6 @@ package com.example.alex.balance;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +23,8 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.example.alex.balance.StartActivity.PROFIT_LOSE_KEY;
 
 /**
  * Created by alex on 04.01.17.
@@ -65,6 +65,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     };
     private Unbinder mUnbinder;
     private DataPresenter mPresenter = new DataPresenter();
+    private boolean mIsProfit;
 
     @Nullable
     @Override
@@ -77,6 +78,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
         mPresenter.bindView(this);
+        if (getArguments() != null) {
+            mIsProfit = getArguments().getInt(PROFIT_LOSE_KEY) > 0;
+        }
 
         mRlDelOne.setOnClickListener(this);
         view.findViewById(R.id.button_cancel).setOnClickListener(this);
@@ -127,7 +131,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                         mTvDateDay.getText().toString(),
                         mTvDateMonth.getText().toString(),
                         mTvDateYear.getText().toString(),
-                        mEtComments.getText().toString());
+                        mEtComments.getText().toString(),
+                        mIsProfit);
                 getAct().popBackStack();
                 break;
             case R.id.date_container:

@@ -17,6 +17,7 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String PROFIT_LOSE_KEY = "start_activity_profit_or_lose_key";
     @BindView(R.id.button_profit)
     Button btnProfit;
     @BindView(R.id.button_lose)
@@ -45,14 +46,19 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        Bundle args = new Bundle();
+
         switch (view.getId()) {
             case R.id.button_profit:
+                args.putInt(PROFIT_LOSE_KEY, 1);
                 break;
             case R.id.button_lose:
+                args.putInt(PROFIT_LOSE_KEY, -1);
                 break;
         }
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.start_activity_container, new BalanceFragment(), null).addToBackStack(null).commit();
+        BalanceFragment fragment = new BalanceFragment();
+        fragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().add(R.id.start_activity_container, fragment, null).addToBackStack(null).commit();
     }
 
     @Override
