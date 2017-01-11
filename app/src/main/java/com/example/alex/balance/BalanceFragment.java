@@ -128,7 +128,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                         mTvDateMonth.getText().toString(),
                         mTvDateYear.getText().toString(),
                         mEtComments.getText().toString());
-                getAct().getSupportFragmentManager().popBackStack();
+                getAct().popBackStack();
                 break;
             case R.id.date_container:
                 DateDialog dateDialog = new DateDialog();

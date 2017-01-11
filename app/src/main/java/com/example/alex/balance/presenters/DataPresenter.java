@@ -62,6 +62,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setMonth(month);
         data.setYear(year);
         data.setComment(comment);
+        data.setTimeStamp(System.currentTimeMillis());
 
         realmObj.commitTransaction();
     }

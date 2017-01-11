@@ -12,6 +12,7 @@ public class BalanceData extends RealmObject {
     private String mMonth;
     private String mYear;
     private String mComment;
+    private long mTimeStamp;
 
     public String getTotalSum() {
         return mTotalSum;
@@ -51,6 +52,14 @@ public class BalanceData extends RealmObject {
 
     public void setComment(String mComment) {
         this.mComment = mComment;
+    }
+
+    public long getTimeStamp() {
+        return mTimeStamp;
+    }
+
+    public void setTimeStamp(long mTimeStamp) {
+        this.mTimeStamp = mTimeStamp;
     }
 
     @Override

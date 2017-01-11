@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Profit"
-        android:textColor="@color/white"
+        android:textColor="@color/with_transparent"
         android:textSize="16sp" />
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:text="-443.34"
-            android:textColor="@color/white"
+            android:textColor="@color/with_transparent"
             android:textSize="18sp" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Shopping in SkyMall"
-            android:textColor="@color/white"
+            android:textColor="@color/with_transparent"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -49,6 +49,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="9 January 2017"
-        android:textColor="@color/white"
+        android:textColor="@color/with_transparent"
         android:textSize="16sp" />
 </LinearLayout>

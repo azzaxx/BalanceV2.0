@@ -51,11 +51,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         builder.append(data.getYear());
         holder.tvDate.setText(builder);
 
-        if (data.getComment() == null) {
-            holder.tvComments.setVisibility(View.GONE);
-        } else {
-            holder.tvComments.setText(data.getComment());
-        }
+        holder.tvComments.setVisibility(data.getComment().isEmpty() ? View.GONE : View.VISIBLE);
+        holder.tvComments.setText(data.getComment());
 
         holder.tvProfitOrLose.setText(isProfit ? "Profit" : "Lose");
         holder.tvTotalSum.setText(data.getTotalSum());

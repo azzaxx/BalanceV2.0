@@ -39,32 +39,26 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted("mTotalSum", Sort.DESCENDING), this);
+        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted("mTimeStamp", Sort.DESCENDING), this);
         mRVList.setAdapter(mAdapter);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void onClick(View view) {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.start_activity_container, new BalanceFragment(), null).addToBackStack(null).commit();
         switch (view.getId()) {
             case R.id.button_profit:
                 break;
             case R.id.button_lose:
                 break;
         }
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.start_activity_container, new BalanceFragment(), null).addToBackStack(null).commit();
     }
 
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
+            popBackStack();
             return;
         }
         super.onBackPressed();
@@ -74,6 +68,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     protected void onDestroy() {
         super.onDestroy();
         mRealm.close();
+    }
+
+    public void popBackStack() {
+        getSupportFragmentManager().popBackStack();
+        mAdapter.notifyDataSetChanged();
     }
 
     public Realm getRealm() {
