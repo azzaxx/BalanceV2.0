@@ -117,7 +117,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="end|center"
-            android:text="443.32"
+            android:text="0.00"
             android:textColor="@color/white"
             android:textSize="22sp" />
 
@@ -366,26 +366,12 @@
                     android:id="@+id/b0"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:layout_below="@+id/b_clear"
-                    android:layout_margin="2dp"
-                    android:layout_toEndOf="@+id/b6"
-                    android:layout_toRightOf="@+id/b6"
-                    android:background="@drawable/round"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/b_dot"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
                     android:layout_below="@id/b6"
                     android:layout_margin="2dp"
                     android:layout_toRightOf="@id/b9"
                     android:background="@drawable/round"
                     android:gravity="center"
-                    android:text="."
+                    android:text="0"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 

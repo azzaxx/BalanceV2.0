@@ -21,6 +21,10 @@ import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_YEAR_KEY;
  */
 
 public class DataPresenter extends BasePresenter<BalanceFragment> {
+    public static final String DEFAULT_VALUE = "0.00";
+    private static final String DOT = ".";
+    private static final String ZERO = "0";
+    private static final int MAX_SUM_LENGTH = 9;
 
     public void setDate(@Nullable Intent date) {
         Calendar calendar = Calendar.getInstance();
@@ -31,15 +35,48 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         mView.setDate(String.valueOf(day), new DateFormatSymbols().getMonths()[month], String.valueOf(year));
     }
 
-    public void totalSumEditor(String text) {
-        String result;
+    public void clearOne(String text) {
+        if (text.equals(DEFAULT_VALUE)) {
+            return;
+        }
 
-        if (text.length() == 1) {
-            result = "0";
-        } else if (text.charAt(text.length() - 2) == '.') {
-            result = text.substring(0, text.length() - 2);
+        String result;
+        String temp = text.substring(0, text.length() - 1);
+        temp = temp.replace(DOT, "");
+
+        if (temp.length() > 2 && !temp.startsWith(ZERO)) {
+            temp = temp.substring(0, temp.length() - 2) + DOT + temp.substring(temp.length() - 2, temp.length());
+            result = temp;
         } else {
-            result = text.substring(0, text.length() - 1);
+            if (temp.startsWith(ZERO + DOT)) {
+                result = ZERO + DOT + ZERO + temp.substring(0, 1);
+            } else if (temp.startsWith(ZERO + DOT + ZERO)) {
+                result = DEFAULT_VALUE;
+            } else {
+                result = ZERO + DOT + temp.substring(0, 2);
+            }
+        }
+
+        mView.setTotalSum(result);
+    }
+
+    public void addOne(String value, String previousValue) {
+        String result;
+        if (previousValue.length() > MAX_SUM_LENGTH) {
+            return;
+        }
+
+        if (previousValue.equals(DEFAULT_VALUE)) {
+            result = ZERO + DOT + ZERO + value;
+        } else if (previousValue.startsWith(ZERO + DOT + ZERO)) {
+            result = ZERO + DOT + previousValue.charAt(previousValue.length() - 1) + value;
+        } else {
+            String temp = previousValue.replace(DOT, "");
+            if (temp.startsWith(ZERO)) {
+                temp = temp.replaceFirst(ZERO, "");
+            }
+            temp += value;
+            result = temp.substring(0, temp.length() - 2) + DOT + temp.substring(temp.length() - 2, temp.length());
         }
 
         mView.setTotalSum(result);

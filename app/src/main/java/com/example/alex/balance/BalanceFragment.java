@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.example.alex.balance.StartActivity.PROFIT_LOSE_KEY;
+import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
 
 /**
  * Created by alex on 04.01.17.
@@ -63,6 +64,19 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             R.id.keyboard_button,
             R.id.notes_button
     };
+    private int[] mNumberButtons = {
+            R.id.b0,
+            R.id.b1,
+            R.id.b2,
+            R.id.b3,
+            R.id.b4,
+            R.id.b5,
+            R.id.b6,
+            R.id.b7,
+            R.id.b8,
+            R.id.b9,
+            R.id.b_clear
+    };
     private Unbinder mUnbinder;
     private DataPresenter mPresenter = new DataPresenter();
     private boolean mIsProfit;
@@ -89,6 +103,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         for (int i : mSwitchButtons) {
             view.findViewById(i).setOnClickListener(this);
         }
+        for (int i : mNumberButtons) {
+            view.findViewById(i).setOnClickListener(this);
+        }
         mPresenter.setDate(null);
     }
 
@@ -104,9 +121,18 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        for (int i = 0; i < mNumberButtons.length - 1; i++) {
+            if (view.getId() == mNumberButtons[i]) {
+                mPresenter.addOne(String.valueOf(i), mTvTotalSum.getText().toString());
+                return;
+            }
+        }
         switch (view.getId()) {
+            case R.id.b_clear:
+                setTotalSum(DEFAULT_VALUE);
+                break;
             case R.id.del_one_button:
-                mPresenter.totalSumEditor(mTvTotalSum.getText().toString());
+                mPresenter.clearOne(mTvTotalSum.getText().toString());
                 break;
             case R.id.category_button:
                 break;
