@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
+import com.example.alex.balance.interfaces.RecyclerClick;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +25,7 @@ import io.realm.RealmResults;
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainViewHolder> {
     private RealmResults<BalanceData> mList;
     private Context mContext;
+    private RecyclerClick mOnItemClick;
 
     public MainListAdapter(RealmResults<BalanceData> list, Context context) {
         this.mList = list;
@@ -70,7 +72,11 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         return mList.size();
     }
 
-    public class MainViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClick(RecyclerClick onItemClick) {
+        this.mOnItemClick = onItemClick;
+    }
+
+    class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_profit_lose)
         TextView tvProfitOrLose;
         @BindView(R.id.tv_total_sum)
@@ -82,9 +88,15 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         @BindView(R.id.ll_sum_text_container)
         LinearLayout llContainer;
 
-        public MainViewHolder(View itemView) {
+        MainViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mOnItemClick.onRecyclerClick(v, getAdapterPosition(), mList.get(getAdapterPosition()));
         }
     }
 }

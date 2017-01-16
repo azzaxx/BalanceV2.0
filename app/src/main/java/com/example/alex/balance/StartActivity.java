@@ -1,6 +1,8 @@
 package com.example.alex.balance;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.widget.Button;
 
 import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.BalanceData;
+import com.example.alex.balance.interfaces.RecyclerClick;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,7 +19,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-public class StartActivity extends AppCompatActivity implements View.OnClickListener {
+public class StartActivity extends AppCompatActivity implements View.OnClickListener, RecyclerClick {
     public static final String PROFIT_LOSE_KEY = "start_activity_profit_or_lose_key";
     @BindView(R.id.button_profit)
     Button btnProfit;
@@ -26,6 +29,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     RecyclerView mRVList;
     private Realm mRealm;
     private MainListAdapter mAdapter;
+    private RealmResults<BalanceData> mRealResultList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted("mTimeStamp", Sort.DESCENDING), this);
+        mRealResultList = mRealm.where(BalanceData.class).findAllSorted("mTimeStamp", Sort.DESCENDING);
+        mAdapter = new MainListAdapter(mRealResultList, this);
+        mAdapter.setOnItemClick(this);
         mRVList.setAdapter(mAdapter);
     }
 
@@ -83,5 +89,33 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     public Realm getRealm() {
         return this.mRealm;
+    }
+
+    @Override
+    public void onRecyclerClick(View view, int position, BalanceData balanceData) {
+        showDialog(balanceData);
+    }
+
+    private void showDialog(final BalanceData balanceData) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE)
+                    removeItemFromList(balanceData);
+                dialog.dismiss();
+            }
+        };
+        builder.setMessage("Are you sure?");
+        builder.setPositiveButton("Yes", onClickListener);
+        builder.setNegativeButton("No", onClickListener);
+        builder.create().show();
+    }
+
+    private void removeItemFromList(BalanceData balanceData) {
+        mRealm.beginTransaction();
+        balanceData.deleteFromRealm();
+        mAdapter.notifyDataSetChanged();
+        mRealm.commitTransaction();
     }
 }

@@ -61,10 +61,10 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     }
 
     public void addOne(String value, String previousValue) {
-        String result;
         if (previousValue.length() > MAX_SUM_LENGTH) {
             return;
         }
+        String result;
 
         if (previousValue.equals(DEFAULT_VALUE)) {
             result = ZERO + DOT + ZERO + value;
@@ -89,6 +89,10 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     }
 
     public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean mIsProfit) {
+        if (totalSum.equals(DEFAULT_VALUE)) {
+            return;
+        }
+
         Realm realmObj = mView.getAct().getRealm();
 
         realmObj.beginTransaction();
