@@ -16,7 +16,6 @@ import com.example.alex.balance.interfaces.RecyclerClick;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmResults;
 import io.realm.Sort;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener, RecyclerClick {
@@ -29,7 +28,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     RecyclerView mRVList;
     private Realm mRealm;
     private MainListAdapter mAdapter;
-    private RealmResults<BalanceData> mRealResultList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +42,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
-        mRealResultList = mRealm.where(BalanceData.class).findAllSorted("mTimeStamp", Sort.DESCENDING);
-        mAdapter = new MainListAdapter(mRealResultList, this);
+        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted("mTimeStamp", Sort.DESCENDING), this);
         mAdapter.setOnItemClick(this);
         mRVList.setAdapter(mAdapter);
     }

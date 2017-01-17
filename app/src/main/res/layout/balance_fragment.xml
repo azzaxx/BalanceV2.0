@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/stones2"
+    android:clickable="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -89,6 +90,7 @@
             android:background="@drawable/round">
 
             <ImageView
+                android:id="@+id/image_category_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -149,13 +151,13 @@
         android:layout_marginTop="8dp">
 
         <TextView
-            android:layout_marginRight="12dp"
             android:id="@+id/date_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/date_month"
             android:layout_alignRight="@+id/date_month"
             android:layout_below="@+id/date_month"
+            android:layout_marginRight="12dp"
             android:text="2017"
             android:textColor="@color/white"
             android:textSize="22sp" />
@@ -177,11 +179,11 @@
             android:id="@+id/date_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:text="April"
             android:textColor="@color/white"
-            android:textSize="36sp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:textSize="36sp" />
 
     </RelativeLayout>
 
@@ -376,6 +378,36 @@
                     android:textSize="18sp" />
 
             </RelativeLayout>
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/category_expand"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            app:el_duration="200"
+            app:el_expanded="false">
+
+            <LinearLayout
+                android:id="@+id/ll_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/solid_light_round_corners"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center"
+                    android:text="Press here to add new category"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
 
         </net.cachapa.expandablelayout.ExpandableLayout>
 

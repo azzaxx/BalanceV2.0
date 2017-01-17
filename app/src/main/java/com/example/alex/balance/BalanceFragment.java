@@ -46,24 +46,25 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     ExpandableLayout mKeyboardExpand;
     @BindView(R.id.edit_expand)
     ExpandableLayout mEditExpand;
+    @BindView(R.id.category_expand)
+    ExpandableLayout mCategoryExpand;
     @BindView(R.id.image_keyboard_button)
     ImageView mIvKeyboard;
     @BindView(R.id.image_notes_button)
     ImageView mIvEdit;
+    @BindView(R.id.image_category_button)
+    ImageView mIvCategory;
     @BindView(R.id.keyboard_button)
     RelativeLayout mRlKeyboard;
     @BindView(R.id.notes_button)
     RelativeLayout mRlEdit;
+    @BindView(R.id.category_button)
+    RelativeLayout mRlCategory;
     @BindView(R.id.del_one_button)
     RelativeLayout mRlDelOne;
     @BindView(R.id.et_comments)
     EditText mEtComments;
 
-    private int[] mSwitchButtons = {
-            R.id.category_button,
-            R.id.keyboard_button,
-            R.id.notes_button
-    };
     private int[] mNumberButtons = {
             R.id.b0,
             R.id.b1,
@@ -100,9 +101,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.button_cancel).setOnClickListener(this);
         view.findViewById(R.id.button_done).setOnClickListener(this);
         view.findViewById(R.id.date_container).setOnClickListener(this);
-        for (int i : mSwitchButtons) {
-            view.findViewById(i).setOnClickListener(this);
-        }
+        mRlKeyboard.setOnClickListener(this);
+        mRlEdit.setOnClickListener(this);
+        mRlCategory.setOnClickListener(this);
+
         for (int i : mNumberButtons) {
             view.findViewById(i).setOnClickListener(this);
         }
@@ -135,6 +137,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 mPresenter.clearOne(mTvTotalSum.getText().toString());
                 break;
             case R.id.category_button:
+                if (!mCategoryExpand.isExpanded()) {
+                    expand(mCategoryExpand);
+                    activateButton(mIvCategory, mRlCategory, getActivity().getResources().getDrawable(R.drawable.ic_tag));
+                }
                 break;
             case R.id.keyboard_button:
                 if (!mKeyboardExpand.isExpanded()) {
@@ -172,9 +178,11 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     private void activateButton(ImageView iv, RelativeLayout relativeLayout, Drawable image) {
         mIvKeyboard.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_keypad_primary));
         mIvEdit.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_underline_button_primary));
+        mIvCategory.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_tag_primary));
 
         mRlKeyboard.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round));
         mRlEdit.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round));
+        mRlCategory.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round));
 
         iv.setImageDrawable(image);
         relativeLayout.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round_white));
@@ -191,6 +199,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     private void expand(ExpandableLayout expand) {
         mKeyboardExpand.collapse();
         mEditExpand.collapse();
+        mCategoryExpand.collapse();
         expand.expand();
     }
 
