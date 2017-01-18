@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.alex.balance.adapters.CategoryListAdapter;
+import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.presenters.DataPresenter;
 
@@ -42,6 +46,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     TextView mTvDateMonth;
     @BindView(R.id.date_year)
     TextView mTvDateYear;
+    @BindView(R.id.add_new_category)
+    TextView mAddNewCategory;
     @BindView(R.id.keyboard_expand)
     ExpandableLayout mKeyboardExpand;
     @BindView(R.id.edit_expand)
@@ -64,6 +70,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     RelativeLayout mRlDelOne;
     @BindView(R.id.et_comments)
     EditText mEtComments;
+    @BindView(R.id.recycler_view_category)
+    RecyclerView mRecycerCategory;
+    private CategoryListAdapter mRVAdapter;
 
     private int[] mNumberButtons = {
             R.id.b0,
@@ -104,10 +113,16 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         mRlKeyboard.setOnClickListener(this);
         mRlEdit.setOnClickListener(this);
         mRlCategory.setOnClickListener(this);
+        mAddNewCategory.setOnClickListener(this);
 
         for (int i : mNumberButtons) {
             view.findViewById(i).setOnClickListener(this);
         }
+
+        mRecycerCategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        String[] list = {"1", "1", "1", "1", "1", "1", "1", "1"};
+        mRVAdapter = new CategoryListAdapter(list);
+        mRecycerCategory.setAdapter(mRVAdapter);
         mPresenter.setDate(null);
     }
 
@@ -123,13 +138,19 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        int viewId = view.getId();
+        Drawable resource = getActivity().getResources().getDrawable(viewId == R.id.category_button
+                ? R.drawable.ic_tag : viewId == R.id.keyboard_button
+                ? R.drawable.ic_keypad : R.drawable.ic_underline_button);
+
         for (int i = 0; i < mNumberButtons.length - 1; i++) {
-            if (view.getId() == mNumberButtons[i]) {
+            if (viewId == mNumberButtons[i]) {
                 mPresenter.addOne(String.valueOf(i), mTvTotalSum.getText().toString());
                 return;
             }
         }
-        switch (view.getId()) {
+
+        switch (viewId) {
             case R.id.b_clear:
                 setTotalSum(DEFAULT_VALUE);
                 break;
@@ -139,19 +160,19 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             case R.id.category_button:
                 if (!mCategoryExpand.isExpanded()) {
                     expand(mCategoryExpand);
-                    activateButton(mIvCategory, mRlCategory, getActivity().getResources().getDrawable(R.drawable.ic_tag));
+                    activateButton(mIvCategory, mRlCategory, resource);
                 }
                 break;
             case R.id.keyboard_button:
                 if (!mKeyboardExpand.isExpanded()) {
                     expand(mKeyboardExpand);
-                    activateButton(mIvKeyboard, mRlKeyboard, getActivity().getResources().getDrawable(R.drawable.ic_keypad));
+                    activateButton(mIvKeyboard, mRlKeyboard, resource);
                 }
                 break;
             case R.id.notes_button:
                 if (!mEditExpand.isExpanded()) {
                     expand(mEditExpand);
-                    activateButton(mIvEdit, mRlEdit, getActivity().getResources().getDrawable(R.drawable.ic_underline_button));
+                    activateButton(mIvEdit, mRlEdit, resource);
                 }
                 break;
             case R.id.button_cancel:
@@ -172,6 +193,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 dateDialog.setTargetFragment(this, DATE_DIALOG_REQ_CODE);
                 dateDialog.show(getFragmentManager(), null);
                 break;
+            case R.id.add_new_category:
+                CreateCategoryDialog.newInstance().show(getFragmentManager(), null);
+                break;
+
         }
     }
 

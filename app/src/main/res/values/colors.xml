@@ -7,4 +7,10 @@
     <color name="with_transparent">#AAFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="green">#00CC00</color>
+    <color name="black">#000000</color>
+    <color name="yellow">#FFD300</color>
+    <color name="blue">#3914AF</color>
+    <color name="violet">#0B61A4</color>
+    <color name="orange">#FF9200</color>
+    <color name="pink">#D2006B</color>
 </resources>
