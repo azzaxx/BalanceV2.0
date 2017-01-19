@@ -5,13 +5,17 @@ import android.support.annotation.Nullable;
 
 import com.example.alex.balance.BalanceFragment;
 import com.example.alex.balance.custom.BalanceData;
+import com.example.alex.balance.custom.CategoryData;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import io.realm.Realm;
 
+import static com.example.alex.balance.BalanceFragment.CREATE_CATEGORY_DIALOG_REQ_CODE;
 import static com.example.alex.balance.BalanceFragment.DATE_DIALOG_REQ_CODE;
+import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_COLOR;
+import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_NAME;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_DAY_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_MONTH_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_YEAR_KEY;
@@ -85,7 +89,21 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     public void onActivityResult(int requestCode, Intent data) {
         if (requestCode == DATE_DIALOG_REQ_CODE) {
             setDate(data);
+        } else if (requestCode == CREATE_CATEGORY_DIALOG_REQ_CODE) {
+            createCategory(data.getStringExtra(CREATE_CATEGORY_NAME), data.getIntExtra(CREATE_CATEGORY_COLOR, -1));
         }
+    }
+
+    private void createCategory(String name, int color) {
+        Realm realmObj = mView.getAct().getRealm();
+        realmObj.beginTransaction();
+
+        CategoryData data = realmObj.createObject(CategoryData.class);
+        data.setTimeStamp(System.currentTimeMillis());
+        data.setName(name);
+        data.setColor(color);
+
+        realmObj.commitTransaction();
     }
 
     public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean mIsProfit) {
@@ -94,7 +112,6 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         }
 
         Realm realmObj = mView.getAct().getRealm();
-
         realmObj.beginTransaction();
 
         BalanceData data = realmObj.createObject(BalanceData.class);

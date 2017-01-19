@@ -227,7 +227,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             app:el_duration="200"
-            app:el_expanded="false">
+            app:el_expanded="true">
 
             <RelativeLayout
                 android:id="@+id/keyboard_container"
@@ -390,7 +390,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             app:el_duration="200"
-            app:el_expanded="true">
+            app:el_expanded="false">
 
             <LinearLayout
                 android:id="@+id/ll_category"
@@ -414,12 +414,6 @@
                     android:layout_height="1dp"
                     android:background="@color/black"
                     android:layout_marginBottom="8dp"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/recycler_item_balance"/>
 
             </LinearLayout>
 

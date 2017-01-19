@@ -7,17 +7,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.alex.balance.adapters.CategoryListAdapter;
 import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.presenters.DataPresenter;
@@ -37,6 +36,7 @@ import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
 
 public class BalanceFragment extends Fragment implements View.OnClickListener {
     public static final int DATE_DIALOG_REQ_CODE = 1001;
+    public static final int CREATE_CATEGORY_DIALOG_REQ_CODE = 1002;
 
     @BindView(R.id.total_sum_tv)
     TextView mTvTotalSum;
@@ -70,9 +70,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     RelativeLayout mRlDelOne;
     @BindView(R.id.et_comments)
     EditText mEtComments;
-    @BindView(R.id.recycler_view_category)
-    RecyclerView mRecycerCategory;
-    private CategoryListAdapter mRVAdapter;
+    @BindView(R.id.ll_category)
+    LinearLayout mLlCategory;
 
     private int[] mNumberButtons = {
             R.id.b0,
@@ -119,10 +118,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             view.findViewById(i).setOnClickListener(this);
         }
 
-        mRecycerCategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        String[] list = {"1", "1", "1", "1", "1", "1", "1", "1"};
-        mRVAdapter = new CategoryListAdapter(list);
-        mRecycerCategory.setAdapter(mRVAdapter);
         mPresenter.setDate(null);
     }
 
@@ -143,13 +138,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 ? R.drawable.ic_tag : viewId == R.id.keyboard_button
                 ? R.drawable.ic_keypad : R.drawable.ic_underline_button);
 
-        for (int i = 0; i < mNumberButtons.length - 1; i++) {
-            if (viewId == mNumberButtons[i]) {
-                mPresenter.addOne(String.valueOf(i), mTvTotalSum.getText().toString());
-                return;
-            }
-        }
-
         switch (viewId) {
             case R.id.b_clear:
                 setTotalSum(DEFAULT_VALUE);
@@ -161,6 +149,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 if (!mCategoryExpand.isExpanded()) {
                     expand(mCategoryExpand);
                     activateButton(mIvCategory, mRlCategory, resource);
+//                    View v = LayoutInflater.from(getContext()).inflate(R.layout.recycler_item_balance, null);
+//                    getAct().getRealm().where(CategoryData.class).findAll()
+//                    ((CheckBox) v.findViewById(R.id.item_balance_check_box)).setText("ASDASdASDASDAS");
+//                    mLlCategory.addView(v);
                 }
                 break;
             case R.id.keyboard_button:
@@ -191,12 +183,21 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             case R.id.date_container:
                 DateDialog dateDialog = new DateDialog();
                 dateDialog.setTargetFragment(this, DATE_DIALOG_REQ_CODE);
-                dateDialog.show(getFragmentManager(), null);
+                dateDialog.show(getFragmentManager(), DateDialog.class.getName());
                 break;
             case R.id.add_new_category:
-                CreateCategoryDialog.newInstance().show(getFragmentManager(), null);
+                CreateCategoryDialog dialog = CreateCategoryDialog.newInstance();
+                dialog.setTargetFragment(this, CREATE_CATEGORY_DIALOG_REQ_CODE);
+                dialog.show(getFragmentManager(), CreateCategoryDialog.class.getName());
                 break;
-
+            default:
+                for (int i = 0; i < mNumberButtons.length - 1; i++) {
+                    if (viewId == mNumberButtons[i]) {
+                        mPresenter.addOne(String.valueOf(i), mTvTotalSum.getText().toString());
+                        return;
+                    }
+                }
+                break;
         }
     }
 

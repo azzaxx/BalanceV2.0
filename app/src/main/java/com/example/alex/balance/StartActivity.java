@@ -16,6 +16,7 @@ import com.example.alex.balance.interfaces.RecyclerClick;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.Sort;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener, RecyclerClick {

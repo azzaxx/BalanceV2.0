@@ -1,6 +1,8 @@
 package com.example.alex.balance.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +21,8 @@ import com.example.alex.balance.R;
  */
 
 public class CreateCategoryDialog extends DialogFragment implements View.OnClickListener {
+    public static final String CREATE_CATEGORY_NAME = "create_category_dialog_name_key";
+    public static final String CREATE_CATEGORY_COLOR = "create_category_dialog_color_key";
     private int[] colorId = {
             R.id.color_accent,
             R.id.color_black,
@@ -69,12 +73,25 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
                 break;
             case R.id.create_category_ok_button:
                 if (mETName.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "This must be filled", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please write name", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                putCategoryData(mETName.getText().toString(), mETName.getCurrentTextColor());
+                this.getDialog().dismiss();
                 break;
             default:
                 mTvColor.setTextColor(((ColorDrawable) v.getBackground()).getColor());
+        }
+    }
+
+    private void putCategoryData(String name, int color) {
+        if (getTargetFragment() != null) {
+            Intent intent = new Intent();
+
+            intent.putExtra(CREATE_CATEGORY_NAME, name);
+            intent.putExtra(CREATE_CATEGORY_COLOR, color);
+
+            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         }
     }
 }
