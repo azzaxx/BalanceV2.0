@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -119,6 +118,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         }
 
         mPresenter.setDate(null);
+        mPresenter.reAddAllCategory();
     }
 
     public void setDate(@NonNull String day, @NonNull String month, @NonNull String year) {
@@ -149,10 +149,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 if (!mCategoryExpand.isExpanded()) {
                     expand(mCategoryExpand);
                     activateButton(mIvCategory, mRlCategory, resource);
-//                    View v = LayoutInflater.from(getContext()).inflate(R.layout.recycler_item_balance, null);
-//                    getAct().getRealm().where(CategoryData.class).findAll()
-//                    ((CheckBox) v.findViewById(R.id.item_balance_check_box)).setText("ASDASdASDASDAS");
-//                    mLlCategory.addView(v);
                 }
                 break;
             case R.id.keyboard_button:
@@ -212,6 +208,14 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
         iv.setImageDrawable(image);
         relativeLayout.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round_white));
+    }
+
+    public void addViewCategory(View view) {
+        mLlCategory.addView(view);
+    }
+
+    public void removeAllCategory() {
+        mLlCategory.removeAllViews();
     }
 
     @Override

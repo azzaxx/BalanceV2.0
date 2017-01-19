@@ -2,8 +2,12 @@ package com.example.alex.balance.presenters;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
 
 import com.example.alex.balance.BalanceFragment;
+import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
 
@@ -104,6 +108,21 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setColor(color);
 
         realmObj.commitTransaction();
+        addCategory(name, color);
+    }
+
+    private void addCategory(String name, int color) {
+        View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_balance, null);
+        ((CheckBox) v.findViewById(R.id.item_balance_check_box)).setText(name);
+        v.findViewById(R.id.color_box).setBackgroundColor(color);
+        mView.addViewCategory(v);
+    }
+
+    public void reAddAllCategory() {
+        mView.removeAllCategory();
+        for (CategoryData data : mView.getAct().getRealm().where(CategoryData.class).findAll()) {
+            addCategory(data.getName(), data.getColor());
+        }
     }
 
     public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean mIsProfit) {

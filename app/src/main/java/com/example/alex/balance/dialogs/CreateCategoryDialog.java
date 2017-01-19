@@ -76,7 +76,7 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
                     Toast.makeText(getContext(), "Please write name", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                putCategoryData(mETName.getText().toString(), mETName.getCurrentTextColor());
+                putCategoryData(mETName.getText().toString(), mTvColor.getCurrentTextColor());
                 this.getDialog().dismiss();
                 break;
             default:

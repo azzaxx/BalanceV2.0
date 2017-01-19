@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/stones2"
     android:clickable="true"
     android:orientation="vertical">
@@ -392,30 +392,42 @@
             app:el_duration="200"
             app:el_expanded="false">
 
-            <LinearLayout
-                android:id="@+id/ll_category"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/solid_light_round_corners"
-                android:gravity="top"
-                android:orientation="vertical">
+                android:background="@drawable/solid_light_round_corners">
 
-                <TextView
-                    android:id="@+id/add_new_category"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:gravity="center"
-                    android:text="Press here to add new category"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/black"
-                    android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/add_new_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:text="Press here to add new category"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
 
-            </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/black" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
 
         </net.cachapa.expandablelayout.ExpandableLayout>
 
