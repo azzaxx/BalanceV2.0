@@ -2,6 +2,7 @@ package com.example.alex.balance;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +11,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.presenters.DataPresenter;
@@ -25,6 +28,7 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.realm.RealmList;
 
 import static com.example.alex.balance.StartActivity.PROFIT_LOSE_KEY;
 import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
@@ -167,14 +171,14 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 getActivity().onBackPressed();
                 break;
             case R.id.button_done:
-//                ((CheckBox)mLlCategory.getChildAt(8).findViewById(R.id.item_balance_check_box)).isChecked()
                 mPresenter.addBalanceData(
                         mTvTotalSum.getText().toString(),
                         mTvDateDay.getText().toString(),
                         mTvDateMonth.getText().toString(),
                         mTvDateYear.getText().toString(),
                         mEtComments.getText().toString(),
-                        mIsProfit);
+                        mIsProfit,
+                        getCheckedList());
                 getAct().popBackStack();
                 break;
             case R.id.date_container:
@@ -196,6 +200,22 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    private RealmList<CategoryData> getCheckedList() {
+        RealmList<CategoryData> list = new RealmList<>();
+
+        for (int i = 0; i < mLlCategory.getChildCount(); i++) {
+            View child = mLlCategory.getChildAt(i);
+            if (((CheckBox) child.findViewById(R.id.item_balance_check_box)).isChecked()) {
+                final String categoryName = ((TextView) child.findViewById(R.id.item_balance_check_box)).getText().toString();
+                final long categoryTimeStamp = Long.parseLong(((TextView) child.findViewById(R.id.item_balance_time_stamp)).getText().toString());
+                final int categoryColor = ((ColorDrawable) child.findViewById(R.id.color_box).getBackground()).getColor();
+                list.add(mPresenter.getSelectedCategory(categoryName, categoryColor, categoryTimeStamp));
+            }
+        }
+
+        return list;
     }
 
     private void activateButton(ImageView iv, RelativeLayout relativeLayout, Drawable image) {

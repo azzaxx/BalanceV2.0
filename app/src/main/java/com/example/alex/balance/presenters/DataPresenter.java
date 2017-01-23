@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.example.alex.balance.BalanceFragment;
 import com.example.alex.balance.R;
@@ -15,9 +16,13 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 
 import static com.example.alex.balance.BalanceFragment.CREATE_CATEGORY_DIALOG_REQ_CODE;
 import static com.example.alex.balance.BalanceFragment.DATE_DIALOG_REQ_CODE;
+import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_COLOR;
+import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_NAME;
+import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_TIME;
 import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_COLOR;
 import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_NAME;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_DAY_KEY;
@@ -115,6 +120,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     private void addCategory(String name, int color, long timeStamp) {
         final View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_balance, null);
         ((CheckBox) v.findViewById(R.id.item_balance_check_box)).setText(name);
+        ((TextView) v.findViewById(R.id.item_balance_time_stamp)).setText(String.valueOf(timeStamp));
         v.findViewById(R.id.color_box).setBackgroundColor(color);
         v.findViewById(R.id.item_balance_remove_view).setOnClickListener(getDeleteListener(v, name, color, timeStamp));
         mView.addViewCategory(v);
@@ -127,9 +133,9 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
                 Realm realmObj = mView.getAct().getRealm();
                 realmObj.beginTransaction();
                 realmObj.where(CategoryData.class)
-                        .equalTo("mName", name)
-                        .equalTo("mTimeStamp", timeStamp)
-                        .equalTo("mColor", color)
+                        .equalTo(CATEGORY_FIELD_NAME, name)
+                        .equalTo(CATEGORY_FIELD_TIME, timeStamp)
+                        .equalTo(CATEGORY_FIELD_COLOR, color)
                         .findFirst().deleteFromRealm();
                 realmObj.commitTransaction();
                 mView.removeViewCategory(v);
@@ -144,7 +150,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         }
     }
 
-    public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean mIsProfit) {
+    public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean mIsProfit, RealmList<CategoryData> checkedList) {
         if (totalSum.equals(DEFAULT_VALUE)) {
             return;
         }
@@ -160,7 +166,16 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setComment(comment);
         data.setTimeStamp(System.currentTimeMillis());
         data.setIsProfit(mIsProfit);
+        data.setList(checkedList);
 
         realmObj.commitTransaction();
+    }
+
+    public CategoryData getSelectedCategory(String categoryName, int categoryColor, long categoryTimeStamp) {
+        return mView.getAct().getRealm().where(CategoryData.class)
+                .equalTo(CATEGORY_FIELD_NAME, categoryName)
+                .equalTo(CATEGORY_FIELD_TIME, categoryTimeStamp)
+                .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
+                .findFirst();
     }
 }

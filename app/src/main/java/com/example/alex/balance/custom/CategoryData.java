@@ -7,6 +7,10 @@ import io.realm.RealmObject;
  */
 
 public class CategoryData extends RealmObject {
+    public static final String CATEGORY_FIELD_NAME = "mName";
+    public static final String CATEGORY_FIELD_COLOR = "mColor";
+    public static final String CATEGORY_FIELD_TIME = "mTimeStamp";
+
     private String mName;
     private int mColor;
     private long mTimeStamp;
