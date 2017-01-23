@@ -167,6 +167,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 getActivity().onBackPressed();
                 break;
             case R.id.button_done:
+//                ((CheckBox)mLlCategory.getChildAt(8).findViewById(R.id.item_balance_check_box)).isChecked()
                 mPresenter.addBalanceData(
                         mTvTotalSum.getText().toString(),
                         mTvDateDay.getText().toString(),
@@ -216,6 +217,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
     public void removeAllCategory() {
         mLlCategory.removeAllViews();
+    }
+
+    public void removeViewCategory(View view) {
+        mLlCategory.removeView(view);
     }
 
     @Override

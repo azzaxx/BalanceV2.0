@@ -99,29 +99,48 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     }
 
     private void createCategory(String name, int color) {
+        final long timeStamp = System.currentTimeMillis();
         Realm realmObj = mView.getAct().getRealm();
         realmObj.beginTransaction();
 
         CategoryData data = realmObj.createObject(CategoryData.class);
-        data.setTimeStamp(System.currentTimeMillis());
+        data.setTimeStamp(timeStamp);
         data.setName(name);
         data.setColor(color);
 
         realmObj.commitTransaction();
-        addCategory(name, color);
+        addCategory(name, color, timeStamp);
     }
 
-    private void addCategory(String name, int color) {
-        View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_balance, null);
+    private void addCategory(String name, int color, long timeStamp) {
+        final View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_balance, null);
         ((CheckBox) v.findViewById(R.id.item_balance_check_box)).setText(name);
         v.findViewById(R.id.color_box).setBackgroundColor(color);
+        v.findViewById(R.id.item_balance_remove_view).setOnClickListener(getDeleteListener(v, name, color, timeStamp));
         mView.addViewCategory(v);
+    }
+
+    private View.OnClickListener getDeleteListener(final View v, final String name, final int color, final long timeStamp) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Realm realmObj = mView.getAct().getRealm();
+                realmObj.beginTransaction();
+                realmObj.where(CategoryData.class)
+                        .equalTo("mName", name)
+                        .equalTo("mTimeStamp", timeStamp)
+                        .equalTo("mColor", color)
+                        .findFirst().deleteFromRealm();
+                realmObj.commitTransaction();
+                mView.removeViewCategory(v);
+            }
+        };
     }
 
     public void reAddAllCategory() {
         mView.removeAllCategory();
         for (CategoryData data : mView.getAct().getRealm().where(CategoryData.class).findAll()) {
-            addCategory(data.getName(), data.getColor());
+            addCategory(data.getName(), data.getColor(), data.getTimeStamp());
         }
     }
 
