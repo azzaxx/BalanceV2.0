@@ -10,6 +10,7 @@ import io.realm.RealmObject;
  */
 
 public class BalanceData extends RealmObject {
+    public static final String BALANCEDATA_FIELD_TIME = "mTimeStamp";
     private String mTotalSum;
     private String mDay;
     private String mMonth;

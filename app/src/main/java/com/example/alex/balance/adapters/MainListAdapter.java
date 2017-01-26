@@ -76,7 +76,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         this.mOnItemClick = onItemClick;
     }
 
-    class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MainViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         @BindView(R.id.tv_profit_lose)
         TextView tvProfitOrLose;
         @BindView(R.id.tv_total_sum)
@@ -90,13 +90,14 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
 
         MainViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
             ButterKnife.bind(this, itemView);
         }
 
         @Override
-        public void onClick(View v) {
+        public boolean onLongClick(View v) {
             mOnItemClick.onRecyclerClick(v, getAdapterPosition(), mList.get(getAdapterPosition()));
+            return false;
         }
     }
 }

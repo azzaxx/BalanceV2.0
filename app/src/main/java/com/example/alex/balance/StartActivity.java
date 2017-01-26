@@ -2,12 +2,15 @@ package com.example.alex.balance;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.BalanceData;
@@ -16,8 +19,9 @@ import com.example.alex.balance.interfaces.RecyclerClick;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.Sort;
+
+import static com.example.alex.balance.custom.BalanceData.BALANCEDATA_FIELD_TIME;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener, RecyclerClick {
     public static final String PROFIT_LOSE_KEY = "start_activity_profit_or_lose_key";
@@ -43,14 +47,19 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted("mTimeStamp", Sort.DESCENDING), this);
+        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted(BALANCEDATA_FIELD_TIME, Sort.DESCENDING), this);
         mAdapter.setOnItemClick(this);
         mRVList.setAdapter(mAdapter);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+        calculateTotalBalance();
     }
 
     @Override
     public void onClick(View view) {
         Bundle args = new Bundle();
+        BalanceFragment fragment = new BalanceFragment();
 
         switch (view.getId()) {
             case R.id.button_profit:
@@ -60,8 +69,12 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 args.putInt(PROFIT_LOSE_KEY, -1);
                 break;
         }
-        BalanceFragment fragment = new BalanceFragment();
+
         fragment.setArguments(args);
+        showFragment(fragment);
+    }
+
+    private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().add(R.id.start_activity_container, fragment, null).addToBackStack(null).commit();
     }
 
@@ -83,6 +96,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     public void popBackStack() {
         getSupportFragmentManager().popBackStack();
         mAdapter.notifyDataSetChanged();
+        calculateTotalBalance();
     }
 
     public Realm getRealm() {
@@ -115,5 +129,29 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         balanceData.deleteFromRealm();
         mAdapter.notifyDataSetChanged();
         mRealm.commitTransaction();
+        calculateTotalBalance();
+    }
+
+    private void calculateTotalBalance() {
+        float totalBalance = 0f;
+
+        mRealm.beginTransaction();
+
+        for (BalanceData data : mRealm.where(BalanceData.class).findAll()) {
+            if (data.isProfit()) {
+                totalBalance += Float.parseFloat(data.getTotalSum());
+            } else {
+                totalBalance -= Float.parseFloat(data.getTotalSum());
+            }
+        }
+
+        mRealm.commitTransaction();
+        setTotalSum(totalBalance);
+    }
+
+    private void setTotalSum(final float sum) {
+        String text = "Balance: ";
+        text += String.format("%.2f", sum);
+        ((TextView) findViewById(R.id.action_bar_title)).setText(text);
     }
 }

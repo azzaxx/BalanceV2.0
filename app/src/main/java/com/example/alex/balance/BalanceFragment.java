@@ -178,7 +178,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                         mTvDateYear.getText().toString(),
                         mEtComments.getText().toString(),
                         mIsProfit,
-                        getCheckedList());
+                        mPresenter.getCheckedList(mLlCategory));
                 getAct().popBackStack();
                 break;
             case R.id.date_container:
@@ -200,22 +200,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
         }
-    }
-
-    private RealmList<CategoryData> getCheckedList() {
-        RealmList<CategoryData> list = new RealmList<>();
-
-        for (int i = 0; i < mLlCategory.getChildCount(); i++) {
-            View child = mLlCategory.getChildAt(i);
-            if (((CheckBox) child.findViewById(R.id.item_balance_check_box)).isChecked()) {
-                final String categoryName = ((TextView) child.findViewById(R.id.item_balance_check_box)).getText().toString();
-                final long categoryTimeStamp = Long.parseLong(((TextView) child.findViewById(R.id.item_balance_time_stamp)).getText().toString());
-                final int categoryColor = ((ColorDrawable) child.findViewById(R.id.color_box).getBackground()).getColor();
-                list.add(mPresenter.getSelectedCategory(categoryName, categoryColor, categoryTimeStamp));
-            }
-        }
-
-        return list;
     }
 
     private void activateButton(ImageView iv, RelativeLayout relativeLayout, Drawable image) {

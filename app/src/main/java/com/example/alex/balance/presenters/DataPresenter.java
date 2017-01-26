@@ -1,10 +1,12 @@
 package com.example.alex.balance.presenters;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.BalanceFragment;
@@ -52,7 +54,6 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         if (text.equals(DEFAULT_VALUE)) {
             return;
         }
-
         String result;
         String temp = text.substring(0, text.length() - 1);
         temp = temp.replace(DOT, "");
@@ -171,11 +172,27 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         realmObj.commitTransaction();
     }
 
-    public CategoryData getSelectedCategory(String categoryName, int categoryColor, long categoryTimeStamp) {
+    private CategoryData getSelectedCategory(String categoryName, int categoryColor, long categoryTimeStamp) {
         return mView.getAct().getRealm().where(CategoryData.class)
                 .equalTo(CATEGORY_FIELD_NAME, categoryName)
                 .equalTo(CATEGORY_FIELD_TIME, categoryTimeStamp)
                 .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
                 .findFirst();
+    }
+
+    public RealmList<CategoryData> getCheckedList(LinearLayout mLlCategory) {
+        RealmList<CategoryData> list = new RealmList<>();
+
+        for (int i = 0; i < mLlCategory.getChildCount(); i++) {
+            View child = mLlCategory.getChildAt(i);
+            if (((CheckBox) child.findViewById(R.id.item_balance_check_box)).isChecked()) {
+                final String categoryName = ((TextView) child.findViewById(R.id.item_balance_check_box)).getText().toString();
+                final long categoryTimeStamp = Long.parseLong(((TextView) child.findViewById(R.id.item_balance_time_stamp)).getText().toString());
+                final int categoryColor = ((ColorDrawable) child.findViewById(R.id.color_box).getBackground()).getColor();
+                list.add(getSelectedCategory(categoryName, categoryColor, categoryTimeStamp));
+            }
+        }
+
+        return list;
     }
 }
