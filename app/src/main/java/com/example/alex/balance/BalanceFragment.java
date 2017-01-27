@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.example.alex.balance.StartActivity.PROFIT_LOSE_KEY;
+import static com.example.alex.balance.StartActivity.PROFIT_LOSS_KEY;
 import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
 
 /**
@@ -102,7 +102,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         mPresenter.bindView(this);
         getAct().actionButtonsVisibility(false);
         if (getArguments() != null) {
-            mIsProfit = getArguments().getInt(PROFIT_LOSE_KEY) > 0;
+            mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
         }
 
         mRlDelOne.setOnClickListener(this);

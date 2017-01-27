@@ -44,7 +44,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         setBackgroundColor(data, holder);
         addDate(data, holder);
         addComments(data, holder);
-        holder.tvProfitOrLose.setText(data.isProfit() ? mContext.getString(R.string.profit) : mContext.getString(R.string.lose));
+        holder.tvProfitOrLoss.setText(data.isProfit() ? mContext.getString(R.string.profit) : mContext.getString(R.string.loss));
         holder.tvTotalSum.setText(data.getTotalSum());
     }
 
@@ -77,8 +77,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
     }
 
     class MainViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
-        @BindView(R.id.tv_profit_lose)
-        TextView tvProfitOrLose;
+        @BindView(R.id.tv_profit_loss)
+        TextView tvProfitOrLoss;
         @BindView(R.id.tv_total_sum)
         TextView tvTotalSum;
         @BindView(R.id.tv_comments)

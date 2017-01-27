@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Balance</string>
     <string name="profit">Profit</string>
-    <string name="lose">Lose</string>
+    <string name="loss">Loss</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
+    <string name="welcome">Your balance list are empty. Press \"Profit\" or \"Loss\" button to add your income (Profit) or expenses (Loss).</string>
 </resources>

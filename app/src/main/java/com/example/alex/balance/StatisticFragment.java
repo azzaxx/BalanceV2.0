@@ -82,8 +82,8 @@ public class StatisticFragment extends Fragment {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         for (int i = 0; i < datas.size(); i++) {
-            if (datas.get(i).getLose() > 0) {
-                entries.add(new PieEntry(datas.get(i).getLose(), datas.get(i).getName()));
+            if (datas.get(i).getLoss() > 0) {
+                entries.add(new PieEntry(datas.get(i).getLoss(), datas.get(i).getName()));
                 colors.add(datas.get(i).getColor());
             }
         }

@@ -25,11 +25,11 @@ import io.realm.Sort;
 import static com.example.alex.balance.custom.BalanceData.BALANCEDATA_FIELD_TIME;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener, RecyclerClick {
-    public static final String PROFIT_LOSE_KEY = "start_activity_profit_or_lose_key";
+    public static final String PROFIT_LOSS_KEY = "start_activity_profit_or_loss_key";
     @BindView(R.id.button_profit)
     Button btnProfit;
-    @BindView(R.id.button_lose)
-    Button btnLose;
+    @BindView(R.id.button_loss)
+    Button btnLoss;
     @BindView(R.id.recycler_view_list)
     RecyclerView mRVList;
     private Realm mRealm;
@@ -44,7 +44,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         mRealm = Realm.getDefaultInstance();
 
         btnProfit.setOnClickListener(this);
-        btnLose.setOnClickListener(this);
+        btnLoss.setOnClickListener(this);
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
@@ -56,6 +56,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
         findViewById(R.id.action_bar_statistic).setOnClickListener(this);
         calculateTotalBalance();
+        welcomeTextVisibility();
     }
 
     @Override
@@ -65,10 +66,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         switch (view.getId()) {
             case R.id.button_profit:
-                args.putInt(PROFIT_LOSE_KEY, 1);
+                args.putInt(PROFIT_LOSS_KEY, 1);
                 break;
-            case R.id.button_lose:
-                args.putInt(PROFIT_LOSE_KEY, -1);
+            case R.id.button_loss:
+                args.putInt(PROFIT_LOSS_KEY, -1);
                 break;
             case R.id.action_bar_statistic:
                 fragment = new StatisticFragment();
@@ -103,6 +104,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         mAdapter.notifyDataSetChanged();
         calculateTotalBalance();
         actionButtonsVisibility(true);
+        welcomeTextVisibility();
     }
 
     public Realm getRealm() {
@@ -137,6 +139,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         mAdapter.notifyDataSetChanged();
         mRealm.commitTransaction();
         calculateTotalBalance();
+        welcomeTextVisibility();
     }
 
     private void removeDataFromCategory(BalanceData balanceData) {
@@ -151,7 +154,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     if (balanceData.isProfit())
                         data.removeProfit(oldData.getProfit());
                     else
-                        data.removeLose(oldData.getLose());
+                        data.removeLoss(oldData.getLoss());
                 }
             }
         }
@@ -182,5 +185,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     public void actionButtonsVisibility(boolean isVisible) {
         findViewById(R.id.action_bar_buttons_container).setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+
+    private void welcomeTextVisibility() {
+        final boolean isVisible = ((TextView) findViewById(R.id.action_bar_title)).getText().toString().equals("Balance: 0.00") && mAdapter.getItemCount() == 0;
+        findViewById(R.id.welcome_text).setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

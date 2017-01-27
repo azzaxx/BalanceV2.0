@@ -19,7 +19,7 @@ public class CategoryData extends RealmObject {
     private int mColor;
     private long mTimeStamp;
     private float mProfit;
-    private float mLose;
+    private float mLoss;
 
     public String getName() {
         return mName;
@@ -53,40 +53,40 @@ public class CategoryData extends RealmObject {
         this.mProfit = mProfit;
     }
 
-    public float getLose() {
-        return mLose;
+    public float getLoss() {
+        return mLoss;
     }
 
-    public void setLose(float mLose) {
-        this.mLose = mLose;
+    public void setLoss(float mLoss) {
+        this.mLoss = mLoss;
     }
 
-    public void addLose(float lose) {
-        this.mLose += lose;
+    public void addLoss(float Loss) {
+        this.mLoss += Loss;
     }
 
     public void addProfit(float profit) {
         this.mProfit += profit;
     }
 
-    public void removeLose(float lose) {
-        this.mLose -= lose;
+    public void removeLoss(float Loss) {
+        this.mLoss -= Loss;
     }
 
     public void removeProfit(float profit) {
         this.mProfit -= profit;
     }
 
-    public void addLose(String lose) {
-        addLose(Float.parseFloat(lose));
+    public void addLoss(String Loss) {
+        addLoss(Float.parseFloat(Loss));
     }
 
     public void addProfit(String profit) {
         addProfit(Float.parseFloat(profit));
     }
 
-    public void removeLose(String lose) {
-        removeLose(Float.parseFloat(lose));
+    public void removeLoss(String Loss) {
+        removeLoss(Float.parseFloat(Loss));
     }
 
     public void removeProfit(String profit) {
