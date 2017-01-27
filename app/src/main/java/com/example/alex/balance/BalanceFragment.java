@@ -118,6 +118,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         }
 
         mPresenter.setDate(null);
+        mPresenter.createOtherCategoryIfNotExist();
         mPresenter.reAddAllCategory();
     }
 

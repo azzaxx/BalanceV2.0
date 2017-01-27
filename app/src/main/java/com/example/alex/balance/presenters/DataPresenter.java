@@ -25,6 +25,8 @@ import static com.example.alex.balance.BalanceFragment.DATE_DIALOG_REQ_CODE;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_COLOR;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_NAME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_TIME;
+import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_COLOR;
+import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_NAME;
 import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_COLOR;
 import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_NAME;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_DAY_KEY;
@@ -100,11 +102,11 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         if (requestCode == DATE_DIALOG_REQ_CODE) {
             setDate(data);
         } else if (requestCode == CREATE_CATEGORY_DIALOG_REQ_CODE) {
-            createCategory(data.getStringExtra(CREATE_CATEGORY_NAME), data.getIntExtra(CREATE_CATEGORY_COLOR, -1));
+            createCategory(data.getStringExtra(CREATE_CATEGORY_NAME), data.getIntExtra(CREATE_CATEGORY_COLOR, -1), true);
         }
     }
 
-    private void createCategory(String name, int color) {
+    private void createCategory(String name, int color, boolean addView) {
         final long timeStamp = System.currentTimeMillis();
         Realm realmObj = mView.getAct().getRealm();
         realmObj.beginTransaction();
@@ -115,10 +117,12 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setColor(color);
 
         realmObj.commitTransaction();
-        addCategory(name, color, timeStamp);
+        addCategory(name, color, timeStamp, addView);
     }
 
-    private void addCategory(String name, int color, long timeStamp) {
+    private void addCategory(String name, int color, long timeStamp, boolean addView) {
+        if (!addView)
+            return;
         final View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_balance, null);
         ((CheckBox) v.findViewById(R.id.item_balance_check_box)).setText(name);
         ((TextView) v.findViewById(R.id.item_balance_time_stamp)).setText(String.valueOf(timeStamp));
@@ -147,11 +151,12 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     public void reAddAllCategory() {
         mView.removeAllCategory();
         for (CategoryData data : mView.getAct().getRealm().where(CategoryData.class).findAll()) {
-            addCategory(data.getName(), data.getColor(), data.getTimeStamp());
+            addCategory(data.getName(), data.getColor(), data.getTimeStamp(),
+                    !data.getName().equals(OTHER_CATEGORY_NAME) && data.getColor() != OTHER_CATEGORY_COLOR);
         }
     }
 
-    public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean mIsProfit, RealmList<CategoryData> checkedList) {
+    public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean isProfit, RealmList<CategoryData> checkedList) {
         if (totalSum.equals(DEFAULT_VALUE)) {
             return;
         }
@@ -166,17 +171,32 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setYear(year);
         data.setComment(comment);
         data.setTimeStamp(System.currentTimeMillis());
-        data.setIsProfit(mIsProfit);
+        data.setIsProfit(isProfit);
         data.setList(checkedList);
 
-        for (CategoryData categoryData : checkedList) {
-            CategoryData someData = getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp());
-            if (mIsProfit)
-                someData.addProfit(totalSum);
-            else
-                someData.addLose(totalSum);
-        }
+        realmObj.commitTransaction();
 
+        addSumToCategories(totalSum, isProfit, checkedList);
+    }
+
+    private void addSumToCategories(String totalSum, boolean isProfit, RealmList<CategoryData> checkedList) {
+        Realm realmObj = mView.getAct().getRealm();
+        realmObj.beginTransaction();
+
+        if (checkedList.isEmpty()) {
+            if (isProfit)
+                getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR).addProfit(totalSum);
+            else
+                getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR).addLose(totalSum);
+        } else {
+            for (CategoryData categoryData : checkedList) {
+                CategoryData someData = getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp());
+                if (isProfit)
+                    someData.addProfit(totalSum);
+                else
+                    someData.addLose(totalSum);
+            }
+        }
         realmObj.commitTransaction();
     }
 
@@ -184,6 +204,13 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         return mView.getAct().getRealm().where(CategoryData.class)
                 .equalTo(CATEGORY_FIELD_NAME, categoryName)
                 .equalTo(CATEGORY_FIELD_TIME, categoryTimeStamp)
+                .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
+                .findFirst();
+    }
+
+    private CategoryData getSelectedCategory(String categoryName, int categoryColor) {
+        return mView.getAct().getRealm().where(CategoryData.class)
+                .equalTo(CATEGORY_FIELD_NAME, categoryName)
                 .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
                 .findFirst();
     }
@@ -202,5 +229,11 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         }
 
         return list;
+    }
+
+    public void createOtherCategoryIfNotExist() {
+        if (getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR) == null) {
+            createCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR, false);
+        }
     }
 }

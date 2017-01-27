@@ -1,5 +1,7 @@
 package com.example.alex.balance.custom;
 
+import android.graphics.Color;
+
 import io.realm.RealmObject;
 
 /**
@@ -10,6 +12,8 @@ public class CategoryData extends RealmObject {
     public static final String CATEGORY_FIELD_NAME = "mName";
     public static final String CATEGORY_FIELD_COLOR = "mColor";
     public static final String CATEGORY_FIELD_TIME = "mTimeStamp";
+    public static final String OTHER_CATEGORY_NAME = "Other";
+    public static final int OTHER_CATEGORY_COLOR = Color.parseColor("#876ED7");
 
     private String mName;
     private int mColor;

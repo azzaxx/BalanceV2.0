@@ -98,7 +98,6 @@ public class StatisticFragment extends Fragment {
         data.setValueTextSize(16f);
         data.setValueTextColor(Color.WHITE);
         mChart.setData(data);
-
         mChart.highlightValues(null);
         mChart.invalidate();
     }
