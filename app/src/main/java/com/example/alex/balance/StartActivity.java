@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.BalanceData;
+import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.interfaces.RecyclerClick;
 
 import butterknife.BindView;
@@ -130,10 +131,29 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private void removeItemFromList(BalanceData balanceData) {
         mRealm.beginTransaction();
+        removeDataFromCategory(balanceData);
         balanceData.deleteFromRealm();
         mAdapter.notifyDataSetChanged();
         mRealm.commitTransaction();
         calculateTotalBalance();
+    }
+
+    private void removeDataFromCategory(BalanceData balanceData) {
+        if (balanceData.getList().isEmpty())
+            return;
+
+        for (CategoryData data : mRealm.where(CategoryData.class).findAll()) {
+            for (CategoryData oldData : balanceData.getList()) {
+                if (data.getName().equals(oldData.getName())
+                        && data.getColor() == oldData.getColor()
+                        && data.getTimeStamp() == oldData.getTimeStamp()) {
+                    if (balanceData.isProfit())
+                        data.removeProfit(oldData.getProfit());
+                    else
+                        data.removeLose(oldData.getLose());
+                }
+            }
+        }
     }
 
     private void calculateTotalBalance() {

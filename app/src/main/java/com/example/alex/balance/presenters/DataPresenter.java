@@ -228,6 +228,10 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
             }
         }
 
+        if (list.isEmpty()) {
+            list.add(getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR));
+        }
+
         return list;
     }
 
