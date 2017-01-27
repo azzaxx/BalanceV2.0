@@ -102,6 +102,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getSupportFragmentManager().popBackStack();
         mAdapter.notifyDataSetChanged();
         calculateTotalBalance();
+        actionButtonsVisibility(true);
     }
 
     public Realm getRealm() {
@@ -177,5 +178,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         String text = "Balance: ";
         text += String.format("%.2f", sum);
         ((TextView) findViewById(R.id.action_bar_title)).setText(text);
+    }
+
+    public void actionButtonsVisibility(boolean isVisible) {
+        findViewById(R.id.action_bar_buttons_container).setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

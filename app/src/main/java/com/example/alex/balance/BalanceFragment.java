@@ -100,6 +100,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
         mPresenter.bindView(this);
+        getAct().actionButtonsVisibility(false);
         if (getArguments() != null) {
             mIsProfit = getArguments().getInt(PROFIT_LOSE_KEY) > 0;
         }
