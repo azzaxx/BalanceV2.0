@@ -53,13 +53,14 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+        findViewById(R.id.action_bar_statistic).setOnClickListener(this);
         calculateTotalBalance();
     }
 
     @Override
     public void onClick(View view) {
         Bundle args = new Bundle();
-        BalanceFragment fragment = new BalanceFragment();
+        Fragment fragment = new BalanceFragment();
 
         switch (view.getId()) {
             case R.id.button_profit:
@@ -68,6 +69,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             case R.id.button_lose:
                 args.putInt(PROFIT_LOSE_KEY, -1);
                 break;
+            case R.id.action_bar_statistic:
+                fragment = new StatisticFragment();
+                break;
         }
 
         fragment.setArguments(args);
@@ -75,7 +79,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().add(R.id.start_activity_container, fragment, null).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.start_activity_container, fragment, null).addToBackStack(null).commit();
     }
 
     @Override

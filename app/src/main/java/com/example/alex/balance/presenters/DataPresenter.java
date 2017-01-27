@@ -169,6 +169,14 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setIsProfit(mIsProfit);
         data.setList(checkedList);
 
+        for (CategoryData categoryData : checkedList) {
+            CategoryData someData = getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp());
+            if (mIsProfit)
+                someData.addProfit(totalSum);
+            else
+                someData.addLose(totalSum);
+        }
+
         realmObj.commitTransaction();
     }
 

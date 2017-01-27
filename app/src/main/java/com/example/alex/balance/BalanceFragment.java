@@ -2,7 +2,6 @@ package com.example.alex.balance;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,14 +10,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.presenters.DataPresenter;
@@ -28,7 +25,6 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.realm.RealmList;
 
 import static com.example.alex.balance.StartActivity.PROFIT_LOSE_KEY;
 import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
