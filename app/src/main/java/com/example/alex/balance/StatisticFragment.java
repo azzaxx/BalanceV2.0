@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -38,7 +39,10 @@ public class StatisticFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((StartActivity) getActivity()).actionButtonsVisibility(false);
+        StartActivity activity = ((StartActivity) getActivity());
+        activity.actionButtonsVisibility(false);
+        Realm realm = activity.getRealm();
+        getActivity().findViewById(R.id.welcome_text_in_statitic).setVisibility(realm.where(BalanceData.class).findAll().isEmpty() ? View.VISIBLE : View.GONE);
 
         mChart = (PieChart) view.findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
@@ -54,7 +58,7 @@ public class StatisticFragment extends Fragment {
         mChart.setRotationEnabled(false);
         mChart.setHighlightPerTapEnabled(true);
 
-        setData();
+        setData(realm);
 
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
 
@@ -69,12 +73,11 @@ public class StatisticFragment extends Fragment {
 
         mChart.setEntryLabelColor(Color.WHITE);
         mChart.setEntryLabelTextSize(12f);
-
     }
 
-    private void setData() {
+    private void setData(Realm realm) {
         ArrayList<Integer> colors = new ArrayList<>();
-        Realm realm = ((StartActivity) getActivity()).getRealm();
+
         realm.beginTransaction();
 
         RealmResults<CategoryData> datas = realm.where(CategoryData.class).findAll();
@@ -93,7 +96,6 @@ public class StatisticFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setSliceSpace(2f);
         dataSet.setSelectionShift(5f);
-
         dataSet.setColors(colors);
 
         PieData data = new PieData(dataSet);
