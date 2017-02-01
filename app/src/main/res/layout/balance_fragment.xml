@@ -20,24 +20,111 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_done"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/left_round"
-            android:text="@string/done"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-
-        <Button
             android:id="@+id/button_cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/right_round"
+            android:background="@drawable/left_round"
             android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/button_done"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/right_round"
+            android:text="@string/done"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/date_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/text_container"
+        android:layout_alignLeft="@+id/text_container"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/text_container"
+        android:layout_alignStart="@+id/text_container"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/date_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/date_month"
+            android:layout_alignRight="@+id/date_month"
+            android:layout_below="@+id/date_month"
+            android:layout_marginRight="12dp"
+            android:text="2017"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/date_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/date_month"
+            android:layout_alignBottom="@+id/date_month"
+            android:layout_margin="8dp"
+            android:layout_toLeftOf="@+id/date_month"
+            android:layout_toStartOf="@+id/date_month"
+            android:text="26"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/date_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="April"
+            android:textColor="@color/white"
+            android:textSize="36sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/text_container"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@id/date_container"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
+        android:background="@drawable/round_corners"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/total_sum_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center"
+            android:text="0.00"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+        <RelativeLayout
+            android:id="@+id/del_one_button"
+            android:layout_width="64dp"
+            android:layout_height="64dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_backspace_black_24dp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -47,7 +134,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/date_container"
+        android:layout_below="@+id/text_container"
         android:layout_marginBottom="16dp"
         android:gravity="center"
         android:orientation="horizontal">
@@ -102,93 +189,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/text_container"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_below="@id/switch_button_container"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginRight="56dp"
-        android:background="@drawable/round_corners"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/total_sum_tv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="end|center"
-            android:text="0.00"
-            android:textColor="@color/white"
-            android:textSize="22sp" />
-
-        <RelativeLayout
-            android:id="@+id/del_one_button"
-            android:layout_width="64dp"
-            android:layout_height="64dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_backspace_black_24dp" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/date_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/text_container"
-        android:layout_alignLeft="@+id/text_container"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/text_container"
-        android:layout_alignStart="@+id/text_container"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:id="@+id/date_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/date_month"
-            android:layout_alignRight="@+id/date_month"
-            android:layout_below="@+id/date_month"
-            android:layout_marginRight="12dp"
-            android:text="2017"
-            android:textColor="@color/white"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/date_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/date_month"
-            android:layout_alignBottom="@+id/date_month"
-            android:layout_margin="8dp"
-            android:layout_toLeftOf="@+id/date_month"
-            android:layout_toStartOf="@+id/date_month"
-            android:text="26"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/date_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="April"
-            android:textColor="@color/white"
-            android:textSize="36sp" />
-
-    </RelativeLayout>
-
-    <LinearLayout
         android:id="@+id/expandable_container"
         android:layout_width="match_parent"
         android:layout_height="180dp"
@@ -222,6 +222,8 @@
         </net.cachapa.expandablelayout.ExpandableLayout>
 
         <net.cachapa.expandablelayout.ExpandableLayout
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:id="@+id/keyboard_expand"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -230,6 +232,7 @@
             app:el_expanded="true">
 
             <RelativeLayout
+                android:background="@drawable/solid_light_round_corners"
                 android:id="@+id/keyboard_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -412,11 +415,11 @@
                         android:textSize="18sp" />
 
                     <View
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="6dp"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="6dp"
                         android:background="@color/black" />
 
                     <LinearLayout

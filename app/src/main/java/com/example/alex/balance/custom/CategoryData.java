@@ -85,6 +85,13 @@ public class CategoryData extends RealmObject {
         addProfit(Float.parseFloat(profit));
     }
 
+    public void addProfOrLoss(String value, boolean isProfit) {
+        if (isProfit)
+            addProfit(value);
+        else
+            addLoss(value);
+    }
+
     public void removeLoss(String Loss) {
         removeLoss(Float.parseFloat(Loss));
     }

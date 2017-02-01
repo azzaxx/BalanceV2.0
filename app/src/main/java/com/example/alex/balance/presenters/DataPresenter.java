@@ -184,17 +184,11 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         realmObj.beginTransaction();
 
         if (checkedList.isEmpty()) {
-            if (isProfit)
-                getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR).addProfit(totalSum);
-            else
-                getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR).addLoss(totalSum);
+            getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR).addProfOrLoss(totalSum, isProfit);
         } else {
             for (CategoryData categoryData : checkedList) {
                 CategoryData someData = getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp());
-                if (isProfit)
-                    someData.addProfit(totalSum);
-                else
-                    someData.addLoss(totalSum);
+                someData.addProfOrLoss(totalSum, isProfit);
             }
         }
         realmObj.commitTransaction();

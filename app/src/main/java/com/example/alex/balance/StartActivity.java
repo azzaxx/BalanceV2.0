@@ -188,7 +188,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void welcomeTextVisibility() {
-        final boolean isVisible = ((TextView) findViewById(R.id.action_bar_title)).getText().toString().equals("Balance: 0.00") && mAdapter.getItemCount() == 0;
-        findViewById(R.id.welcome_text).setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        findViewById(R.id.welcome_text).setVisibility(mRealm.where(BalanceData.class).findAll().isEmpty() ? View.VISIBLE : View.GONE);
     }
 }
