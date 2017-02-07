@@ -36,6 +36,10 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
         holder.categoryNameCheckBox.setText(mList.get(position).getName());
     }
 
+    public RealmResults<CategoryData> getList() {
+        return this.mList;
+    }
+
     @Override
     public int getItemCount() {
         return mList.size();

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
+import com.example.alex.balance.custom.FilterSettings;
+import com.example.alex.balance.dialogs.FilterDialog;
 import com.example.alex.balance.interfaces.RecyclerClick;
 
 import butterknife.BindView;
@@ -34,6 +36,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     RecyclerView mRVList;
     private Realm mRealm;
     private MainListAdapter mAdapter;
+    private FilterSettings mFilterSettings = new FilterSettings();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
         findViewById(R.id.action_bar_statistic).setOnClickListener(this);
+        findViewById(R.id.action_bar_filter).setOnClickListener(this);
         calculateTotalBalance();
         welcomeTextVisibility();
     }
@@ -74,10 +78,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             case R.id.action_bar_statistic:
                 fragment = new StatisticFragment();
                 break;
+            case R.id.action_bar_filter:
+                showFilterDialog();
+                return;
         }
 
         fragment.setArguments(args);
         showFragment(fragment);
+    }
+
+    private void showFilterDialog() {
+        FilterDialog.newInstance(mFilterSettings).show(getSupportFragmentManager(), FilterDialog.class.toString());
     }
 
     private void showFragment(Fragment fragment) {
@@ -113,10 +124,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onRecyclerClick(View view, int position, BalanceData balanceData) {
-        showDialog(balanceData);
+        showDeleteMessageDialog(balanceData);
     }
 
-    private void showDialog(final BalanceData balanceData) {
+    private void showDeleteMessageDialog(final BalanceData balanceData) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -189,5 +200,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private void welcomeTextVisibility() {
         findViewById(R.id.welcome_text).setVisibility(mRealm.where(BalanceData.class).findAll().isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    public void setFilterSettings(FilterSettings settings) {
+        this.mFilterSettings = settings;
     }
 }

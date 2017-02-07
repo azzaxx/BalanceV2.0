@@ -9,24 +9,30 @@
 
     <TextView
         android:id="@+id/welcome_text"
-        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="@string/welcome"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button_container"
+        android:layout_centerHorizontal="true"
+        tools:listitem="@layout/recycler_item_main" />
 
     <LinearLayout
         android:id="@+id/button_container"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/button_profit"
@@ -49,13 +55,5 @@
             android:textColor="@color/white" />
 
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/button_container"
-        android:layout_centerHorizontal="true"
-        tools:listitem="@layout/recycler_item_main" />
 
 </RelativeLayout>

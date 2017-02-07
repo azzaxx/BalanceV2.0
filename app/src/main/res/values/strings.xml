@@ -5,4 +5,14 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="welcome">Your balance list are empty. Press \"Profit\" or \"Loss\" button to add your income (Profit) or expenses (Loss).</string>
+    <string name="filter_settings">Filter settings</string>
+    <string name="show">Show:</string>
+    <string name="sum">Sum:</string>
+    <string name="from">From:</string>
+    <string name="min">Min</string>
+    <string name="to">To:</string>
+    <string name="max">Max</string>
+    <string name="category">Category:</string>
+    <string name="show_all">Show all</string>
+    <string name="apply">Apply</string>
 </resources>
