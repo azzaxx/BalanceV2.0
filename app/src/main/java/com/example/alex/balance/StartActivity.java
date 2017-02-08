@@ -22,9 +22,14 @@ import com.example.alex.balance.interfaces.RecyclerClick;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import io.realm.Sort;
 
-import static com.example.alex.balance.custom.BalanceData.BALANCEDATA_FIELD_TIME;
+import static com.example.alex.balance.custom.BalanceData.BALANCE_DATA_FIELD_IS_PROFIT;
+import static com.example.alex.balance.custom.BalanceData.BALANCE_DATA_FIELD_TIME;
+import static com.example.alex.balance.custom.BalanceData.BALANCE_DATA_FIELD_TOTAL_SUM;
+import static com.example.alex.balance.custom.FilterSettings.DEFAULT_FILTER_VALUE;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener, RecyclerClick {
     public static final String PROFIT_LOSS_KEY = "start_activity_profit_or_loss_key";
@@ -51,7 +56,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted(BALANCEDATA_FIELD_TIME, Sort.DESCENDING), this);
+        mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING), this);
         mAdapter.setOnItemClick(this);
         mRVList.setAdapter(mAdapter);
 
@@ -59,8 +64,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
         findViewById(R.id.action_bar_statistic).setOnClickListener(this);
         findViewById(R.id.action_bar_filter).setOnClickListener(this);
-        calculateTotalBalance();
-        welcomeTextVisibility();
+        calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
     }
 
     @Override
@@ -113,9 +117,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     public void popBackStack() {
         getSupportFragmentManager().popBackStack();
         mAdapter.notifyDataSetChanged();
-        calculateTotalBalance();
+        calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
         actionButtonsVisibility(true);
-        welcomeTextVisibility();
     }
 
     public Realm getRealm() {
@@ -149,8 +152,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         balanceData.deleteFromRealm();
         mAdapter.notifyDataSetChanged();
         mRealm.commitTransaction();
-        calculateTotalBalance();
-        welcomeTextVisibility();
+        calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
     }
 
     private void removeDataFromCategory(BalanceData balanceData) {
@@ -171,16 +173,15 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void calculateTotalBalance() {
+    private void calculateTotalBalance(RealmResults<BalanceData> results) {
         float totalBalance = 0f;
-
         mRealm.beginTransaction();
 
-        for (BalanceData data : mRealm.where(BalanceData.class).findAll()) {
+        for (BalanceData data : results) {
             if (data.isProfit()) {
-                totalBalance += Float.parseFloat(data.getTotalSum());
+                totalBalance += data.getTotalSum();
             } else {
-                totalBalance -= Float.parseFloat(data.getTotalSum());
+                totalBalance -= data.getTotalSum();
             }
         }
 
@@ -192,6 +193,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         String text = "Balance: ";
         text += String.format("%.2f", sum);
         ((TextView) findViewById(R.id.action_bar_title)).setText(text);
+        welcomeTextVisibility();
     }
 
     public void actionButtonsVisibility(boolean isVisible) {
@@ -204,5 +206,27 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     public void setFilterSettings(FilterSettings settings) {
         this.mFilterSettings = settings;
+        enableFilter();
+    }
+
+    private void enableFilter() {
+        RealmQuery<BalanceData> query = mRealm.where(BalanceData.class);
+
+        if (!mFilterSettings.isProfit) {
+            query.equalTo(BALANCE_DATA_FIELD_IS_PROFIT, false);
+        }
+        if (!mFilterSettings.isLoss) {
+            query.equalTo(BALANCE_DATA_FIELD_IS_PROFIT, true);
+        }
+        if (mFilterSettings.minValue != DEFAULT_FILTER_VALUE) {
+            query.greaterThan(BALANCE_DATA_FIELD_TOTAL_SUM, mFilterSettings.minValue);
+        }
+        if (mFilterSettings.maxValue != DEFAULT_FILTER_VALUE) {
+            query.lessThan(BALANCE_DATA_FIELD_TOTAL_SUM, mFilterSettings.maxValue);
+        }
+
+        RealmResults<BalanceData> result = query.findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING);
+        calculateTotalBalance(result);
+        mAdapter.setList(result);
     }
 }

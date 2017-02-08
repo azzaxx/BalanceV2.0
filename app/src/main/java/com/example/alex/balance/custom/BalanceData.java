@@ -10,8 +10,10 @@ import io.realm.RealmObject;
  */
 
 public class BalanceData extends RealmObject {
-    public static final String BALANCEDATA_FIELD_TIME = "mTimeStamp";
-    private String mTotalSum;
+    public static final String BALANCE_DATA_FIELD_TIME = "mTimeStamp";
+    public static final String BALANCE_DATA_FIELD_IS_PROFIT = "mIsProfit";
+    public static final String BALANCE_DATA_FIELD_TOTAL_SUM = "mTotalSum";
+    private float mTotalSum;
     private String mDay;
     private String mMonth;
     private String mYear;
@@ -20,11 +22,11 @@ public class BalanceData extends RealmObject {
     private boolean mIsProfit;
     private RealmList<CategoryData> mList;
 
-    public String getTotalSum() {
+    public float getTotalSum() {
         return mTotalSum;
     }
 
-    public void setTotalSum(String mTotalSum) {
+    public void setTotalSum(float mTotalSum) {
         this.mTotalSum = mTotalSum;
     }
 

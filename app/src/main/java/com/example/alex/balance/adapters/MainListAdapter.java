@@ -45,7 +45,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         addDate(data, holder);
         addComments(data, holder);
         holder.tvProfitOrLoss.setText(data.isProfit() ? mContext.getString(R.string.profit) : mContext.getString(R.string.loss));
-        holder.tvTotalSum.setText(data.getTotalSum());
+        holder.tvTotalSum.setText(String.format("%.2f", data.getTotalSum()));
     }
 
     private void setBackgroundColor(BalanceData data, MainViewHolder holder) {
@@ -65,6 +65,11 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         builder.append(data.getMonth()).append(" ");
         builder.append(data.getYear());
         holder.tvDate.setText(builder);
+    }
+
+    public void setList(RealmResults<BalanceData> list) {
+        this.mList = list;
+        notifyDataSetChanged();
     }
 
     @Override

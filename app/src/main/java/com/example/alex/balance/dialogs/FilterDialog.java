@@ -66,6 +66,7 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
         mCheckBoxMax.setOnCheckedChangeListener(this);
         mCheckBoxMin.setOnCheckedChangeListener(this);
         mCheckBoxShowAll.setOnCheckedChangeListener(this);
+
         mRecycler = (RecyclerView) view.findViewById(R.id.filter_recycler_view);
         Realm realm = ((StartActivity) getActivity()).getRealm();
 

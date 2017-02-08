@@ -165,7 +165,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         realmObj.beginTransaction();
 
         BalanceData data = realmObj.createObject(BalanceData.class);
-        data.setTotalSum(totalSum);
+        data.setTotalSum(Float.parseFloat(totalSum));
         data.setDay(day);
         data.setMonth(month);
         data.setYear(year);
