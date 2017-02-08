@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.CategoryData;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -18,6 +20,7 @@ import io.realm.RealmResults;
 
 public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAdapter.FilterViewHolder> {
     private RealmResults<CategoryData> mList;
+    private RealmList<CategoryData> realmList = new RealmList<>();
     private Context mContext;
 
     public FilterRecyclerAdapter(Context context, RealmResults<CategoryData> list) {
@@ -36,8 +39,8 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
         holder.categoryNameCheckBox.setText(mList.get(position).getName());
     }
 
-    public RealmResults<CategoryData> getList() {
-        return this.mList;
+    public RealmList<CategoryData> getList() {
+        return this.realmList;
     }
 
     @Override
@@ -53,6 +56,16 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
             super(itemView);
             categoryNameCheckBox = (CheckBox) itemView.findViewById(R.id.item_filter_check_box);
             colorBox = itemView.findViewById(R.id.item_filter_color_box);
+
+            categoryNameCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked)
+                        realmList.add(mList.get(getAdapterPosition()));
+                    else
+                        realmList.remove(mList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 }

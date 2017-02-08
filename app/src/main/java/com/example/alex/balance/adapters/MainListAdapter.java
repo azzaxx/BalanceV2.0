@@ -14,6 +14,8 @@ import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.interfaces.RecyclerClick;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.RealmResults;
@@ -23,7 +25,7 @@ import io.realm.RealmResults;
  */
 
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainViewHolder> {
-    private RealmResults<BalanceData> mList;
+    private List<BalanceData> mList;
     private Context mContext;
     private RecyclerClick mOnItemClick;
 
@@ -67,7 +69,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         holder.tvDate.setText(builder);
     }
 
-    public void setList(RealmResults<BalanceData> list) {
+    public void setList(List<BalanceData> list) {
         this.mList = list;
         notifyDataSetChanged();
     }

@@ -23,7 +23,7 @@ import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.FilterSettings;
 
 import io.realm.Realm;
-
+import io.realm.RealmList;
 
 import static com.example.alex.balance.custom.FilterSettings.DEFAULT_FILTER_VALUE;
 
@@ -103,6 +103,8 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
                     ? DEFAULT_FILTER_VALUE : Float.valueOf(mEtMin.getText().toString());
             settings.maxValue = mCheckBoxMax.isChecked() || mEtMax.getText().toString().isEmpty()
                     ? DEFAULT_FILTER_VALUE : Float.valueOf(mEtMax.getText().toString());
+            settings.filterCategoryList = ((FilterRecyclerAdapter) mRecycler.getAdapter()).getList();
+
             ((StartActivity) getActivity()).setFilterSettings(settings);
         }
     }
@@ -141,5 +143,12 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
         if (!minChecked) {
             mEtMin.setText(String.valueOf(filterSettings.minValue));
         }
+    }
+
+    private RealmList<CategoryData> getSelectedItemsList() {
+        RealmList<CategoryData> list = new RealmList<>();
+
+
+        return list;
     }
 }

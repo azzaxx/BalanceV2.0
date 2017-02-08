@@ -19,11 +19,13 @@ import com.example.alex.balance.custom.FilterSettings;
 import com.example.alex.balance.dialogs.FilterDialog;
 import com.example.alex.balance.interfaces.RecyclerClick;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
-import io.realm.RealmResults;
 import io.realm.Sort;
 
 import static com.example.alex.balance.custom.BalanceData.BALANCE_DATA_FIELD_IS_PROFIT;
@@ -173,7 +175,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void calculateTotalBalance(RealmResults<BalanceData> results) {
+    private void calculateTotalBalance(List<BalanceData> results) {
         float totalBalance = 0f;
         mRealm.beginTransaction();
 
@@ -225,8 +227,35 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             query.lessThan(BALANCE_DATA_FIELD_TOTAL_SUM, mFilterSettings.maxValue);
         }
 
-        RealmResults<BalanceData> result = query.findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING);
+        List<BalanceData> result = query.findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING);
+
+        if (!mFilterSettings.isShowAll) {
+            result = filerListByCategoryInside(result);
+        }
+
         calculateTotalBalance(result);
         mAdapter.setList(result);
+    }
+
+    private RealmList<BalanceData> filerListByCategoryInside(List<BalanceData> result) {
+        RealmList<BalanceData> list = new RealmList<>();
+
+        for (int i = 0; i < result.size(); i++) {
+            List<CategoryData> temp = result.get(i).getList();
+
+            for (int j = 0; j < temp.size(); j++) {
+                CategoryData data = temp.get(j);
+
+                for (CategoryData categoryData : mFilterSettings.filterCategoryList) {
+                    if (data.getName().equals(categoryData.getName())
+                            && data.getTimeStamp() == categoryData.getTimeStamp()
+                            && data.getColor() == categoryData.getColor())
+                        list.add(result.get(i));
+                    break;
+                }
+            }
+        }
+
+        return list;
     }
 }
