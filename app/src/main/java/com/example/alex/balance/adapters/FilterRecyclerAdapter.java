@@ -13,6 +13,9 @@ import com.example.alex.balance.custom.CategoryData;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -65,27 +68,27 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
         return mList.size();
     }
 
-    class FilterViewHolder extends RecyclerView.ViewHolder {
+    class FilterViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+        @BindView(R.id.item_filter_check_box)
         CheckBox categoryNameCheckBox;
+        @BindView(R.id.item_filter_color_box)
         View colorBox;
 
         FilterViewHolder(View itemView) {
             super(itemView);
-            categoryNameCheckBox = (CheckBox) itemView.findViewById(R.id.item_filter_check_box);
-            colorBox = itemView.findViewById(R.id.item_filter_color_box);
+            ButterKnife.bind(this, itemView);
+            categoryNameCheckBox.setOnCheckedChangeListener(this);
+        }
 
-            categoryNameCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        if (!realmList.contains(mList.get(getAdapterPosition()))) {
-                            realmList.add(mList.get(getAdapterPosition()));
-                        }
-                    } else {
-                        realmList.remove(mList.get(getAdapterPosition()));
-                    }
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                if (!realmList.contains(mList.get(getAdapterPosition()))) {
+                    realmList.add(mList.get(getAdapterPosition()));
                 }
-            });
+            } else {
+                realmList.remove(mList.get(getAdapterPosition()));
+            }
         }
     }
 }

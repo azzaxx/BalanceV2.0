@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import com.example.alex.balance.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by alex on 18.01.17.
  */
@@ -36,8 +40,11 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
             R.id.create_category_cancel_button,
             R.id.create_category_ok_button
     };
-    private TextView mTvColor;
-    private EditText mETName;
+    @BindView(R.id.create_category_tv_cat_color)
+    TextView mTvColor;
+    @BindView(R.id.create_category_dialog_et_cat_name)
+    EditText mETName;
+    private Unbinder unbinder;
 
     public static CreateCategoryDialog newInstance() {
         Bundle args = new Bundle();
@@ -52,15 +59,13 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View view = LayoutInflater.from(getContext()).inflate(R.layout.create_category_dialog, null);
+        unbinder = ButterKnife.bind(this, view);
 
         for (int i : colorId) {
             view.findViewById(i).setOnClickListener(this);
         }
-        mTvColor = (TextView) view.findViewById(R.id.create_category_tv_cat_color);
-        mETName = (EditText) view.findViewById(R.id.create_category_dialog_et_cat_name);
 
         builder.setView(view);
-
         builder.setCancelable(false);
         return builder.create();
     }
@@ -73,7 +78,7 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
                 break;
             case R.id.create_category_ok_button:
                 if (mETName.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Please write name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getContext().getResources().getString(R.string.please_write_name), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 putCategoryData(mETName.getText().toString(), mTvColor.getCurrentTextColor());
@@ -93,5 +98,11 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
 
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

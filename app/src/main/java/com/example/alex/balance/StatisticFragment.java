@@ -20,6 +20,9 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -28,7 +31,9 @@ import io.realm.RealmResults;
  */
 
 public class StatisticFragment extends Fragment {
-    private PieChart mChart;
+    @BindView(R.id.statistic_pie_chart)
+    PieChart mChart;
+    private Unbinder unbinder;
 
     @Nullable
     @Override
@@ -42,9 +47,9 @@ public class StatisticFragment extends Fragment {
         StartActivity activity = ((StartActivity) getActivity());
         activity.actionButtonsVisibility(false);
         Realm realm = activity.getRealm();
+        unbinder = ButterKnife.bind(this, view);
         getActivity().findViewById(R.id.welcome_text_in_statitic).setVisibility(realm.where(BalanceData.class).findAll().isEmpty() ? View.VISIBLE : View.GONE);
 
-        mChart = (PieChart) view.findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -105,5 +110,11 @@ public class StatisticFragment extends Fragment {
         mChart.setData(data);
         mChart.highlightValues(null);
         mChart.invalidate();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

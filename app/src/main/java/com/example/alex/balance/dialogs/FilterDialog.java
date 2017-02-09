@@ -22,6 +22,9 @@ import com.example.alex.balance.adapters.FilterRecyclerAdapter;
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.FilterSettings;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.realm.Realm;
 import io.realm.RealmList;
 
@@ -33,12 +36,24 @@ import static com.example.alex.balance.custom.FilterSettings.DEFAULT_FILTER_VALU
 
 public class FilterDialog extends DialogFragment implements DialogInterface.OnClickListener, AppCompatCheckBox.OnCheckedChangeListener {
     public static final String FILTER_SETTINGS_KEY = "filter_dialog_filter_settings_key";
-    private RecyclerView mRecycler;
-    private SwitchCompat mSwitchProfit, mSwitchLoss;
-    private AppCompatCheckBox mCheckBoxMax, mCheckBoxMin, mCheckBoxShowAll;
-    private EditText mEtMax, mEtMin;
-    private View mLockView;
-    private FilterRecyclerAdapter adapter;
+    @BindView(R.id.filter_lose_switch)
+    SwitchCompat mSwitchLoss;
+    @BindView(R.id.filter_profit_switch)
+    SwitchCompat mSwitchProfit;
+    @BindView(R.id.filter_max_check_box)
+    AppCompatCheckBox mCheckBoxMax;
+    @BindView(R.id.filter_min_check_box)
+    AppCompatCheckBox mCheckBoxMin;
+    @BindView(R.id.filter_show_all_category_check_box)
+    AppCompatCheckBox mCheckBoxShowAll;
+    @BindView(R.id.filter_max_et)
+    EditText mEtMax;
+    @BindView(R.id.filter_min_et)
+    EditText mEtMin;
+    @BindView(R.id.filter_recycler_block)
+    View mLockView;
+    FilterRecyclerAdapter adapter;
+    private Unbinder unbinder;
 
     public static FilterDialog newInstance(FilterSettings settings) {
         Bundle args = new Bundle();
@@ -55,20 +70,13 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
         final Context context = getContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.filter_dialog_layout, null);
+        unbinder = ButterKnife.bind(this, view);
 
-        mLockView = view.findViewById(R.id.filter_recycler_block);
-        mEtMin = (EditText) view.findViewById(R.id.filter_min_et);
-        mEtMax = (EditText) view.findViewById(R.id.filter_max_et);
-        mCheckBoxMax = (AppCompatCheckBox) view.findViewById(R.id.filter_max_check_box);
-        mCheckBoxMin = (AppCompatCheckBox) view.findViewById(R.id.filter_min_check_box);
-        mCheckBoxShowAll = (AppCompatCheckBox) view.findViewById(R.id.filter_show_all_category_check_box);
-        mSwitchLoss = (SwitchCompat) view.findViewById(R.id.filter_lose_switch);
-        mSwitchProfit = (SwitchCompat) view.findViewById(R.id.filter_profit_switch);
         mCheckBoxMax.setOnCheckedChangeListener(this);
         mCheckBoxMin.setOnCheckedChangeListener(this);
         mCheckBoxShowAll.setOnCheckedChangeListener(this);
 
-        mRecycler = (RecyclerView) view.findViewById(R.id.filter_recycler_view);
+        RecyclerView mRecycler = (RecyclerView) view.findViewById(R.id.filter_recycler_view);
         Realm realm = ((StartActivity) getActivity()).getRealm();
 
         mRecycler.setHasFixedSize(true);
@@ -146,5 +154,10 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
             mEtMin.setText(String.valueOf(filterSettings.minValue));
         }
         adapter.setRealmList(filterSettings.filterCategoryList);
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
