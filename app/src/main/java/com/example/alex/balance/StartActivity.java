@@ -251,7 +251,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                             && data.getTimeStamp() == categoryData.getTimeStamp()
                             && data.getColor() == categoryData.getColor())
                         list.add(result.get(i));
-                    break;
                 }
             }
         }

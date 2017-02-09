@@ -38,6 +38,7 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
     private AppCompatCheckBox mCheckBoxMax, mCheckBoxMin, mCheckBoxShowAll;
     private EditText mEtMax, mEtMin;
     private View mLockView;
+    private FilterRecyclerAdapter adapter;
 
     public static FilterDialog newInstance(FilterSettings settings) {
         Bundle args = new Bundle();
@@ -72,7 +73,8 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
 
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(new GridLayoutManager(context, 2));
-        mRecycler.setAdapter(new FilterRecyclerAdapter(context, realm.where(CategoryData.class).findAll()));
+        adapter = new FilterRecyclerAdapter(context, realm.where(CategoryData.class).findAll());
+        mRecycler.setAdapter(adapter);
 
         Bundle args = getArguments();
         if (args != null && args.containsKey(FILTER_SETTINGS_KEY)) {
@@ -103,7 +105,7 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
                     ? DEFAULT_FILTER_VALUE : Float.valueOf(mEtMin.getText().toString());
             settings.maxValue = mCheckBoxMax.isChecked() || mEtMax.getText().toString().isEmpty()
                     ? DEFAULT_FILTER_VALUE : Float.valueOf(mEtMax.getText().toString());
-            settings.filterCategoryList = ((FilterRecyclerAdapter) mRecycler.getAdapter()).getList();
+            settings.filterCategoryList = (RealmList<CategoryData>) adapter.getList();
 
             ((StartActivity) getActivity()).setFilterSettings(settings);
         }
@@ -143,12 +145,6 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
         if (!minChecked) {
             mEtMin.setText(String.valueOf(filterSettings.minValue));
         }
-    }
-
-    private RealmList<CategoryData> getSelectedItemsList() {
-        RealmList<CategoryData> list = new RealmList<>();
-
-
-        return list;
+        adapter.setRealmList(filterSettings.filterCategoryList);
     }
 }

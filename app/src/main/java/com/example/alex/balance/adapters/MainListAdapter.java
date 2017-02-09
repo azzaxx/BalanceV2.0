@@ -49,7 +49,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         addDate(data, holder);
         addComments(data, holder);
         addCategoryList(data, holder);
-//        holder.tvProfitOrLoss.setText(data.isProfit() ? mContext.getString(R.string.profit) : mContext.getString(R.string.loss));
 
         builder.append(data.isProfit() ? "+" : "-");
         builder.append(String.format("%.2f", data.getTotalSum()));
@@ -59,6 +58,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
     private void addCategoryList(BalanceData data, MainViewHolder holder) {
         StringBuilder builder = new StringBuilder();
         List<CategoryData> list = data.getList();
+
+        builder.append(" ");
         builder.append(list.get(0).getName());
 
         for (int i = 1; i < list.size(); i++) {

@@ -11,6 +11,8 @@ import android.widget.CompoundButton;
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.CategoryData;
 
+import java.util.List;
+
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -20,12 +22,12 @@ import io.realm.RealmResults;
 
 public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAdapter.FilterViewHolder> {
     private RealmResults<CategoryData> mList;
-    private RealmList<CategoryData> realmList = new RealmList<>();
+    private List<CategoryData> realmList = new RealmList<>();
     private Context mContext;
 
-    public FilterRecyclerAdapter(Context context, RealmResults<CategoryData> list) {
+    public FilterRecyclerAdapter(Context context, RealmResults<CategoryData> resultList) {
         this.mContext = context;
-        this.mList = list;
+        this.mList = resultList;
     }
 
     @Override
@@ -35,12 +37,27 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
 
     @Override
     public void onBindViewHolder(FilterViewHolder holder, int position) {
-        holder.colorBox.setBackgroundColor(mList.get(position).getColor());
-        holder.categoryNameCheckBox.setText(mList.get(position).getName());
+        final CategoryData categoryData = mList.get(position);
+
+        holder.colorBox.setBackgroundColor(categoryData.getColor());
+        holder.categoryNameCheckBox.setText(categoryData.getName());
+
+        for (CategoryData data : realmList) {
+            if (categoryData.getName().equals(data.getName()) &&
+                    categoryData.getColor() == data.getColor() &&
+                    categoryData.getTimeStamp() == data.getTimeStamp()) {
+                holder.categoryNameCheckBox.setChecked(true);
+                break;
+            }
+        }
     }
 
-    public RealmList<CategoryData> getList() {
+    public List<CategoryData> getList() {
         return this.realmList;
+    }
+
+    public void setRealmList(List<CategoryData> selectedList) {
+        this.realmList = selectedList;
     }
 
     @Override
@@ -60,10 +77,13 @@ public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAd
             categoryNameCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                        realmList.add(mList.get(getAdapterPosition()));
-                    else
+                    if (isChecked) {
+                        if (!realmList.contains(mList.get(getAdapterPosition()))) {
+                            realmList.add(mList.get(getAdapterPosition()));
+                        }
+                    } else {
                         realmList.remove(mList.get(getAdapterPosition()));
+                    }
                 }
             });
         }
