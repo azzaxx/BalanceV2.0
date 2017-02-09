@@ -214,8 +214,10 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/solid_light_round_corners"
                 android:gravity="center"
-                android:hint="Type notes here"
-                android:inputType="text"
+                android:hint="@string/type_notes_here"
+                android:maxLines="10"
+                android:lines="6"
+                android:inputType="textMultiLine"
                 android:textColor="@color/white"
                 android:textColorHint="#88FFFFFF" />
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
+import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.interfaces.RecyclerClick;
 
 import java.util.List;
@@ -42,12 +43,30 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
         BalanceData data = mList.get(position);
+        StringBuilder builder = new StringBuilder();
 
         setBackgroundColor(data, holder);
         addDate(data, holder);
         addComments(data, holder);
-        holder.tvProfitOrLoss.setText(data.isProfit() ? mContext.getString(R.string.profit) : mContext.getString(R.string.loss));
-        holder.tvTotalSum.setText(String.format("%.2f", data.getTotalSum()));
+        addCategoryList(data, holder);
+//        holder.tvProfitOrLoss.setText(data.isProfit() ? mContext.getString(R.string.profit) : mContext.getString(R.string.loss));
+
+        builder.append(data.isProfit() ? "+" : "-");
+        builder.append(String.format("%.2f", data.getTotalSum()));
+        holder.tvTotalSum.setText(builder);
+    }
+
+    private void addCategoryList(BalanceData data, MainViewHolder holder) {
+        StringBuilder builder = new StringBuilder();
+        List<CategoryData> list = data.getList();
+        builder.append(list.get(0).getName());
+
+        for (int i = 1; i < list.size(); i++) {
+            builder.append(", ");
+            builder.append(list.get(i).getName());
+        }
+
+        holder.tvCategoryList.setText(builder);
     }
 
     private void setBackgroundColor(BalanceData data, MainViewHolder holder) {
@@ -94,6 +113,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         TextView tvDate;
         @BindView(R.id.ll_sum_text_container)
         LinearLayout llContainer;
+        @BindView(R.id.tv_category_list)
+        TextView tvCategoryList;
 
         MainViewHolder(View itemView) {
             super(itemView);
