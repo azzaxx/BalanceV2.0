@@ -1,10 +1,8 @@
 package com.example.alex.balance;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,24 +12,16 @@ import android.widget.TextView;
 
 import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.BalanceData;
-import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.FilterSettings;
-import com.example.alex.balance.dialogs.FilterDialog;
 import com.example.alex.balance.interfaces.RecyclerClick;
-
-import java.util.List;
+import com.example.alex.balance.presenters.StartActivityPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmQuery;
 import io.realm.Sort;
 
-import static com.example.alex.balance.custom.BalanceData.BALANCE_DATA_FIELD_IS_PROFIT;
 import static com.example.alex.balance.custom.BalanceData.BALANCE_DATA_FIELD_TIME;
-import static com.example.alex.balance.custom.BalanceData.BALANCE_DATA_FIELD_TOTAL_SUM;
-import static com.example.alex.balance.custom.FilterSettings.DEFAULT_FILTER_VALUE;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener, RecyclerClick {
     public static final String PROFIT_LOSS_KEY = "start_activity_profit_or_loss_key";
@@ -44,6 +34,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private Realm mRealm;
     private MainListAdapter mAdapter;
     private FilterSettings mFilterSettings = new FilterSettings();
+    private StartActivityPresenter mPresenter = new StartActivityPresenter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +42,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.start_activity);
         ButterKnife.bind(this);
         Realm.init(this);
+        mPresenter.bindView(this);
         mRealm = Realm.getDefaultInstance();
 
         btnProfit.setOnClickListener(this);
@@ -66,7 +58,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
         findViewById(R.id.action_bar_statistic).setOnClickListener(this);
         findViewById(R.id.action_bar_filter).setOnClickListener(this);
-        calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
+        mPresenter.calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
     }
 
     @Override
@@ -85,16 +77,12 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 fragment = new StatisticFragment();
                 break;
             case R.id.action_bar_filter:
-                showFilterDialog();
+                mPresenter.showFilterDialog(mFilterSettings);
                 return;
         }
 
         fragment.setArguments(args);
         showFragment(fragment);
-    }
-
-    private void showFilterDialog() {
-        FilterDialog.newInstance(mFilterSettings).show(getSupportFragmentManager(), FilterDialog.class.toString());
     }
 
     private void showFragment(Fragment fragment) {
@@ -119,7 +107,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     public void popBackStack() {
         getSupportFragmentManager().popBackStack();
         mAdapter.notifyDataSetChanged();
-        calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
+        mPresenter.calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
         actionButtonsVisibility(true);
     }
 
@@ -127,71 +115,16 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         return this.mRealm;
     }
 
+    public MainListAdapter getAdapter() {
+        return this.mAdapter;
+    }
+
     @Override
     public void onRecyclerClick(View view, int position, BalanceData balanceData) {
-        showDeleteMessageDialog(balanceData);
+        mPresenter.showDeleteMessageDialog(balanceData);
     }
 
-    private void showDeleteMessageDialog(final BalanceData balanceData) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == DialogInterface.BUTTON_POSITIVE)
-                    removeItemFromList(balanceData);
-                dialog.dismiss();
-            }
-        };
-        builder.setMessage("Are you sure?");
-        builder.setPositiveButton("Yes", onClickListener);
-        builder.setNegativeButton("No", onClickListener);
-        builder.create().show();
-    }
-
-    private void removeItemFromList(BalanceData balanceData) {
-        mRealm.beginTransaction();
-        removeDataFromCategory(balanceData);
-        balanceData.deleteFromRealm();
-        mAdapter.notifyDataSetChanged();
-        mRealm.commitTransaction();
-        calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
-    }
-
-    private void removeDataFromCategory(BalanceData balanceData) {
-        if (balanceData.getList().isEmpty())
-            return;
-
-        for (CategoryData data : mRealm.where(CategoryData.class).findAll()) {
-            for (CategoryData oldData : balanceData.getList()) {
-                if (data.getName().equals(oldData.getName())
-                        && data.getColor() == oldData.getColor()
-                        && data.getTimeStamp() == oldData.getTimeStamp()) {
-                    if (balanceData.isProfit())
-                        data.removeProfit(oldData.getProfit());
-                    else
-                        data.removeLoss(oldData.getLoss());
-                }
-            }
-        }
-    }
-
-    private void calculateTotalBalance(List<BalanceData> results) {
-        float totalBalance = 0f;
-        mRealm.beginTransaction();
-
-        for (BalanceData data : results) {
-            if (data.isProfit()) {
-                totalBalance += data.getTotalSum();
-            } else {
-                totalBalance -= data.getTotalSum();
-            }
-        }
-
-        mRealm.commitTransaction();
-        setTotalSum(totalBalance);
-    }
-
-    private void setTotalSum(final float sum) {
+    public void setTotalSum(final float sum) {
         String text = "Balance: ";
         text += String.format("%.2f", sum);
         ((TextView) findViewById(R.id.action_bar_title)).setText(text);
@@ -208,53 +141,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     public void setFilterSettings(FilterSettings settings) {
         this.mFilterSettings = settings;
-        enableFilter();
-    }
-
-    private void enableFilter() {
-        RealmQuery<BalanceData> query = mRealm.where(BalanceData.class);
-
-        if (!mFilterSettings.isProfit) {
-            query.equalTo(BALANCE_DATA_FIELD_IS_PROFIT, false);
-        }
-        if (!mFilterSettings.isLoss) {
-            query.equalTo(BALANCE_DATA_FIELD_IS_PROFIT, true);
-        }
-        if (mFilterSettings.minValue != DEFAULT_FILTER_VALUE) {
-            query.greaterThan(BALANCE_DATA_FIELD_TOTAL_SUM, mFilterSettings.minValue);
-        }
-        if (mFilterSettings.maxValue != DEFAULT_FILTER_VALUE) {
-            query.lessThan(BALANCE_DATA_FIELD_TOTAL_SUM, mFilterSettings.maxValue);
-        }
-
-        List<BalanceData> result = query.findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING);
-
-        if (!mFilterSettings.isShowAll) {
-            result = filerListByCategoryInside(result);
-        }
-
-        calculateTotalBalance(result);
-        mAdapter.setList(result);
-    }
-
-    private RealmList<BalanceData> filerListByCategoryInside(List<BalanceData> result) {
-        RealmList<BalanceData> list = new RealmList<>();
-
-        for (int i = 0; i < result.size(); i++) {
-            List<CategoryData> temp = result.get(i).getList();
-
-            for (int j = 0; j < temp.size(); j++) {
-                CategoryData data = temp.get(j);
-
-                for (CategoryData categoryData : mFilterSettings.filterCategoryList) {
-                    if (data.getName().equals(categoryData.getName())
-                            && data.getTimeStamp() == categoryData.getTimeStamp()
-                            && data.getColor() == categoryData.getColor())
-                        list.add(result.get(i));
-                }
-            }
-        }
-
-        return list;
+        mAdapter.setList(mPresenter.enableFilter(mFilterSettings));
     }
 }

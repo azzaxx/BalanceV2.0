@@ -16,5 +16,7 @@
     <string name="show_all">Show all</string>
     <string name="apply">Apply</string>
     <string name="type_notes_here">Type notes here</string>
-    <string name="please_write_name">"Please write name"</string>
+    <string name="please_write_name">Please write name</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure">Are you sure?</string>
 </resources>
