@@ -1,5 +1,6 @@
 package com.example.alex.balance;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -40,6 +41,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
+        if (getResources().getBoolean(R.bool.portrait_only)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         ButterKnife.bind(this);
         Realm.init(this);
         mPresenter.bindView(this);
