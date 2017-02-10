@@ -1,4 +1,4 @@
-package com.example.alex.balance;
+package com.example.alex.balance.views;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.FilterSettings;
+import com.example.alex.balance.custom.realm.BalanceRealmConfig;
 import com.example.alex.balance.interfaces.RecyclerClick;
 import com.example.alex.balance.presenters.StartActivityPresenter;
 
@@ -45,24 +47,36 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         ButterKnife.bind(this);
-        Realm.init(this);
         mPresenter.bindView(this);
-        mRealm = Realm.getDefaultInstance();
+        mRealm = Realm.getInstance(BalanceRealmConfig.setRealmConfiguration());
 
+        setupActionBar();
+        initButtons();
+        initList();
+        mPresenter.calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
+    }
+
+    private void setupActionBar() {
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            supportActionBar.setCustomView(R.layout.action_bar_layout);
+        }
+    }
+
+    private void initButtons() {
         btnProfit.setOnClickListener(this);
         btnLoss.setOnClickListener(this);
+        findViewById(R.id.action_bar_statistic).setOnClickListener(this);
+        findViewById(R.id.action_bar_filter).setOnClickListener(this);
+    }
 
+    private void initList() {
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MainListAdapter(mRealm.where(BalanceData.class).findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING), this);
         mAdapter.setOnItemClick(this);
         mRVList.setAdapter(mAdapter);
-
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.action_bar_layout);
-        findViewById(R.id.action_bar_statistic).setOnClickListener(this);
-        findViewById(R.id.action_bar_filter).setOnClickListener(this);
-        mPresenter.calculateTotalBalance(mRealm.where(BalanceData.class).findAll());
     }
 
     @Override

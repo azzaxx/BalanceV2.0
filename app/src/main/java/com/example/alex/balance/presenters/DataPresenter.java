@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.alex.balance.BalanceFragment;
+import com.example.alex.balance.views.BalanceFragment;
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
@@ -20,8 +20,8 @@ import java.util.Calendar;
 import io.realm.Realm;
 import io.realm.RealmList;
 
-import static com.example.alex.balance.BalanceFragment.CREATE_CATEGORY_DIALOG_REQ_CODE;
-import static com.example.alex.balance.BalanceFragment.DATE_DIALOG_REQ_CODE;
+import static com.example.alex.balance.views.BalanceFragment.CREATE_CATEGORY_DIALOG_REQ_CODE;
+import static com.example.alex.balance.views.BalanceFragment.DATE_DIALOG_REQ_CODE;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_COLOR;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_NAME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_TIME;

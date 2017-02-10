@@ -1,4 +1,4 @@
-package com.example.alex.balance;
+package com.example.alex.balance.views;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
 import com.github.mikephil.charting.animation.Easing;

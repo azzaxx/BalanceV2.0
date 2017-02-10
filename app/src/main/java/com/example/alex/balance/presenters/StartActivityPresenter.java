@@ -4,7 +4,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import com.example.alex.balance.R;
-import com.example.alex.balance.StartActivity;
+import com.example.alex.balance.views.StartActivity;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.FilterSettings;
@@ -27,6 +27,7 @@ import static com.example.alex.balance.custom.FilterSettings.DEFAULT_FILTER_VALU
  */
 
 public class StartActivityPresenter extends BasePresenter<StartActivity> {
+
     public void calculateTotalBalance(List<BalanceData> results) {
         float totalBalance = 0f;
         Realm realm = mView.getRealm();

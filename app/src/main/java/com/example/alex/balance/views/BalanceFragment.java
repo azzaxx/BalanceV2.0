@@ -1,4 +1,4 @@
-package com.example.alex.balance;
+package com.example.alex.balance.views;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.alex.balance.R;
 import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.presenters.DataPresenter;
@@ -26,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.example.alex.balance.StartActivity.PROFIT_LOSS_KEY;
+import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
 import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
 
 /**
@@ -85,7 +86,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             R.id.b9,
             R.id.b_clear
     };
-    private Unbinder mUnbinder;
+    private Unbinder unbinder;
     private DataPresenter mPresenter = new DataPresenter();
     private boolean mIsProfit;
 
@@ -98,13 +99,21 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mUnbinder = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         mPresenter.bindView(this);
         getAct().actionButtonsVisibility(false);
         if (getArguments() != null) {
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
         }
 
+        initButtons(view);
+        
+        mPresenter.setDate(null);
+        mPresenter.createOtherCategoryIfNotExist();
+        mPresenter.reAddAllCategory();
+    }
+
+    private void initButtons(View view) {
         mRlDelOne.setOnClickListener(this);
         view.findViewById(R.id.button_cancel).setOnClickListener(this);
         view.findViewById(R.id.button_done).setOnClickListener(this);
@@ -113,14 +122,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         mRlEdit.setOnClickListener(this);
         mRlCategory.setOnClickListener(this);
         mAddNewCategory.setOnClickListener(this);
-
         for (int i : mNumberButtons) {
             view.findViewById(i).setOnClickListener(this);
         }
-
-        mPresenter.setDate(null);
-        mPresenter.createOtherCategoryIfNotExist();
-        mPresenter.reAddAllCategory();
     }
 
     public void setDate(@NonNull String day, @NonNull String month, @NonNull String year) {
@@ -247,6 +251,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 }

@@ -17,7 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.example.alex.balance.R;
-import com.example.alex.balance.StartActivity;
+import com.example.alex.balance.views.StartActivity;
 import com.example.alex.balance.adapters.FilterRecyclerAdapter;
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.FilterSettings;
