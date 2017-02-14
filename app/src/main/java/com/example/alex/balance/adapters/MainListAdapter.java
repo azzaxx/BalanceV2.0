@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.R;
@@ -45,14 +47,24 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         BalanceData data = mList.get(position);
         StringBuilder builder = new StringBuilder();
 
-        setBackgroundColor(data, holder);
         addDate(data, holder);
         addComments(data, holder);
         addCategoryList(data, holder);
+        setProfitOrLossImage(holder, data.isProfit());
 
         builder.append(data.isProfit() ? "+" : "-");
         builder.append(String.format("%.2f", data.getTotalSum()));
         holder.tvTotalSum.setText(builder);
+    }
+
+    private void setProfitOrLossImage(MainViewHolder holder, boolean isProfit) {
+        holder.ivProfitOrLoss.setImageDrawable(
+                mContext.getResources().getDrawable(
+                        isProfit ? R.drawable.ic_profit_colored : R.drawable.ic_loss_colored));
+        holder.rrCircle.setBackgroundDrawable(
+                mContext.getResources().getDrawable(
+                        isProfit ? R.drawable.circle_profit : R.drawable.circle_loss)
+        );
     }
 
     private void addCategoryList(BalanceData data, MainViewHolder holder) {
@@ -70,12 +82,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         holder.tvCategoryList.setText(builder);
     }
 
-    private void setBackgroundColor(BalanceData data, MainViewHolder holder) {
-        Drawable drawable = holder.llContainer.getBackground();
-        ((GradientDrawable) drawable).setStroke(1, mContext.getResources().getColor(data.isProfit() ? R.color.green : R.color.red));
-        holder.llContainer.setBackgroundDrawable(drawable);
-    }
-
     private void addComments(BalanceData data, MainViewHolder holder) {
         holder.tvComments.setVisibility(data.getComment().isEmpty() ? View.GONE : View.VISIBLE);
         holder.tvComments.setText(data.getComment());
@@ -84,7 +90,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
     private void addDate(BalanceData data, MainViewHolder holder) {
         StringBuilder builder = new StringBuilder();
         builder.append(data.getDay()).append(" ");
-        builder.append(data.getMonth()).append(" ");
+        builder.append(data.getMonth().substring(0, 3)).append(" ");
         builder.append(data.getYear());
         holder.tvDate.setText(builder);
     }
@@ -112,10 +118,12 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         TextView tvComments;
         @BindView(R.id.tv_year)
         TextView tvDate;
-        @BindView(R.id.ll_sum_text_container)
-        LinearLayout llContainer;
         @BindView(R.id.tv_category_list)
         TextView tvCategoryList;
+        @BindView(R.id.recycler_item_image_profit)
+        ImageView ivProfitOrLoss;
+        @BindView(R.id.recycler_item_rr_circle)
+        RelativeLayout rrCircle;
 
         MainViewHolder(View itemView) {
             super(itemView);

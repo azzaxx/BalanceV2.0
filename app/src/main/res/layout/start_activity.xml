@@ -8,15 +8,15 @@
     tools:context="com.example.alex.balance.views.StartActivity">
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/welcome_text"
-        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="@string/welcome"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/button_container"
@@ -57,6 +57,8 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/button_container"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/stroke_light_round_corners"
+        android:padding="1dp"
         tools:listitem="@layout/recycler_item_main" />
 
 </RelativeLayout>
