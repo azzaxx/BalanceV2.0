@@ -48,7 +48,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
         ButterKnife.bind(this);
         mPresenter.bindView(this);
-        mRealm = Realm.getInstance(BalanceRealmConfig.setRealmConfiguration());
+        mRealm = Realm.getInstance(BalanceRealmConfig.getRealmConfiguration());
 
         setupActionBar();
         initButtons();

@@ -13,14 +13,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.example.alex.balance.R;
-import com.example.alex.balance.views.StartActivity;
 import com.example.alex.balance.adapters.FilterRecyclerAdapter;
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.FilterSettings;
+import com.example.alex.balance.views.StartActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +29,7 @@ import butterknife.Unbinder;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.example.alex.balance.custom.FilterSettings.DEFAULT_FILTER_VALUE;
 
 /**
@@ -156,7 +158,8 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
         adapter.setRealmList(filterSettings.filterCategoryList);
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
