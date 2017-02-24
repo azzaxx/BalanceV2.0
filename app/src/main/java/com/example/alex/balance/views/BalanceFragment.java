@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +48,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     TextView mTvDateMonth;
     @BindView(R.id.date_year)
     TextView mTvDateYear;
-    @BindView(R.id.add_new_category)
-    TextView mAddNewCategory;
     @BindView(R.id.keyboard_expand)
     ExpandableLayout mKeyboardExpand;
-    @BindView(R.id.edit_expand)
-    ExpandableLayout mEditExpand;
     @BindView(R.id.category_expand)
     ExpandableLayout mCategoryExpand;
     @BindView(R.id.image_keyboard_button)
@@ -61,17 +59,18 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.image_category_button)
     ImageView mIvCategory;
     @BindView(R.id.keyboard_button)
-    RelativeLayout mRlKeyboard;
+    LinearLayout mRlKeyboard;
     @BindView(R.id.notes_button)
     RelativeLayout mRlEdit;
     @BindView(R.id.category_button)
-    RelativeLayout mRlCategory;
+    LinearLayout mRlCategory;
     @BindView(R.id.del_one_button)
     RelativeLayout mRlDelOne;
     @BindView(R.id.et_comments)
     EditText mEtComments;
-    @BindView(R.id.ll_category)
-    LinearLayout mLlCategory;
+
+    @BindView(R.id.recycler11)
+    RecyclerView mRv;
 
     private int[] mNumberButtons = {
             R.id.b0,
@@ -107,10 +106,28 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         }
 
         initButtons(view);
-        
+        mRv.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mRv.setAdapter(new RecyclerView.Adapter() {
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return new RecyclerView.ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.recycler_item_category, parent, false)) {
+
+                };
+            }
+
+            @Override
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return 16;
+            }
+        });
+
         mPresenter.setDate(null);
         mPresenter.createOtherCategoryIfNotExist();
-        mPresenter.reAddAllCategory();
     }
 
     private void initButtons(View view) {
@@ -121,7 +138,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         mRlKeyboard.setOnClickListener(this);
         mRlEdit.setOnClickListener(this);
         mRlCategory.setOnClickListener(this);
-        mAddNewCategory.setOnClickListener(this);
         for (int i : mNumberButtons) {
             view.findViewById(i).setOnClickListener(this);
         }
@@ -140,9 +156,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-        Drawable resource = getActivity().getResources().getDrawable(viewId == R.id.category_button
-                ? R.drawable.ic_tag : viewId == R.id.keyboard_button
-                ? R.drawable.ic_keypad : R.drawable.ic_underline_button);
 
         switch (viewId) {
             case R.id.b_clear:
@@ -154,19 +167,11 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             case R.id.category_button:
                 if (!mCategoryExpand.isExpanded()) {
                     expand(mCategoryExpand);
-                    activateButton(mIvCategory, mRlCategory, resource);
                 }
                 break;
             case R.id.keyboard_button:
                 if (!mKeyboardExpand.isExpanded()) {
                     expand(mKeyboardExpand);
-                    activateButton(mIvKeyboard, mRlKeyboard, resource);
-                }
-                break;
-            case R.id.notes_button:
-                if (!mEditExpand.isExpanded()) {
-                    expand(mEditExpand);
-                    activateButton(mIvEdit, mRlEdit, resource);
                 }
                 break;
             case R.id.button_cancel:
@@ -179,19 +184,13 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                         mTvDateMonth.getText().toString(),
                         mTvDateYear.getText().toString(),
                         mEtComments.getText().toString(),
-                        mIsProfit,
-                        mPresenter.getCheckedList(mLlCategory));
+                        mIsProfit);
                 getAct().popBackStack();
                 break;
             case R.id.date_container:
                 DateDialog dateDialog = new DateDialog();
                 dateDialog.setTargetFragment(this, DATE_DIALOG_REQ_CODE);
                 dateDialog.show(getFragmentManager(), DateDialog.class.getName());
-                break;
-            case R.id.add_new_category:
-                CreateCategoryDialog dialog = CreateCategoryDialog.newInstance();
-                dialog.setTargetFragment(this, CREATE_CATEGORY_DIALOG_REQ_CODE);
-                dialog.show(getFragmentManager(), CreateCategoryDialog.class.getName());
                 break;
             default:
                 for (int i = 0; i < mNumberButtons.length - 1; i++) {
@@ -204,31 +203,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void activateButton(ImageView iv, RelativeLayout relativeLayout, Drawable image) {
-        mIvKeyboard.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_keypad_primary));
-        mIvEdit.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_underline_button_primary));
-        mIvCategory.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_tag_primary));
-
-        mRlKeyboard.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round));
-        mRlEdit.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round));
-        mRlCategory.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round));
-
-        iv.setImageDrawable(image);
-        relativeLayout.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.round_white));
-    }
-
-    public void addViewCategory(View view) {
-        mLlCategory.addView(view);
-    }
-
-    public void removeAllCategory() {
-        mLlCategory.removeAllViews();
-    }
-
-    public void removeViewCategory(View view) {
-        mLlCategory.removeView(view);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -239,7 +213,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
     private void expand(ExpandableLayout expand) {
         mKeyboardExpand.collapse();
-        mEditExpand.collapse();
         mCategoryExpand.collapse();
         expand.expand();
     }

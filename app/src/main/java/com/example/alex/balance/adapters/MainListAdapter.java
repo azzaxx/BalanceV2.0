@@ -72,7 +72,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
         List<CategoryData> list = data.getList();
 
         builder.append(" ");
-        builder.append(list.get(0).getName());
+        if (!list.isEmpty())
+            builder.append(list.get(0).getName());
 
         for (int i = 1; i < list.size(); i++) {
             builder.append(", ");

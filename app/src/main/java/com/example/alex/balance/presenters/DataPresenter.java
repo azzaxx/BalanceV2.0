@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -123,15 +124,19 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     private void addCategory(String name, int color, long timeStamp, boolean addView) {
         if (!addView)
             return;
-        final View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_balance, null);
-        ((CheckBox) v.findViewById(R.id.item_balance_check_box)).setText(name);
-        ((TextView) v.findViewById(R.id.item_balance_time_stamp)).setText(String.valueOf(timeStamp));
+        LinearLayout linearLayout = new LinearLayout(mView.getContext());
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        final View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_category, null);
+        ((TextView) v.findViewById(R.id.recycler_item_category_name_text)).setText(name);
+
+        /*((TextView) v.findViewById(R.id.item_balance_time_stamp)).setText(String.valueOf(timeStamp));
         v.findViewById(R.id.color_box).setBackgroundColor(color);
-        v.findViewById(R.id.item_balance_remove_view).setOnClickListener(getDeleteListener(v, name, color, timeStamp));
-        mView.addViewCategory(v);
+        v.findViewById(R.id.item_balance_remove_view).setOnClickListener(getDeleteListener(v, name, color, timeStamp));*/
+//        mView.addViewCategory(v);
     }
 
-    private View.OnClickListener getDeleteListener(final View v, final String name, final int color, final long timeStamp) {
+    /*private View.OnClickListener getDeleteListener(final View v, final String name, final int color, final long timeStamp) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,17 +151,17 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
                 mView.removeViewCategory(v);
             }
         };
-    }
+    }*/
 
-    public void reAddAllCategory() {
+    /*public void reAddAllCategory() {
         mView.removeAllCategory();
         for (CategoryData data : mView.getAct().getRealm().where(CategoryData.class).findAll()) {
             addCategory(data.getName(), data.getColor(), data.getTimeStamp(),
                     !data.getName().equals(OTHER_CATEGORY_NAME) && data.getColor() != OTHER_CATEGORY_COLOR);
         }
-    }
+    }*/
 
-    public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean isProfit, RealmList<CategoryData> checkedList) {
+    public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean isProfit/*, RealmList<CategoryData> checkedList*/) {
         if (totalSum.equals(DEFAULT_VALUE)) {
             return;
         }
@@ -172,14 +177,14 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         data.setComment(comment);
         data.setTimeStamp(System.currentTimeMillis());
         data.setIsProfit(isProfit);
-        data.setList(checkedList);
+//        data.setList(checkedList);
 
         realmObj.commitTransaction();
 
-        addSumToCategories(totalSum, isProfit, checkedList);
+//        addSumToCategories(totalSum, isProfit, checkedList);
     }
 
-    private void addSumToCategories(String totalSum, boolean isProfit, RealmList<CategoryData> checkedList) {
+    /*private void addSumToCategories(String totalSum, boolean isProfit, RealmList<CategoryData> checkedList) {
         Realm realmObj = mView.getAct().getRealm();
         realmObj.beginTransaction();
 
@@ -192,15 +197,15 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
             }
         }
         realmObj.commitTransaction();
-    }
+    }*/
 
-    private CategoryData getSelectedCategory(String categoryName, int categoryColor, long categoryTimeStamp) {
+    /*private CategoryData getSelectedCategory(String categoryName, int categoryColor, long categoryTimeStamp) {
         return mView.getAct().getRealm().where(CategoryData.class)
                 .equalTo(CATEGORY_FIELD_NAME, categoryName)
                 .equalTo(CATEGORY_FIELD_TIME, categoryTimeStamp)
                 .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
                 .findFirst();
-    }
+    }*/
 
     private CategoryData getSelectedCategory(String categoryName, int categoryColor) {
         return mView.getAct().getRealm().where(CategoryData.class)
@@ -209,7 +214,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
                 .findFirst();
     }
 
-    public RealmList<CategoryData> getCheckedList(LinearLayout mLlCategory) {
+    /*public RealmList<CategoryData> getCheckedList(LinearLayout mLlCategory) {
         RealmList<CategoryData> list = new RealmList<>();
 
         for (int i = 0; i < mLlCategory.getChildCount(); i++) {
@@ -227,7 +232,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         }
 
         return list;
-    }
+    }*/
 
     public void createOtherCategoryIfNotExist() {
         if (getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR) == null) {
