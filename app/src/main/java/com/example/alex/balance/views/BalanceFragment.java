@@ -2,7 +2,6 @@ package com.example.alex.balance.views;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,7 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.R;
-import com.example.alex.balance.dialogs.CreateCategoryDialog;
+import com.example.alex.balance.adapters.CategoryAdapter;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.presenters.DataPresenter;
 
@@ -107,27 +106,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
         initButtons(view);
         mRv.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        mRv.setAdapter(new RecyclerView.Adapter() {
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                return new RecyclerView.ViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.recycler_item_category, parent, false)) {
-
-                };
-            }
-
-            @Override
-            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-            }
-
-            @Override
-            public int getItemCount() {
-                return 16;
-            }
-        });
-
+        mRv.setAdapter(new CategoryAdapter(getContext()));
         mPresenter.setDate(null);
-        mPresenter.createOtherCategoryIfNotExist();
+//        mPresenter.createOtherCategoryIfNotExist();
     }
 
     private void initButtons(View view) {

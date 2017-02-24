@@ -102,39 +102,39 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     public void onActivityResult(int requestCode, Intent data) {
         if (requestCode == DATE_DIALOG_REQ_CODE) {
             setDate(data);
-        } else if (requestCode == CREATE_CATEGORY_DIALOG_REQ_CODE) {
+        } /*else if (requestCode == CREATE_CATEGORY_DIALOG_REQ_CODE) {
             createCategory(data.getStringExtra(CREATE_CATEGORY_NAME), data.getIntExtra(CREATE_CATEGORY_COLOR, -1), true);
-        }
+        }*/
     }
 
-    private void createCategory(String name, int color, boolean addView) {
-        final long timeStamp = System.currentTimeMillis();
-        Realm realmObj = mView.getAct().getRealm();
-        realmObj.beginTransaction();
+//    private void createCategory(String name, int color, boolean addView) {
+//        final long timeStamp = System.currentTimeMillis();
+//        Realm realmObj = mView.getAct().getRealm();
+//        realmObj.beginTransaction();
+//
+//        CategoryData data = realmObj.createObject(CategoryData.class);
+//        data.setTimeStamp(timeStamp);
+//        data.setName(name);
+//        data.setColor(color);
+//
+//        realmObj.commitTransaction();
+//        addCategory(name, color, timeStamp, addView);
+//    }
 
-        CategoryData data = realmObj.createObject(CategoryData.class);
-        data.setTimeStamp(timeStamp);
-        data.setName(name);
-        data.setColor(color);
-
-        realmObj.commitTransaction();
-        addCategory(name, color, timeStamp, addView);
-    }
-
-    private void addCategory(String name, int color, long timeStamp, boolean addView) {
-        if (!addView)
-            return;
-        LinearLayout linearLayout = new LinearLayout(mView.getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        final View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_category, null);
-        ((TextView) v.findViewById(R.id.recycler_item_category_name_text)).setText(name);
+//    private void addCategory(String name, int color, long timeStamp, boolean addView) {
+//        if (!addView)
+//            return;
+//        LinearLayout linearLayout = new LinearLayout(mView.getContext());
+//        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+//        final View v = LayoutInflater.from(mView.getContext()).inflate(R.layout.recycler_item_category, null);
+//        ((TextView) v.findViewById(R.id.recycler_item_category_name_text)).setText(name);
 
         /*((TextView) v.findViewById(R.id.item_balance_time_stamp)).setText(String.valueOf(timeStamp));
         v.findViewById(R.id.color_box).setBackgroundColor(color);
         v.findViewById(R.id.item_balance_remove_view).setOnClickListener(getDeleteListener(v, name, color, timeStamp));*/
 //        mView.addViewCategory(v);
-    }
+//    }
 
     /*private View.OnClickListener getDeleteListener(final View v, final String name, final int color, final long timeStamp) {
         return new View.OnClickListener() {
@@ -207,12 +207,12 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
                 .findFirst();
     }*/
 
-    private CategoryData getSelectedCategory(String categoryName, int categoryColor) {
+    /*private CategoryData getSelectedCategory(String categoryName, int categoryColor) {
         return mView.getAct().getRealm().where(CategoryData.class)
                 .equalTo(CATEGORY_FIELD_NAME, categoryName)
                 .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
                 .findFirst();
-    }
+    }*/
 
     /*public RealmList<CategoryData> getCheckedList(LinearLayout mLlCategory) {
         RealmList<CategoryData> list = new RealmList<>();
@@ -234,9 +234,9 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         return list;
     }*/
 
-    public void createOtherCategoryIfNotExist() {
+    /*public void createOtherCategoryIfNotExist() {
         if (getSelectedCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR) == null) {
             createCategory(OTHER_CATEGORY_NAME, OTHER_CATEGORY_COLOR, false);
         }
-    }
+    }*/
 }
