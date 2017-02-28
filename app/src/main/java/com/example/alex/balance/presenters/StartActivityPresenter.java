@@ -4,16 +4,15 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import com.example.alex.balance.R;
-import com.example.alex.balance.views.StartActivity;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.FilterSettings;
 import com.example.alex.balance.dialogs.FilterDialog;
+import com.example.alex.balance.views.StartActivity;
 
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.Sort;
 
@@ -46,21 +45,16 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
     }
 
     private void removeDataFromCategory(BalanceData balanceData) {
-        if (balanceData.getList().isEmpty())
-            return;
-
-        for (CategoryData data : mView.getRealm().where(CategoryData.class).findAll()) {
-            for (CategoryData oldData : balanceData.getList()) {
-                if (data.getName().equals(oldData.getName())
-                        && data.getColor() == oldData.getColor()
-                        && data.getTimeStamp() == oldData.getTimeStamp()) {
-                    if (balanceData.isProfit())
-                        data.removeProfit(oldData.getProfit());
-                    else
-                        data.removeLoss(oldData.getLoss());
-                }
-            }
-        }
+        CategoryData oldData = balanceData.getCategory();
+        CategoryData data = mView.getRealm().where(CategoryData.class)
+                .equalTo(CategoryData.CATEGORY_FIELD_NAME, oldData.getName())
+                .equalTo(CategoryData.CATEGORY_FIELD_COLOR, oldData.getColor())
+                .equalTo(CategoryData.CATEGORY_FIELD_TIME, oldData.getTimeStamp())
+                .findFirst();
+        if (balanceData.isProfit())
+            data.removeProfit(oldData.getProfit());
+        else
+            data.removeLoss(oldData.getLoss());
     }
 
     public List<BalanceData> enableFilter(final FilterSettings settings) {
@@ -82,14 +76,14 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         List<BalanceData> result = query.findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING);
 
         if (!settings.isShowAll) {
-            result = filerListByCategoryInside(result, settings);
+//            result = filerListByCategoryInside(result, settings);
         }
 
         calculateTotalBalance(result);
         return result;
     }
 
-    private RealmList<BalanceData> filerListByCategoryInside(final List<BalanceData> result, final FilterSettings settings) {
+    /*private RealmList<BalanceData> filerListByCategoryInside(final List<BalanceData> result, final FilterSettings settings) {
         RealmList<BalanceData> list = new RealmList<>();
 
         for (int i = 0; i < result.size(); i++) {
@@ -108,7 +102,7 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         }
 
         return list;
-    }
+    }*/
 
     public void showDeleteMessageDialog(final BalanceData balanceData) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mView);
