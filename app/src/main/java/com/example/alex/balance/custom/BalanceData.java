@@ -1,8 +1,5 @@
 package com.example.alex.balance.custom;
 
-import java.util.List;
-
-import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -20,7 +17,15 @@ public class BalanceData extends RealmObject {
     private String mComment;
     private long mTimeStamp;
     private boolean mIsProfit;
-    private RealmList<CategoryData> mList;
+    private CategoryData category;
+
+    public CategoryData getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryData category) {
+        this.category = category;
+    }
 
     public float getTotalSum() {
         return mTotalSum;
@@ -76,14 +81,6 @@ public class BalanceData extends RealmObject {
 
     public void setIsProfit(boolean mIsProfit) {
         this.mIsProfit = mIsProfit;
-    }
-
-    public List<CategoryData> getList() {
-        return mList;
-    }
-
-    public void setList(RealmList<CategoryData> mList) {
-        this.mList = mList;
     }
 
     @Override

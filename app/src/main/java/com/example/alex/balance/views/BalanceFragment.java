@@ -19,17 +19,20 @@ import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryAdapter;
+import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.presenters.DataPresenter;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
 import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
+import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
 
 /**
  * Created by alex on 04.01.17.
@@ -53,21 +56,16 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     ExpandableLayout mCategoryExpand;
     @BindView(R.id.image_keyboard_button)
     ImageView mIvKeyboard;
-    @BindView(R.id.image_notes_button)
-    ImageView mIvEdit;
     @BindView(R.id.image_category_button)
     ImageView mIvCategory;
     @BindView(R.id.keyboard_button)
     LinearLayout mRlKeyboard;
-    @BindView(R.id.notes_button)
-    RelativeLayout mRlEdit;
     @BindView(R.id.category_button)
     LinearLayout mRlCategory;
     @BindView(R.id.del_one_button)
     RelativeLayout mRlDelOne;
     @BindView(R.id.et_comments)
     EditText mEtComments;
-
     @BindView(R.id.recycler11)
     RecyclerView mRv;
 
@@ -104,11 +102,11 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
         }
 
+        List<CategoryData> datas = getAct().getRealm().where(CategoryData.class).findAll();
         initButtons(view);
         mRv.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        mRv.setAdapter(new CategoryAdapter(getContext()));
+        mRv.setAdapter(new CategoryAdapter(getContext(), datas.isEmpty() ? mPresenter.createCategoryData() : datas));
         mPresenter.setDate(null);
-//        mPresenter.createOtherCategoryIfNotExist();
     }
 
     private void initButtons(View view) {
@@ -117,7 +115,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.button_done).setOnClickListener(this);
         view.findViewById(R.id.date_container).setOnClickListener(this);
         mRlKeyboard.setOnClickListener(this);
-        mRlEdit.setOnClickListener(this);
         mRlCategory.setOnClickListener(this);
         for (int i : mNumberButtons) {
             view.findViewById(i).setOnClickListener(this);
@@ -165,7 +162,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
                         mTvDateMonth.getText().toString(),
                         mTvDateYear.getText().toString(),
                         mEtComments.getText().toString(),
-                        mIsProfit);
+                        mIsProfit,
+                        ((CategoryAdapter) mRv.getAdapter()).getCurrentCategory());
                 getAct().popBackStack();
                 break;
             case R.id.date_container:

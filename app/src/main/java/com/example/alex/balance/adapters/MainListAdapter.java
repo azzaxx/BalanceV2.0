@@ -69,16 +69,16 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
 
     private void addCategoryList(BalanceData data, MainViewHolder holder) {
         StringBuilder builder = new StringBuilder();
-        List<CategoryData> list = data.getList();
+//        List<CategoryData> list = data.getList();
 
         builder.append(" ");
-        if (!list.isEmpty())
-            builder.append(list.get(0).getName());
+//        if (!list.isEmpty())
+            builder.append(data.getCategory().getName());
 
-        for (int i = 1; i < list.size(); i++) {
-            builder.append(", ");
-            builder.append(list.get(i).getName());
-        }
+//        for (int i = 1; i < list.size(); i++) {
+//            builder.append(", ");
+//            builder.append(list.get(i).getName());
+//        }
 
         holder.tvCategoryList.setText(builder);
     }

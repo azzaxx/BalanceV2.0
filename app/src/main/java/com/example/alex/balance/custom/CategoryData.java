@@ -13,13 +13,23 @@ public class CategoryData extends RealmObject {
     public static final String CATEGORY_FIELD_COLOR = "mColor";
     public static final String CATEGORY_FIELD_TIME = "mTimeStamp";
     public static final String OTHER_CATEGORY_NAME = "Other";
+    public static final String CATEGORY_ICON_FIELD_NAME = "mIconName";
     public static final int OTHER_CATEGORY_COLOR = Color.parseColor("#876ED7");
 
-    private String mName;
-    private int mColor;
+    private String mIconName;
+    private String mName = OTHER_CATEGORY_NAME;
+    private int mColor = OTHER_CATEGORY_COLOR;
     private long mTimeStamp;
     private float mProfit;
     private float mLoss;
+
+    public String getIconName() {
+        return mIconName;
+    }
+
+    public void setIconName(String mIconName) {
+        this.mIconName = mIconName;
+    }
 
     public String getName() {
         return mName;

@@ -11,9 +11,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.R;
+import com.example.alex.balance.custom.CategoryData;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,11 +25,13 @@ import butterknife.ButterKnife;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private View mIvSelectedCategory;
+    private int mSelectedCategoryPosition;
     private Context mContext;
-    public String[] images = {"mobile_home", "mouse_trap_mouse", "wardrobe", "washing_machine"};
+    private List<CategoryData> mDataList;
 
-    public CategoryAdapter(Context context) {
+    public CategoryAdapter(Context context, List<CategoryData> categories) {
         this.mContext = context;
+        mDataList = categories;
     }
 
     @Override
@@ -38,12 +41,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
-        holder.mCategoryName.setText(images[position]);
+        holder.mCategoryName.setText(mDataList.get(position).getName());
 
         try {
-            InputStream is = mContext.getAssets().open(images[position] + ".png");
-            Drawable d = Drawable.createFromStream(is, null);
-            holder.mCategoryIcon.setImageDrawable(d);
+            holder.mCategoryIcon.setImageDrawable(Drawable.createFromStream(mContext.getAssets().open(mDataList.get(position).getIconName() + ".png"), null));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -51,7 +52,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public int getItemCount() {
-        return images.length;
+        return mDataList.size();
+    }
+
+    public CategoryData getCurrentCategory() {
+        return mDataList.get(mSelectedCategoryPosition);
     }
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -78,6 +83,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     mIvSelectedCategory.findViewById(R.id.recycler_item_category_image_container).setBackgroundDrawable(mDrawable);
                 }
                 mIvSelectedCategory = view;
+                mSelectedCategoryPosition = getAdapterPosition();
             }
         }
     }

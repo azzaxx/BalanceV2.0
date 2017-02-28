@@ -10,9 +10,9 @@
     <LinearLayout
         android:id="@+id/button_container"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="8dp"
@@ -128,58 +128,79 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/switch_button_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/text_container"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-
-        <RelativeLayout
-            android:id="@+id/notes_button"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/round_primary"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/image_notes_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_underline_button_primary" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/expandable_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/button_container"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/switch_button_container"
-        android:layout_above="@id/button_container"
-        android:layout_marginTop="6dp"
+        android:layout_below="@id/text_container"
         android:layout_marginBottom="8dp"
+        android:layout_marginTop="6dp"
         android:gravity="center|top"
         android:orientation="vertical">
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/category_expand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            app:el_duration="200"
+            app:el_expanded="false">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/keyboard_button"
+                    android:layout_width="170dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/solid_round"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/image_keyboard_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginRight="22dp"
+                        android:src="@drawable/ic_keypad_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/keyboard"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="52dp" />
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
 
         <net.cachapa.expandablelayout.ExpandableLayout
             android:id="@+id/keyboard_expand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingBottom="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
+            android:paddingTop="8dp"
             app:el_duration="200"
             app:el_expanded="true">
 
@@ -190,7 +211,7 @@
                 android:layout_above="@+id/button_container"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="48dp"
                 android:gravity="center">
 
                 <TextView
@@ -351,7 +372,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="280dp"
+                android:layout_marginTop="260dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -383,83 +404,6 @@
                 </LinearLayout>
 
             </FrameLayout>
-
-        </net.cachapa.expandablelayout.ExpandableLayout>
-
-        <net.cachapa.expandablelayout.ExpandableLayout
-            android:id="@+id/category_expand"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            app:el_duration="200"
-            app:el_expanded="false">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/keyboard_button"
-                    android:layout_width="170dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/solid_round"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/image_keyboard_button"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="22dp"
-                        android:layout_marginRight="22dp"
-                        android:src="@drawable/ic_keypad_primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/keyboard"
-                        android:textColor="@color/white" />
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="52dp"
-                android:id="@+id/recycler11"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-            <!--<ScrollView
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/ll_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="top"
-                        android:orientation="vertical">
-
-                        <include layout="@layout/recycler_item_category" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </ScrollView>-->
 
         </net.cachapa.expandablelayout.ExpandableLayout>
 
