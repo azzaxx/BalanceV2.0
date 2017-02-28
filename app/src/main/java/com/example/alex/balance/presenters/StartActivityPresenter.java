@@ -13,6 +13,7 @@ import com.example.alex.balance.views.StartActivity;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.Sort;
 
@@ -76,33 +77,28 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         List<BalanceData> result = query.findAllSorted(BALANCE_DATA_FIELD_TIME, Sort.DESCENDING);
 
         if (!settings.isShowAll) {
-//            result = filerListByCategoryInside(result, settings);
+            result = filerListByCategoryInside(result, settings);
         }
 
         calculateTotalBalance(result);
         return result;
     }
 
-    /*private RealmList<BalanceData> filerListByCategoryInside(final List<BalanceData> result, final FilterSettings settings) {
+    private RealmList<BalanceData> filerListByCategoryInside(final List<BalanceData> result, final FilterSettings settings) {
         RealmList<BalanceData> list = new RealmList<>();
 
         for (int i = 0; i < result.size(); i++) {
-            List<CategoryData> temp = result.get(i).getList();
-
-            for (int j = 0; j < temp.size(); j++) {
-                CategoryData data = temp.get(j);
-
-                for (CategoryData categoryData : settings.filterCategoryList) {
-                    if (data.getName().equals(categoryData.getName())
-                            && data.getTimeStamp() == categoryData.getTimeStamp()
-                            && data.getColor() == categoryData.getColor())
-                        list.add(result.get(i));
-                }
+            CategoryData category = result.get(i).getCategory();
+            for (CategoryData categoryData : settings.filterCategoryList) {
+                if (category.getName().equals(categoryData.getName())
+                        && category.getTimeStamp() == categoryData.getTimeStamp()
+                        && category.getColor() == categoryData.getColor())
+                    list.add(result.get(i));
             }
         }
 
         return list;
-    }*/
+    }
 
     public void showDeleteMessageDialog(final BalanceData balanceData) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mView);
