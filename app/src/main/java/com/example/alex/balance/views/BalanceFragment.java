@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryAdapter;
 import com.example.alex.balance.custom.CategoryData;
+import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
+import com.example.alex.balance.interfaces.RecyclerClickCategory;
 import com.example.alex.balance.presenters.DataPresenter;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -38,7 +40,7 @@ import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
  * Created by alex on 04.01.17.
  */
 
-public class BalanceFragment extends Fragment implements View.OnClickListener {
+public class BalanceFragment extends Fragment implements View.OnClickListener, RecyclerClickCategory {
     public static final int DATE_DIALOG_REQ_CODE = 1001;
     public static final int CREATE_CATEGORY_DIALOG_REQ_CODE = 1002;
 
@@ -104,8 +106,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
 
         List<CategoryData> datas = getAct().getRealm().where(CategoryData.class).findAll();
         initButtons(view);
+        CategoryAdapter adapter = new CategoryAdapter(getContext(), datas.isEmpty() ? mPresenter.createCategoryData() : datas);
+        adapter.setOnRecyclerClick(this);
         mRv.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        mRv.setAdapter(new CategoryAdapter(getContext(), datas.isEmpty() ? mPresenter.createCategoryData() : datas));
+        mRv.setAdapter(adapter);
         mPresenter.setDate(null);
     }
 
@@ -204,5 +208,15 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onRecyclerInClick(View view, int position) {
+        if (position == 0) {
+            CreateCategoryDialog dialog = CreateCategoryDialog.newInstance();
+            dialog.setTargetFragment(this, CREATE_CATEGORY_DIALOG_REQ_CODE);
+            dialog.show(getFragmentManager(), CreateCategoryDialog.class.getName());
+
+        }
     }
 }

@@ -14,9 +14,12 @@ import java.util.List;
 
 import io.realm.Realm;
 
+import static com.example.alex.balance.custom.CategoryData.ADD_CATEGORY_NAME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_COLOR;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_NAME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_TIME;
+import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_ICON;
+import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_NAME;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_DAY_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_MONTH_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_YEAR_KEY;
@@ -135,8 +138,8 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
 
     public List<CategoryData> createCategoryData() {
         List<CategoryData> datas = new ArrayList<>();
-        final String[] imagesFile = {"", "mobile_home", "mouse_trap_mouse", "wardrobe", "washing_machine"};
-        final String[] imagesName = {"Other", "Mobile Home", "Mouse Trap", "Wardrobe", "Washing Machine"};
+        final String[] imagesFile = {"", OTHER_CATEGORY_ICON, "mobile_home", "mouse_trap_mouse", "wardrobe", "washing_machine"};
+        final String[] imagesName = {ADD_CATEGORY_NAME, OTHER_CATEGORY_NAME, "Mobile Home", "Mouse Trap", "Wardrobe", "Washing Machine"};
 
         for (int i = 0; i < imagesFile.length && i < imagesName.length; i++) {
             Realm realm = mView.getAct().getRealm();

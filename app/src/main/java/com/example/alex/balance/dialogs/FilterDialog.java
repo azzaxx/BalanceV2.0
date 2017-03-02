@@ -30,6 +30,8 @@ import io.realm.Realm;
 import io.realm.RealmList;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.example.alex.balance.custom.CategoryData.ADD_CATEGORY_NAME;
+import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_NAME;
 import static com.example.alex.balance.custom.FilterSettings.DEFAULT_FILTER_VALUE;
 
 /**
@@ -83,7 +85,8 @@ public class FilterDialog extends DialogFragment implements DialogInterface.OnCl
 
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(new GridLayoutManager(context, 2));
-        adapter = new FilterRecyclerAdapter(context, realm.where(CategoryData.class).findAll());
+        adapter = new FilterRecyclerAdapter(context, realm.where(CategoryData.class)
+                .notEqualTo(CATEGORY_FIELD_NAME, ADD_CATEGORY_NAME).findAll());
         mRecycler.setAdapter(adapter);
 
         Bundle args = getArguments();

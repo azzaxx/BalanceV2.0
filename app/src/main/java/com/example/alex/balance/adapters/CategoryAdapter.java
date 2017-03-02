@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.CategoryData;
+import com.example.alex.balance.interfaces.RecyclerClickCategory;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +29,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private int mSelectedCategoryPosition;
     private Context mContext;
     private List<CategoryData> mDataList;
+    private RecyclerClickCategory mRecyclerClickCategory;
 
     public CategoryAdapter(Context context, List<CategoryData> categories) {
         this.mContext = context;
@@ -56,7 +58,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     public CategoryData getCurrentCategory() {
+        if (mSelectedCategoryPosition == 0)
+            return mDataList.get(1);
         return mDataList.get(mSelectedCategoryPosition);
+    }
+
+    public void setOnRecyclerClick(RecyclerClickCategory clickListener) {
+        this.mRecyclerClickCategory = clickListener;
     }
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,14 +84,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         @Override
         public void onClick(View view) {
-            if (view != mIvSelectedCategory) {
+            final int position = getAdapterPosition();
+            if (mRecyclerClickCategory != null) {
+                mRecyclerClickCategory.onRecyclerInClick(view, position);
+            }
+            if (view != mIvSelectedCategory && position != 0) {
                 mDrawable = mRlImageContainer.getBackground();
                 mRlImageContainer.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.round_white));
                 if (mIvSelectedCategory != null) {
                     mIvSelectedCategory.findViewById(R.id.recycler_item_category_image_container).setBackgroundDrawable(mDrawable);
                 }
                 mIvSelectedCategory = view;
-                mSelectedCategoryPosition = getAdapterPosition();
+                mSelectedCategoryPosition = position;
             }
         }
     }
