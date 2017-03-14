@@ -68,6 +68,9 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
     }
 
     private void addCategoryList(BalanceData data, MainViewHolder holder) {
+        if (data.getCategory() == null)
+            return;
+
         StringBuilder builder = new StringBuilder();
 //        List<CategoryData> list = data.getList();
 

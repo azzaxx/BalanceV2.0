@@ -8,7 +8,7 @@ import io.realm.RealmConfiguration;
 
 public class BalanceRealmConfig {
     private static final String REAL_FILE_NAME = "balance.realm";
-    private static long REALM_SCHEMA_VERSION = 1L;
+    private static long REALM_SCHEMA_VERSION = 3L;
 
     public static RealmConfiguration getRealmConfiguration() {
         return new RealmConfiguration.Builder()

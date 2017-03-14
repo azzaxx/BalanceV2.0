@@ -216,7 +216,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
             CreateCategoryDialog dialog = CreateCategoryDialog.newInstance();
             dialog.setTargetFragment(this, CREATE_CATEGORY_DIALOG_REQ_CODE);
             dialog.show(getFragmentManager(), CreateCategoryDialog.class.getName());
-
         }
     }
 }
