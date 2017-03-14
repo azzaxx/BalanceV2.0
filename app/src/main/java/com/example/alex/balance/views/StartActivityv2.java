@@ -3,16 +3,16 @@ package com.example.alex.balance.views;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.widget.Toast;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
-import com.example.alex.balance.adapters.MainListAdapter;
 import com.example.alex.balance.custom.SimpleItemTouchHelperCallback;
-import com.example.alex.balance.custom.realm.BalanceRealmConfig;
 import com.example.alex.balance.interfaces.OnStartDragListener;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -28,6 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
+import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
+
 /**
  * Created by alex on 13.03.17.
  */
@@ -38,7 +40,6 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
     @BindView(R.id.pie_chart)
     PieChart mChart;
     private Realm mRealm;
-    private MainListAdapter mAdapter;
     private ItemTouchHelper mItemTouchHelper;
 
     @Override
@@ -96,8 +97,6 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
 
         ArrayList<PieEntry> entries = new ArrayList<>();
 
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
         for (int i = 0; i < count; i++) {
             entries.add(new PieEntry((float) ((Math.random() * mult) + mult / 5),
                     mParties[i % mParties.length],
@@ -105,15 +104,7 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "");
-
-//        dataSet.setDrawIcons(false);
-
         dataSet.setSliceSpace(3f);
-//        dataSet.setIconsOffset(new MPPointF(0, 40));
-//        dataSet.setSelectionShift(5f);
-
-        // add a lot of colors
-
         ArrayList<Integer> colors = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
@@ -134,7 +125,6 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
         colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);
-        //dataSet.setSelectionShift(0f);
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
@@ -151,8 +141,29 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
         mChart.invalidate();
     }
 
+    private void showFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, null).addToBackStack(null).commit();
+    }
+
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void onItemSwipe(int position, int direction) {
+        Bundle args = new Bundle();
+
+        if (direction == ItemTouchHelper.RIGHT || direction == ItemTouchHelper.END) {
+            Toast.makeText(this, "Right", Toast.LENGTH_SHORT).show();
+            args.putInt(PROFIT_LOSS_KEY, 1);
+        } else {
+            Toast.makeText(this, "Left", Toast.LENGTH_SHORT).show();
+            args.putInt(PROFIT_LOSS_KEY, -1);
+        }
+
+        Fragment frg = new BalanceFragment();
+        frg.setArguments(args);
+        showFragment(frg);
     }
 }

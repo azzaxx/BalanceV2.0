@@ -52,24 +52,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
     TextView mTvDateMonth;
     @BindView(R.id.date_year)
     TextView mTvDateYear;
-    @BindView(R.id.keyboard_expand)
-    ExpandableLayout mKeyboardExpand;
-    @BindView(R.id.category_expand)
-    ExpandableLayout mCategoryExpand;
-    @BindView(R.id.image_keyboard_button)
-    ImageView mIvKeyboard;
-    @BindView(R.id.image_category_button)
-    ImageView mIvCategory;
-    @BindView(R.id.keyboard_button)
-    LinearLayout mRlKeyboard;
-    @BindView(R.id.category_button)
-    LinearLayout mRlCategory;
     @BindView(R.id.del_one_button)
     RelativeLayout mRlDelOne;
     @BindView(R.id.et_comments)
     EditText mEtComments;
-    @BindView(R.id.recycler11)
-    RecyclerView mRv;
 
     private int[] mNumberButtons = {
             R.id.b0,
@@ -99,17 +85,10 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         mPresenter.bindView(this);
-        getAct().actionButtonsVisibility(false);
         if (getArguments() != null) {
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
         }
-
-        List<CategoryData> datas = getAct().getRealm().where(CategoryData.class).findAll();
         initButtons(view);
-        CategoryAdapter adapter = new CategoryAdapter(getContext(), datas.isEmpty() ? mPresenter.createCategoryData() : datas);
-        adapter.setOnRecyclerClick(this);
-        mRv.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        mRv.setAdapter(adapter);
         mPresenter.setDate(null);
     }
 
@@ -118,8 +97,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
         view.findViewById(R.id.button_cancel).setOnClickListener(this);
         view.findViewById(R.id.button_done).setOnClickListener(this);
         view.findViewById(R.id.date_container).setOnClickListener(this);
-        mRlKeyboard.setOnClickListener(this);
-        mRlCategory.setOnClickListener(this);
         for (int i : mNumberButtons) {
             view.findViewById(i).setOnClickListener(this);
         }
@@ -146,16 +123,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
             case R.id.del_one_button:
                 mPresenter.clearOne(mTvTotalSum.getText().toString());
                 break;
-            case R.id.category_button:
-                if (!mCategoryExpand.isExpanded()) {
-                    expand(mCategoryExpand);
-                }
-                break;
-            case R.id.keyboard_button:
-                if (!mKeyboardExpand.isExpanded()) {
-                    expand(mKeyboardExpand);
-                }
-                break;
             case R.id.button_cancel:
                 getActivity().onBackPressed();
                 break;
@@ -167,7 +134,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
                         mTvDateYear.getText().toString(),
                         mEtComments.getText().toString(),
                         mIsProfit,
-                        ((CategoryAdapter) mRv.getAdapter()).getCurrentCategory());
+                        null);
                 getAct().popBackStack();
                 break;
             case R.id.date_container:
@@ -192,12 +159,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
         if (resultCode == Activity.RESULT_OK) {
             mPresenter.onActivityResult(requestCode, data);
         }
-    }
-
-    private void expand(ExpandableLayout expand) {
-        mKeyboardExpand.collapse();
-        mCategoryExpand.collapse();
-        expand.expand();
     }
 
     public StartActivity getAct() {

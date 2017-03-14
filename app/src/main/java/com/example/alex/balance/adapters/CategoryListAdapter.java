@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.interfaces.ItemTouchHelperAdapter;
@@ -36,7 +35,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(final CategoryHolder holder, int position) {
-        holder.tv.setOnTouchListener(new View.OnTouchListener() {
+        holder.relativeContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
@@ -58,18 +57,18 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     @Override
-    public void onItemDismiss(int position) {
-        Toast.makeText(mContext, "Fffffffff", Toast.LENGTH_SHORT).show();
+    public void onItemSwipe(int position, int direction) {
+        mDragStartListener.onItemSwipe(position, direction);
     }
 
     class CategoryHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
         View view;
-        TextView tv;
+        RelativeLayout relativeContainer;
 
         public CategoryHolder(View itemView) {
             super(itemView);
             this.view = itemView;
-            tv = (TextView) itemView.findViewById(R.id.sssssss);
+            relativeContainer = (RelativeLayout) itemView.findViewById(R.id.category_list_image_container);
         }
 
         @Override
