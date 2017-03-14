@@ -9,11 +9,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.alex.balance.R;
+import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.interfaces.ItemTouchHelperAdapter;
 import com.example.alex.balance.interfaces.ItemTouchHelperViewHolder;
 import com.example.alex.balance.interfaces.OnStartDragListener;
+
+import java.util.List;
 
 /**
  * Created by alex on 14.03.17.
@@ -22,10 +26,12 @@ import com.example.alex.balance.interfaces.OnStartDragListener;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryHolder> implements ItemTouchHelperAdapter {
     private Context mContext;
     private final OnStartDragListener mDragStartListener;
+    private List<CategoryData> list;
 
-    public CategoryListAdapter(Context context, OnStartDragListener dragStartListener) {
+    public CategoryListAdapter(List<CategoryData> list, Context context, OnStartDragListener dragStartListener) {
         this.mDragStartListener = dragStartListener;
         this.mContext = context;
+        this.list = list;
     }
 
     @Override
@@ -44,11 +50,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 return false;
             }
         });
+        holder.textName.setText(list.get(position).getName());
+        holder.textBalance.setText(String.format("%.2f", (list.get(position).getProfit() - list.get(position).getLoss())));
     }
 
     @Override
     public int getItemCount() {
-        return 6;
+        return list.size();
     }
 
     @Override
@@ -62,13 +70,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     class CategoryHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
-        View view;
+        TextView textName, textBalance;
         RelativeLayout relativeContainer;
 
         public CategoryHolder(View itemView) {
             super(itemView);
-            this.view = itemView;
             relativeContainer = (RelativeLayout) itemView.findViewById(R.id.category_list_image_container);
+            textName = (TextView) itemView.findViewById(R.id.text);
+            textBalance = (TextView) itemView.findViewById(R.id.textbalance);
         }
 
         @Override

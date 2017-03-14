@@ -6,35 +6,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.R;
-import com.example.alex.balance.adapters.CategoryAdapter;
-import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.interfaces.RecyclerClickCategory;
 import com.example.alex.balance.presenters.DataPresenter;
-
-import net.cachapa.expandablelayout.ExpandableLayout;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
-import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
+import static com.example.alex.balance.views.StartActivityv2.PROFIT_LOSS_KEY;
+import static com.example.alex.balance.views.StartActivityv2.CATEGORY_POSITION_KEY;
 
 /**
  * Created by alex on 04.01.17.
@@ -134,7 +125,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
                         mTvDateYear.getText().toString(),
                         mEtComments.getText().toString(),
                         mIsProfit,
-                        null);
+                        getAct().getCategoryByPosition(getArguments().getInt(CATEGORY_POSITION_KEY)));
                 getAct().popBackStack();
                 break;
             case R.id.date_container:
@@ -161,8 +152,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
         }
     }
 
-    public StartActivity getAct() {
-        return (StartActivity) getActivity();
+    public StartActivityv2 getAct() {
+        return (StartActivityv2) getActivity();
     }
 
     @Override

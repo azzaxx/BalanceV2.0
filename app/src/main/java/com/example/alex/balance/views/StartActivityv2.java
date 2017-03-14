@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
+import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.SimpleItemTouchHelperCallback;
+import com.example.alex.balance.custom.realm.BalanceRealmConfig;
 import com.example.alex.balance.interfaces.OnStartDragListener;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -23,24 +25,27 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-
-import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
 
 /**
  * Created by alex on 13.03.17.
  */
 
 public class StartActivityv2 extends AppCompatActivity implements OnStartDragListener {
+    public static final String PROFIT_LOSS_KEY = "start_activity_profit_or_loss_key";
+    public static final String CATEGORY_POSITION_KEY = "start_activity_category_position_key";
+
     @BindView(R.id.recycler_view_list)
     RecyclerView mRVList;
     @BindView(R.id.pie_chart)
     PieChart mChart;
     private Realm mRealm;
     private ItemTouchHelper mItemTouchHelper;
+    private List<CategoryData> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +55,30 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         ButterKnife.bind(this);
-//        mRealm = Realm.getInstance(BalanceRealmConfig.getRealmConfiguration());
+//        mRealm = Realm.getDefaultInstance();
+        mRealm = Realm.getInstance(BalanceRealmConfig.getRealmConfiguration());
+
+
+        if (mRealm.where(CategoryData.class).findAll().isEmpty()) {
+            list = new ArrayList<>();
+
+            for (int i = 0; i < 9; i++) {
+                mRealm.beginTransaction();
+
+                CategoryData data = mRealm.createObject(CategoryData.class);
+                data.setName("blablabal " + i);
+                list.add(data);
+
+                mRealm.commitTransaction();
+            }
+        } else {
+            list = mRealm.where(CategoryData.class).findAll();
+        }
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
 
-        CategoryListAdapter adapter = new CategoryListAdapter(this, this);
+        CategoryListAdapter adapter = new CategoryListAdapter(list, this, this);
         mRVList.setAdapter(adapter);
 
         mChart.setUsePercentValues(true);
@@ -147,12 +170,21 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
+//        mItemTouchHelper.startDrag(viewHolder);
+    }
+
+    public void popBackStack() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    public Realm getRealm() {
+        return this.mRealm;
     }
 
     @Override
     public void onItemSwipe(int position, int direction) {
         Bundle args = new Bundle();
+        args.putInt(CATEGORY_POSITION_KEY, position);
 
         if (direction == ItemTouchHelper.RIGHT || direction == ItemTouchHelper.END) {
             Toast.makeText(this, "Right", Toast.LENGTH_SHORT).show();
@@ -165,5 +197,9 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
         Fragment frg = new BalanceFragment();
         frg.setArguments(args);
         showFragment(frg);
+    }
+
+    public CategoryData getCategoryByPosition(int position) {
+        return list.get(position);
     }
 }
