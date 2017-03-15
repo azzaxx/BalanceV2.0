@@ -2,12 +2,14 @@ package com.example.alex.balance.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,7 +19,11 @@ import com.example.alex.balance.interfaces.ItemTouchHelperAdapter;
 import com.example.alex.balance.interfaces.ItemTouchHelperViewHolder;
 import com.example.alex.balance.interfaces.OnStartDragListener;
 
+import java.io.IOException;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by alex on 14.03.17.
@@ -52,6 +58,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         });
         holder.textName.setText(list.get(position).getName());
         holder.textBalance.setText(String.format("%.2f", (list.get(position).getProfit() - list.get(position).getLoss())));
+        try {
+            holder.mCategoryImage.setImageDrawable(Drawable.createFromStream(mContext.getAssets().open(list.get(position).getIconName() + ".png"), null));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -70,14 +81,18 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     class CategoryHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
-        TextView textName, textBalance;
+        @BindView(R.id.category_list_tv_name)
+        TextView textName;
+        @BindView(R.id.category_list_tv_balance)
+        TextView textBalance;
+        @BindView(R.id.category_list_image_container)
         RelativeLayout relativeContainer;
+        @BindView(R.id.category_list_image)
+        ImageView mCategoryImage;
 
         public CategoryHolder(View itemView) {
             super(itemView);
-            relativeContainer = (RelativeLayout) itemView.findViewById(R.id.category_list_image_container);
-            textName = (TextView) itemView.findViewById(R.id.text);
-            textBalance = (TextView) itemView.findViewById(R.id.textbalance);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override

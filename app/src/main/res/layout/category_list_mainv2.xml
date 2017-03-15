@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="4dp">
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
 
     <RelativeLayout
         android:id="@+id/category_list_image_container"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/round_primary">
 
@@ -22,19 +25,19 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/text"
-        android:gravity="center"
-        android:text="Some category"
-        android:layout_weight="1"
+        android:id="@+id/category_list_tv_name"
         android:layout_width="0dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Some category" />
 
     <TextView
-        android:id="@+id/textbalance"
-        android:gravity="center"
-        android:text="+2500"
-        android:layout_weight="1"
+        android:id="@+id/category_list_tv_balance"
         android:layout_width="0dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="+2500" />
 
 </LinearLayout>

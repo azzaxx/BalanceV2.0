@@ -135,23 +135,4 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
                 .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
                 .findFirst();
     }
-
-    public List<CategoryData> createCategoryData() {
-        List<CategoryData> datas = new ArrayList<>();
-        final String[] imagesFile = {"", OTHER_CATEGORY_ICON, "mobile_home", "mouse_trap_mouse", "wardrobe", "washing_machine"};
-        final String[] imagesName = {ADD_CATEGORY_NAME, OTHER_CATEGORY_NAME, "Mobile Home", "Mouse Trap", "Wardrobe", "Washing Machine"};
-
-        for (int i = 0; i < imagesFile.length && i < imagesName.length; i++) {
-            Realm realm = mView.getAct().getRealm();
-            realm.beginTransaction();
-            CategoryData categoryData = realm.createObject(CategoryData.class);
-            categoryData.setName(imagesName[i]);
-            categoryData.setIconName(imagesFile[i]);
-            categoryData.setTimeStamp(System.currentTimeMillis());
-            datas.add(categoryData);
-            realm.commitTransaction();
-        }
-
-        return datas;
-    }
 }
