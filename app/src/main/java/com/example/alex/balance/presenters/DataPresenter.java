@@ -3,23 +3,13 @@ package com.example.alex.balance.presenters;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
+import com.example.alex.balance.custom.realm.RealmHelper;
 import com.example.alex.balance.views.BalanceFragment;
 
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import io.realm.Realm;
-
-import static com.example.alex.balance.custom.CategoryData.ADD_CATEGORY_NAME;
-import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_COLOR;
-import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_NAME;
-import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_TIME;
-import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_ICON;
-import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_NAME;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_DAY_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_MONTH_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_YEAR_KEY;
@@ -103,36 +93,11 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
             return;
         }
 
-        Realm realmObj = mView.getAct().getRealm();
-        realmObj.beginTransaction();
-
-        BalanceData data = realmObj.createObject(BalanceData.class);
-        data.setTotalSum(Float.parseFloat(totalSum));
-        data.setDay(day);
-        data.setMonth(month);
-        data.setYear(year);
-        data.setComment(comment);
-        data.setTimeStamp(System.currentTimeMillis());
-        data.setIsProfit(isProfit);
-        data.setCategory(categoryData);
-
-        realmObj.commitTransaction();
-
+        RealmHelper.getInstance().createBalanceData(totalSum, day, month, year, comment, isProfit, categoryData);
         addSumToCategories(totalSum, isProfit, categoryData);
     }
 
     private void addSumToCategories(String totalSum, boolean isProfit, CategoryData categoryData) {
-        Realm realmObj = mView.getAct().getRealm();
-        realmObj.beginTransaction();
-        getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp()).addProfOrLoss(totalSum, isProfit);
-        realmObj.commitTransaction();
-    }
-
-    private CategoryData getSelectedCategory(String categoryName, int categoryColor, long categoryTimeStamp) {
-        return mView.getAct().getRealm().where(CategoryData.class)
-                .equalTo(CATEGORY_FIELD_NAME, categoryName)
-                .equalTo(CATEGORY_FIELD_TIME, categoryTimeStamp)
-                .equalTo(CATEGORY_FIELD_COLOR, categoryColor)
-                .findFirst();
+        RealmHelper.getInstance().addCategoryProfitOrLose(totalSum, isProfit, categoryData);
     }
 }

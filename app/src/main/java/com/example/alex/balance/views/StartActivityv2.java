@@ -12,7 +12,7 @@ import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.SimpleItemTouchHelperCallback;
-import com.example.alex.balance.custom.realm.BalanceRealmConfig;
+import com.example.alex.balance.custom.realm.RealmHelper;
 import com.example.alex.balance.interfaces.OnStartDragListener;
 import com.example.alex.balance.presenters.StartActivityV2Presenter;
 import com.github.mikephil.charting.charts.PieChart;
@@ -21,7 +21,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
@@ -37,7 +36,6 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
     @BindView(R.id.pie_chart)
     PieChart mChart;
     private StartActivityV2Presenter mPresenter = new StartActivityV2Presenter();
-    private Realm mRealm;
     private ItemTouchHelper mItemTouchHelper;
     private List<CategoryData> list;
     private CategoryListAdapter adapter;
@@ -51,8 +49,9 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
         }
         ButterKnife.bind(this);
         mPresenter.bindView(this);
-        mRealm = Realm.getInstance(BalanceRealmConfig.getRealmConfiguration());
-        RealmResults<CategoryData> realmResults = mRealm.where(CategoryData.class).findAll();
+
+        RealmResults<CategoryData> realmResults = RealmHelper.getInstance().getCategorySorted();
+
         list = realmResults.isEmpty() ? mPresenter.createCategoryData() : realmResults;
 
         adapter = new CategoryListAdapter(list, this, this);
@@ -85,15 +84,11 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
     }
 
     private void notifyChanges() {
-        List<CategoryData> dataList = mRealm.where(CategoryData.class).findAll();
+        List<CategoryData> dataList = RealmHelper.getInstance().getCategorySorted();
         mPresenter.setData(dataList, mChart);
         mChart.setCenterText(mPresenter.totalBalance(dataList));
         mChart.notifyDataSetChanged();
         mChart.invalidate();
-    }
-
-    public Realm getRealm() {
-        return this.mRealm;
     }
 
     @Override

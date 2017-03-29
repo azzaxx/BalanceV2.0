@@ -3,6 +3,7 @@ package com.example.alex.balance.presenters;
 import android.graphics.Color;
 
 import com.example.alex.balance.custom.CategoryData;
+import com.example.alex.balance.custom.realm.RealmHelper;
 import com.example.alex.balance.views.StartActivityv2;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -95,14 +96,7 @@ public class StartActivityV2Presenter extends BasePresenter<StartActivityv2> {
         final String[] imagesColor = {"#00CC00", "#FFD300", "#0B61A4", "#D2006B", "#1E90FF"};
 
         for (int i = 0; i < imagesFile.length && i < imagesName.length; i++) {
-            mView.getRealm().beginTransaction();
-            CategoryData categoryData = mView.getRealm().createObject(CategoryData.class);
-            categoryData.setName(imagesName[i]);
-            categoryData.setIconName(imagesFile[i]);
-            categoryData.setColor(Color.parseColor(imagesColor[i]));
-            categoryData.setTimeStamp(System.currentTimeMillis());
-            datas.add(categoryData);
-            mView.getRealm().commitTransaction();
+            datas.add(RealmHelper.getInstance().createCategoryData(imagesName[i], imagesFile[i], imagesColor[i]));
         }
 
         return datas;

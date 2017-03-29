@@ -16,6 +16,8 @@ public class CategoryData extends RealmObject {
     public static final String OTHER_CATEGORY_ICON = "other_category";
     public static final String ADD_CATEGORY_NAME = "Add category";
     public static final String CATEGORY_ICON_FIELD_NAME = "mIconName";
+    public static final String CATEGORY_LOSS_NAME ="mLoss";
+    public static final String CATEGORY_IS_PROFIT_NAME = "mProfit";
     public static final int OTHER_CATEGORY_COLOR = Color.parseColor("#876ED7");
 
     private String mIconName;
