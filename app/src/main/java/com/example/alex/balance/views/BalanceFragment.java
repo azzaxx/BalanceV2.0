@@ -115,7 +115,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
                 mPresenter.clearOne(mTvTotalSum.getText().toString());
                 break;
             case R.id.button_cancel:
-                getActivity().onBackPressed();
+                getAct().popBackStack();
                 break;
             case R.id.button_done:
                 mPresenter.addBalanceData(

@@ -2,6 +2,7 @@ package com.example.alex.balance.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
@@ -56,6 +57,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 return false;
             }
         });
+        holder.mCategoryColorView.setBackgroundColor(list.get(position).getColor());
         holder.textName.setText(list.get(position).getName());
         holder.textBalance.setText(String.format("%.2f", (list.get(position).getProfit() - list.get(position).getLoss())));
         try {
@@ -89,6 +91,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         RelativeLayout relativeContainer;
         @BindView(R.id.category_list_image)
         ImageView mCategoryImage;
+        @BindView(R.id.category_list_cat_color)
+        View mCategoryColorView;
+        private int color;
 
         public CategoryHolder(View itemView) {
             super(itemView);
@@ -97,12 +102,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         @Override
         public void onItemSelected() {
+            this.color = ((ColorDrawable) itemView.getBackground()).getColor();
             itemView.setBackgroundColor(Color.LTGRAY);
         }
 
         @Override
         public void onItemClear() {
-            itemView.setBackgroundColor(0);
+            itemView.setBackgroundColor(color);
         }
     }
 }

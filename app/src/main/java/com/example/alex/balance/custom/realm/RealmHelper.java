@@ -43,7 +43,6 @@ public class RealmHelper {
 
     public void createBalanceData(String totalSum, String day, String month, String year, String comment, boolean isProfit, CategoryData categoryData) {
         mRealm.beginTransaction();
-
         BalanceData data = mRealm.createObject(BalanceData.class);
         data.setTotalSum(Float.parseFloat(totalSum));
         data.setDay(day);
@@ -53,7 +52,6 @@ public class RealmHelper {
         data.setTimeStamp(System.currentTimeMillis());
         data.setIsProfit(isProfit);
         data.setCategory(categoryData);
-
         mRealm.commitTransaction();
     }
 

@@ -23,7 +23,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     public static final String DEFAULT_VALUE = "0.00";
     private static final String DOT = ".";
     private static final String ZERO = "0";
-    private static final int MAX_SUM_LENGTH = 9;
+    private static final int MAX_SUM_LENGTH = 6;
 
     public void setDate(@Nullable Intent date) {
         Calendar calendar = Calendar.getInstance();

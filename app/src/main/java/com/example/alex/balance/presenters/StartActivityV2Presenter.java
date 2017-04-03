@@ -43,6 +43,7 @@ public class StartActivityV2Presenter extends BasePresenter<StartActivityv2> {
         mChart.getLegend().setEnabled(false);
         mChart.setEntryLabelColor(Color.WHITE);
         mChart.setEntryLabelTextSize(12f);
+        mChart.setCenterTextColor(Color.WHITE);
     }
 
     public void setData(List<CategoryData> list, PieChart mChart) {

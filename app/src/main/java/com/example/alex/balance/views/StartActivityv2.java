@@ -97,9 +97,9 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
         args.putInt(CATEGORY_POSITION_KEY, position);
 
         if (direction == ItemTouchHelper.RIGHT || direction == ItemTouchHelper.END) {
-            args.putInt(PROFIT_LOSS_KEY, 1);
-        } else {
             args.putInt(PROFIT_LOSS_KEY, -1);
+        } else {
+            args.putInt(PROFIT_LOSS_KEY, 1);
         }
 
         Fragment frg = new BalanceFragment();
