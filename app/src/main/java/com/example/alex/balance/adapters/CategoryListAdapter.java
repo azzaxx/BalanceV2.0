@@ -3,14 +3,10 @@ package com.example.alex.balance.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,8 +15,11 @@ import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.interfaces.ItemTouchHelperAdapter;
 import com.example.alex.balance.interfaces.ItemTouchHelperViewHolder;
 import com.example.alex.balance.interfaces.OnStartDragListener;
+import com.example.alex.balance.views.DetailFragment;
+import com.example.alex.balance.views.StartActivityv2;
 
-import java.io.IOException;
+import net.cachapa.expandablelayout.ExpandableLayout;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,11 +33,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private Context mContext;
     private final OnStartDragListener mDragStartListener;
     private List<CategoryData> list;
+    private View.OnClickListener clickListener;
 
-    public CategoryListAdapter(List<CategoryData> list, Context context, OnStartDragListener dragStartListener) {
+    public CategoryListAdapter(List<CategoryData> list, Context context, OnStartDragListener dragStartListener, View.OnClickListener clickListener) {
         this.mDragStartListener = dragStartListener;
         this.mContext = context;
         this.list = list;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -48,23 +49,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(final CategoryHolder holder, int position) {
-        holder.relativeContainer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
-                }
-                return false;
-            }
-        });
-        holder.mCategoryColorView.setBackgroundColor(list.get(position).getColor());
-        holder.textName.setText(list.get(position).getName());
-        holder.textBalance.setText(String.format("%.2f", (list.get(position).getProfit() - list.get(position).getLoss())));
-        try {
-            holder.mCategoryImage.setImageDrawable(Drawable.createFromStream(mContext.getAssets().open(list.get(position).getIconName() + ".png"), null));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        final CategoryData data = list.get(position);
+        holder.mCategoryColorView.setBackgroundColor(data.getColor());
+        holder.textName.setText(data.getName());
+        holder.textBalance.setText(String.format("%.2f", (data.getProfit() - data.getLoss())));
+        holder.mTvCategoryDate.setText(data.getLastDate());
+        holder.mRVMore.setOnClickListener(clickListener);
     }
 
     @Override
@@ -87,12 +77,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         TextView textName;
         @BindView(R.id.category_list_tv_balance)
         TextView textBalance;
-        @BindView(R.id.category_list_image_container)
-        RelativeLayout relativeContainer;
-        @BindView(R.id.category_list_image)
-        ImageView mCategoryImage;
         @BindView(R.id.category_list_cat_color)
         View mCategoryColorView;
+        @BindView(R.id.category_list_tv_date)
+        TextView mTvCategoryDate;
+        @BindView(R.id.keyboard_expand)
+        ExpandableLayout mExpand;
+        @BindView(R.id.category_list_rv_show_more)
+        RelativeLayout mRVMore;
         private int color;
 
         public CategoryHolder(View itemView) {

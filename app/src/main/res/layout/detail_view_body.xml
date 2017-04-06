@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/detail_view_body_rl_delete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_delete_forever_white_24px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/detail_view_body_rl_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/detail_view_body_iv_profit"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_profit_colored" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/detail_view_body_rl_edit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/detail_view_body_rl_delete">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_underline_button" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/detail_view_body_ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/detail_view_body_rl_edit"
+        android:layout_toRightOf="@id/detail_view_body_rl_image"
+        android:gravity="center|left"
+        android:minHeight="48dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/detail_view_body_tv_total"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="-33.76 $"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/detail_view_body_tv_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Some comment text Some comment text text"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/detail_view_body_view_line"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/detail_view_body_ll_container"
+        android:layout_toRightOf="@id/detail_view_body_rl_image" />
+
+</RelativeLayout>

@@ -5,6 +5,9 @@ import android.graphics.Color;
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -38,7 +41,7 @@ public class RealmHelper {
     }
 
     public RealmResults<CategoryData> getCategorySorted() {
-        return mRealm.where(CategoryData.class).findAllSorted(new String[]{CATEGORY_LOSS_NAME, CATEGORY_IS_PROFIT_NAME}, new Sort[]{Sort.ASCENDING, Sort.ASCENDING});
+        return mRealm.where(CategoryData.class).findAllSorted(new String[]{CATEGORY_LOSS_NAME, CATEGORY_IS_PROFIT_NAME}, new Sort[]{Sort.DESCENDING, Sort.DESCENDING});
     }
 
     public void createBalanceData(String totalSum, String day, String month, String year, String comment, boolean isProfit, CategoryData categoryData) {
@@ -79,5 +82,22 @@ public class RealmHelper {
         mRealm.beginTransaction();
         getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp()).addProfOrLoss(totalSum, isProfit);
         mRealm.commitTransaction();
+    }
+
+    public void setLastCategoryDate(CategoryData categoryData, String day, String month) {
+        mRealm.beginTransaction();
+        getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp()).setLastDate(day, month);
+        mRealm.commitTransaction();
+    }
+
+    public List<BalanceData> getBalanceList(CategoryData data) {
+        List<BalanceData> list = new ArrayList<>();
+
+        for (BalanceData balanceData : mRealm.where(BalanceData.class).findAll()) {
+            if (balanceData.getCategory().getTimeStamp() == data.getTimeStamp())
+                list.add(balanceData);
+        }
+
+        return list;
     }
 }

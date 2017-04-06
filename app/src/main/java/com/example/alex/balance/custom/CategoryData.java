@@ -16,7 +16,7 @@ public class CategoryData extends RealmObject {
     public static final String OTHER_CATEGORY_ICON = "other_category";
     public static final String ADD_CATEGORY_NAME = "Add category";
     public static final String CATEGORY_ICON_FIELD_NAME = "mIconName";
-    public static final String CATEGORY_LOSS_NAME ="mLoss";
+    public static final String CATEGORY_LOSS_NAME = "mLoss";
     public static final String CATEGORY_IS_PROFIT_NAME = "mProfit";
     public static final int OTHER_CATEGORY_COLOR = Color.parseColor("#876ED7");
 
@@ -26,6 +26,8 @@ public class CategoryData extends RealmObject {
     private long mTimeStamp;
     private float mProfit;
     private float mLoss;
+    private String mLastDateDay;
+    private String mLastDateMonth;
 
     public String getIconName() {
         return mIconName;
@@ -112,5 +114,16 @@ public class CategoryData extends RealmObject {
 
     public void removeProfit(String profit) {
         removeProfit(Float.parseFloat(profit));
+    }
+
+    public void setLastDate(String day, String month) {
+        this.mLastDateDay = day;
+        this.mLastDateMonth = month;
+    }
+
+    public String getLastDate() {
+        if (mLastDateDay == null || mLastDateMonth == null)
+            return "--";
+        return mLastDateDay + " " + mLastDateMonth.substring(0, 3);
     }
 }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
@@ -54,7 +55,12 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
 
         list = realmResults.isEmpty() ? mPresenter.createCategoryData() : realmResults;
 
-        adapter = new CategoryListAdapter(list, this, this);
+        adapter = new CategoryListAdapter(list, this, this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment(new DetailFragment());
+            }
+        });
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
@@ -68,7 +74,7 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
         mItemTouchHelper.attachToRecyclerView(mRVList);
     }
 
-    private void showFragment(Fragment fragment) {
+    public void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, null).addToBackStack(null).commit();
     }
 

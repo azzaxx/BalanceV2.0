@@ -61,7 +61,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
             R.id.b9,
             R.id.b_clear
     };
-    private Unbinder unbinder;
+    private Unbinder mUnbinder;
     private DataPresenter mPresenter = new DataPresenter();
     private boolean mIsProfit;
 
@@ -74,7 +74,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        unbinder = ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         mPresenter.bindView(this);
         if (getArguments() != null) {
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
@@ -159,7 +159,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        mUnbinder.unbind();
     }
 
     @Override

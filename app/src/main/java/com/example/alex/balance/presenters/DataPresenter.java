@@ -83,9 +83,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
     public void onActivityResult(int requestCode, Intent data) {
         if (requestCode == DATE_DIALOG_REQ_CODE) {
             setDate(data);
-        } /*else if (requestCode == CREATE_CATEGORY_DIALOG_REQ_CODE) {
-            createCategory(data.getStringExtra(CREATE_CATEGORY_NAME), data.getIntExtra(CREATE_CATEGORY_COLOR, -1), true);
-        }*/
+        }
     }
 
     public void addBalanceData(String totalSum, String day, String month, String year, String comment, boolean isProfit, CategoryData categoryData) {
@@ -94,10 +92,7 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
         }
 
         RealmHelper.getInstance().createBalanceData(totalSum, day, month, year, comment, isProfit, categoryData);
-        addSumToCategories(totalSum, isProfit, categoryData);
-    }
-
-    private void addSumToCategories(String totalSum, boolean isProfit, CategoryData categoryData) {
         RealmHelper.getInstance().addCategoryProfitOrLose(totalSum, isProfit, categoryData);
+        RealmHelper.getInstance().setLastCategoryDate(categoryData, day, month);
     }
 }
