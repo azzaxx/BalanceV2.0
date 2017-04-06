@@ -14,9 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.R;
-import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.dialogs.DateDialog;
-import com.example.alex.balance.interfaces.RecyclerClickCategory;
 import com.example.alex.balance.presenters.DataPresenter;
 
 import butterknife.BindView;
@@ -31,9 +29,8 @@ import static com.example.alex.balance.views.StartActivityv2.CATEGORY_POSITION_K
  * Created by alex on 04.01.17.
  */
 
-public class BalanceFragment extends Fragment implements View.OnClickListener, RecyclerClickCategory {
+public class BalanceFragment extends Fragment implements View.OnClickListener{
     public static final int DATE_DIALOG_REQ_CODE = 1001;
-    public static final int CREATE_CATEGORY_DIALOG_REQ_CODE = 1002;
 
     @BindView(R.id.total_sum_tv)
     TextView mTvTotalSum;
@@ -160,14 +157,5 @@ public class BalanceFragment extends Fragment implements View.OnClickListener, R
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
-    }
-
-    @Override
-    public void onRecyclerInClick(View view, int position) {
-        if (position == 0) {
-            CreateCategoryDialog dialog = CreateCategoryDialog.newInstance();
-            dialog.setTargetFragment(this, CREATE_CATEGORY_DIALOG_REQ_CODE);
-            dialog.show(getFragmentManager(), CreateCategoryDialog.class.getName());
-        }
     }
 }
