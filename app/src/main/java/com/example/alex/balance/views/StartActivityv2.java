@@ -55,12 +55,7 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
 
         list = realmResults.isEmpty() ? mPresenter.createCategoryData() : realmResults;
 
-        adapter = new CategoryListAdapter(list, this, this, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFragment(new DetailFragment());
-            }
-        });
+        adapter = new CategoryListAdapter(list, this, this);
 
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));

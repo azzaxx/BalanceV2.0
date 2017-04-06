@@ -3,6 +3,7 @@ package com.example.alex.balance.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.alex.balance.views.DetailFragment.CATEGORY_POSITION_KEY;
+
 /**
  * Created by alex on 14.03.17.
  */
@@ -33,13 +36,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private Context mContext;
     private final OnStartDragListener mDragStartListener;
     private List<CategoryData> list;
-    private View.OnClickListener clickListener;
 
-    public CategoryListAdapter(List<CategoryData> list, Context context, OnStartDragListener dragStartListener, View.OnClickListener clickListener) {
+    public CategoryListAdapter(List<CategoryData> list, Context context, OnStartDragListener dragStartListener) {
         this.mDragStartListener = dragStartListener;
         this.mContext = context;
         this.list = list;
-        this.clickListener = clickListener;
     }
 
     @Override
@@ -48,13 +49,22 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     @Override
-    public void onBindViewHolder(final CategoryHolder holder, int position) {
+    public void onBindViewHolder(final CategoryHolder holder, final int position) {
         final CategoryData data = list.get(position);
         holder.mCategoryColorView.setBackgroundColor(data.getColor());
         holder.textName.setText(data.getName());
         holder.textBalance.setText(String.format("%.2f", (data.getProfit() - data.getLoss())));
         holder.mTvCategoryDate.setText(data.getLastDate());
-        holder.mRVMore.setOnClickListener(clickListener);
+        holder.mRVMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putInt(CATEGORY_POSITION_KEY, position);
+                DetailFragment frg = new DetailFragment();
+                frg.setArguments(args);
+                ((StartActivityv2) mContext).showFragment(frg);
+            }
+        });
     }
 
     @Override
@@ -81,8 +91,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         View mCategoryColorView;
         @BindView(R.id.category_list_tv_date)
         TextView mTvCategoryDate;
-        @BindView(R.id.keyboard_expand)
-        ExpandableLayout mExpand;
         @BindView(R.id.category_list_rv_show_more)
         RelativeLayout mRVMore;
         private int color;

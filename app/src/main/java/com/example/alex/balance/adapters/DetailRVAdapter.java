@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
-import com.example.alex.balance.custom.realm.RealmHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +28,12 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int BODY = 1;
     private Context mContext;
 
-    public DetailRVAdapter(Context context) {
+    public DetailRVAdapter(Context context, List<BalanceData> old) {
         this.mContext = context;
         List<BalanceData> array = new ArrayList<>();
-        List<BalanceData> old = RealmHelper.getInstance().getBalanceList(RealmHelper.getInstance().getCategorySorted().get(0));
+
+        if (!old.isEmpty())
+            array.add(old.get(0));
 
         for (int i = 0; i < old.size(); i++) {
             array.add(old.get(i));
@@ -65,6 +66,7 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (balanceData.getComment().isEmpty()) {
                 body.mTvComment.setVisibility(View.GONE);
             } else {
+                body.mTvComment.setVisibility(View.VISIBLE);
                 body.mTvComment.setText(balanceData.getComment());
             }
 
