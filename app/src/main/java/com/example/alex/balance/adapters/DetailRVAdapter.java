@@ -6,13 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,14 +25,15 @@ import butterknife.ButterKnife;
 
 public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<BalanceData> list;
-    public static final int HEADER = 0;
-    public static final int BODY = 1;
+    private static final int HEADER = 0;
+    private static final int BODY = 1;
     private Context mContext;
 
     public DetailRVAdapter(Context context, List<BalanceData> old) {
         this.mContext = context;
         List<BalanceData> array = new ArrayList<>();
 
+        old = sortList(old);
         if (!old.isEmpty())
             array.add(old.get(0));
 
@@ -59,7 +61,8 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final BalanceData balanceData = list.get(position);
 
         if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).mTvHeader.setText(balanceData.getDay() + " " + balanceData.getMonth() + " " + balanceData.getYear());
+            ((HeaderViewHolder) holder).mTvHeaderDate.setText(balanceData.getDay() + " " + balanceData.getMonth() + " " + balanceData.getYear());
+            ((HeaderViewHolder) holder).mTvHeaderTotal.setText(calculateTotalByDay(balanceData.getDay(), position));
         } else if (holder instanceof BodyViewHolder) {
             BodyViewHolder body = (BodyViewHolder) holder;
 
@@ -71,13 +74,31 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             String totalSum = String.format("%.2f", balanceData.getTotalSum());
-            body.mTvTotal.setText(balanceData.isProfit() ? totalSum : "-" + totalSum);
-            body.mIvProfit.setImageDrawable(
-                    mContext.getResources().getDrawable(
-                            balanceData.isProfit() ? R.drawable.ic_profit_colored : R.drawable.ic_loss_colored));
+            body.mTvTotal.setText(balanceData.isProfit() ? "+" + totalSum : "-" + totalSum);
+            body.mIvProfit.setImageDrawable(mContext.getResources().getDrawable(
+                    balanceData.isProfit() ? R.drawable.ic_profit_colored : R.drawable.ic_loss_colored));
 
             body.mUnderline.setVisibility(getItemViewType(position + 1) == BODY ? View.VISIBLE : View.GONE);
         }
+    }
+
+    private String calculateTotalByDay(String day, int pos) {
+        float totalSum = 0;
+
+        for (int i = 0; i < getItemCount(); i++) {
+            final BalanceData data = list.get(i);
+            if (i != pos && data.getDay().equals(day)) {
+                if (data.isProfit()) {
+                    totalSum += data.getTotalSum();
+                } else {
+                    totalSum -= data.getTotalSum();
+                }
+            }
+        }
+
+        final String total = String.format("%.2f", totalSum);
+
+        return totalSum > 0 ? "+" + total : total;
     }
 
     @Override
@@ -95,21 +116,51 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return BODY;
     }
 
-    public class HeaderViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.detail_view_header_tv)
-        TextView mTvHeader;
+    private List<BalanceData> sortList(List<BalanceData> old) {
+        Collections.sort(old, new Comparator<BalanceData>() {
+            @Override
+            public int compare(BalanceData old1, BalanceData old2) {
+                return old1.getYear().equals(old2.getYear()) ? 0 : -1;
+            }
+        });
 
-        public HeaderViewHolder(View itemView) {
+        Collections.sort(old, new Comparator<BalanceData>() {
+            @Override
+            public int compare(BalanceData old1, BalanceData old2) {
+                return old1.getMonth().equals(old2.getMonth()) ? 0 : -1;
+            }
+        });
+
+        Collections.sort(old, new Comparator<BalanceData>() {
+            @Override
+            public int compare(BalanceData old1, BalanceData old2) {
+                return old1.getDay().equals(old2.getDay()) ? 0 : -1;
+            }
+        });
+
+        Collections.sort(old, new Comparator<BalanceData>() {
+            @Override
+            public int compare(BalanceData old1, BalanceData old2) {
+                return Integer.valueOf(old1.getDay()).compareTo(Integer.valueOf(old2.getDay()));
+            }
+        });
+
+        return old;
+    }
+
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.detail_view_header_date_tv)
+        TextView mTvHeaderDate;
+        @BindView(R.id.detail_view_header_total_tv)
+        TextView mTvHeaderTotal;
+
+        HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
-    public class BodyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.detail_view_body_rl_delete)
-        RelativeLayout mRlDelete;
-        @BindView(R.id.detail_view_body_rl_edit)
-        RelativeLayout mRlEdit;
+    class BodyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.detail_view_body_iv_profit)
         ImageView mIvProfit;
         @BindView(R.id.detail_view_body_tv_total)
@@ -119,7 +170,7 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.detail_view_body_view_line)
         View mUnderline;
 
-        public BodyViewHolder(View itemView) {
+        BodyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -3,16 +3,30 @@
     android:layout_width="match_parent"
     android:background="@drawable/stroke_light_round_corners"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <TextView
-        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:textColor="@color/white"
         android:layout_margin="8dp"
-        android:id="@+id/detail_view_header_tv"
-        android:layout_width="match_parent"
+        android:id="@+id/detail_view_header_date_tv"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:text="20 junary"
+        android:textSize="20sp" />
+
+    <TextView
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="@color/white"
+        android:layout_margin="8dp"
+        android:id="@+id/detail_view_header_total_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- 425"
+        android:gravity="right"
         android:textSize="20sp" />
 
 </LinearLayout>
