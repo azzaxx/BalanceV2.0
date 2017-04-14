@@ -17,9 +17,7 @@ import com.example.alex.balance.interfaces.ItemTouchHelperAdapter;
 import com.example.alex.balance.interfaces.ItemTouchHelperViewHolder;
 import com.example.alex.balance.interfaces.OnStartDragListener;
 import com.example.alex.balance.views.DetailFragment;
-import com.example.alex.balance.views.StartActivityv2;
-
-import net.cachapa.expandablelayout.ExpandableLayout;
+import com.example.alex.balance.views.StartActivity;
 
 import java.util.List;
 
@@ -62,7 +60,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 args.putInt(CATEGORY_POSITION_KEY, position);
                 DetailFragment frg = new DetailFragment();
                 frg.setArguments(args);
-                ((StartActivityv2) mContext).showFragment(frg);
+                ((StartActivity) mContext).showFragment(frg);
             }
         });
     }

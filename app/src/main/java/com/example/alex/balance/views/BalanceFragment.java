@@ -22,8 +22,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
-import static com.example.alex.balance.views.StartActivityv2.PROFIT_LOSS_KEY;
-import static com.example.alex.balance.views.StartActivityv2.CATEGORY_POSITION_KEY;
+import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
+import static com.example.alex.balance.views.StartActivity.CATEGORY_POSITION_KEY;
 
 /**
  * Created by alex on 04.01.17.
@@ -149,8 +149,8 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public StartActivityv2 getAct() {
-        return (StartActivityv2) getActivity();
+    public StartActivity getAct() {
+        return (StartActivity) getActivity();
     }
 
     @Override

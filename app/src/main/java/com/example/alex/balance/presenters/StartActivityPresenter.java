@@ -4,7 +4,7 @@ import android.graphics.Color;
 
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.realm.RealmHelper;
-import com.example.alex.balance.views.StartActivityv2;
+import com.example.alex.balance.views.StartActivity;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -22,7 +22,7 @@ import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_NAME;
  * Created by alex on 15.03.17.
  */
 
-public class StartActivityV2Presenter extends BasePresenter<StartActivityv2> {
+public class StartActivityPresenter extends BasePresenter<StartActivity> {
     public void setupChart(PieChart mChart) {
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);

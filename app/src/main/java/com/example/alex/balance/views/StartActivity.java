@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
@@ -15,7 +14,7 @@ import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.SimpleItemTouchHelperCallback;
 import com.example.alex.balance.custom.realm.RealmHelper;
 import com.example.alex.balance.interfaces.OnStartDragListener;
-import com.example.alex.balance.presenters.StartActivityV2Presenter;
+import com.example.alex.balance.presenters.StartActivityPresenter;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.List;
@@ -28,7 +27,7 @@ import io.realm.RealmResults;
  * Created by alex on 13.03.17.
  */
 
-public class StartActivityv2 extends AppCompatActivity implements OnStartDragListener {
+public class StartActivity extends AppCompatActivity implements OnStartDragListener {
     public static final String PROFIT_LOSS_KEY = "start_activity_profit_or_loss_key";
     public static final String CATEGORY_POSITION_KEY = "start_activity_category_position_key";
 
@@ -36,7 +35,7 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
     RecyclerView mRVList;
     @BindView(R.id.pie_chart)
     PieChart mChart;
-    private StartActivityV2Presenter mPresenter = new StartActivityV2Presenter();
+    private StartActivityPresenter mPresenter = new StartActivityPresenter();
     private ItemTouchHelper mItemTouchHelper;
     private List<CategoryData> list;
     private CategoryListAdapter adapter;
@@ -44,7 +43,7 @@ public class StartActivityv2 extends AppCompatActivity implements OnStartDragLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start_activyty_v2);
+        setContentView(R.layout.start_activyty);
         if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }

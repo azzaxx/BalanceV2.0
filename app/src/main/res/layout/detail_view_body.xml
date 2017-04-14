@@ -39,15 +39,28 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-        <TextView
+        <LinearLayout
             android:gravity="center|right"
-            android:id="@+id/detail_view_body_tv_comments"
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Some comment text Some comment text text"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/detail_view_body_tv_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -11,10 +11,13 @@ import android.widget.TextView;
 import com.example.alex.balance.R;
 import com.example.alex.balance.custom.BalanceData;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,15 +64,14 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         final BalanceData balanceData = list.get(position);
 
         if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).mTvHeaderDate.setText(balanceData.getDay() + " " + balanceData.getMonth() + " " + balanceData.getYear());
-            ((HeaderViewHolder) holder).mTvHeaderTotal.setText(calculateTotalByDay(balanceData.getDay(), position));
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+
+            headerViewHolder.mTvHeaderDate.setText(balanceData.getDay() + " " + balanceData.getMonth() + " " + balanceData.getYear());
+            headerViewHolder.mTvHeaderTotal.setText(calculateTotalByDay(balanceData.getDay(), position));
         } else if (holder instanceof BodyViewHolder) {
             BodyViewHolder body = (BodyViewHolder) holder;
 
-            if (balanceData.getComment().isEmpty()) {
-                body.mTvComment.setVisibility(View.GONE);
-            } else {
-                body.mTvComment.setVisibility(View.VISIBLE);
+            if (!balanceData.getComment().isEmpty()) {
                 body.mTvComment.setText(balanceData.getComment());
             }
 
@@ -108,9 +110,7 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return HEADER;
-        } else if (getItemCount() > position && !list.get(position).getDay().equals(list.get(position - 1).getDay())) {
+        if (position == 0 || getItemCount() > position && !list.get(position).getDay().equals(list.get(position - 1).getDay())) {
             return HEADER;
         }
         return BODY;
@@ -120,28 +120,13 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Collections.sort(old, new Comparator<BalanceData>() {
             @Override
             public int compare(BalanceData old1, BalanceData old2) {
-                return old1.getYear().equals(old2.getYear()) ? 0 : -1;
-            }
-        });
-
-        Collections.sort(old, new Comparator<BalanceData>() {
-            @Override
-            public int compare(BalanceData old1, BalanceData old2) {
-                return old1.getMonth().equals(old2.getMonth()) ? 0 : -1;
-            }
-        });
-
-        Collections.sort(old, new Comparator<BalanceData>() {
-            @Override
-            public int compare(BalanceData old1, BalanceData old2) {
-                return old1.getDay().equals(old2.getDay()) ? 0 : -1;
-            }
-        });
-
-        Collections.sort(old, new Comparator<BalanceData>() {
-            @Override
-            public int compare(BalanceData old1, BalanceData old2) {
-                return Integer.valueOf(old1.getDay()).compareTo(Integer.valueOf(old2.getDay()));
+                try {
+                    return new SimpleDateFormat("yyyy/MMM/dd", Locale.ENGLISH).parse(old1.getYear() + "/" + old1.getMonth() + "/" + old1.getDay())
+                            .compareTo(new SimpleDateFormat("yyyy/MMM/dd", Locale.ENGLISH).parse(old2.getYear() + "/" + old2.getMonth() + "/" + old2.getDay()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return 0;
+                }
             }
         });
 
