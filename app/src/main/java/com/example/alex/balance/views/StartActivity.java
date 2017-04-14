@@ -114,5 +114,9 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
     @Override
     public void onBackPressed() {
         popBackStack();
+
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        }
     }
 }

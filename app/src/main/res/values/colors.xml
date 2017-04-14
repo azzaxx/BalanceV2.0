@@ -19,4 +19,5 @@
     <color name="niceBlue">#1E90FF</color>
     <color name="profitColor">#345E16</color>
     <color name="lossColor">#B0102D</color>
+    <color name="blackTrans">#66000000</color>
 </resources>

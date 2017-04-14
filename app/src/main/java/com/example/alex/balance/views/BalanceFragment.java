@@ -82,7 +82,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
 
     private void initButtons(View view) {
         mRlDelOne.setOnClickListener(this);
-        view.findViewById(R.id.button_cancel).setOnClickListener(this);
+
         view.findViewById(R.id.button_done).setOnClickListener(this);
         view.findViewById(R.id.date_container).setOnClickListener(this);
         for (int i : mNumberButtons) {
@@ -110,9 +110,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.del_one_button:
                 mPresenter.clearOne(mTvTotalSum.getText().toString());
-                break;
-            case R.id.button_cancel:
-                getAct().popBackStack();
                 break;
             case R.id.button_done:
                 mPresenter.addBalanceData(
