@@ -90,6 +90,14 @@ public class RealmHelper {
         mRealm.commitTransaction();
     }
 
+    public void editCategoryNameAndColor(CategoryData categoryData, String newName, int newColor) {
+        mRealm.beginTransaction();
+        CategoryData newData = getSelectedCategory(categoryData.getName(), categoryData.getColor(), categoryData.getTimeStamp());
+        newData.setName(newName);
+        newData.setColor(newColor);
+        mRealm.commitTransaction();
+    }
+
     public List<BalanceData> getBalanceList(CategoryData data) {
         List<BalanceData> list = new ArrayList<>();
 

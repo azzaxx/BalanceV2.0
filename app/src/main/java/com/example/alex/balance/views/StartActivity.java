@@ -110,4 +110,9 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
     public CategoryData getCategoryByPosition(int position) {
         return list.get(position);
     }
+
+    @Override
+    public void onBackPressed() {
+        popBackStack();
+    }
 }
