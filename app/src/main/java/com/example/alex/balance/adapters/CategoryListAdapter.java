@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.alex.balance.views.DetailFragment.CATEGORY_POSITION_KEY;
+import static com.example.alex.balance.presenters.DetailFragmentPresenter.CATEGORY_POSITION_KEY;
 
 /**
  * Created by alex on 14.03.17.
@@ -93,7 +93,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         RelativeLayout mRVMore;
         private int color;
 
-        public CategoryHolder(View itemView) {
+        CategoryHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
