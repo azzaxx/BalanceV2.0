@@ -1,5 +1,6 @@
 package com.example.alex.balance.views;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
@@ -15,6 +19,7 @@ import com.example.alex.balance.custom.SimpleItemTouchHelperCallback;
 import com.example.alex.balance.dagger.components.DaggerStartActivityComponent;
 import com.example.alex.balance.dagger.modules.ActivityModule;
 import com.example.alex.balance.dagger.presenters.StartActivityPresenter;
+import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.interfaces.OnStartDragListener;
 import com.github.mikephil.charting.charts.PieChart;
 
@@ -28,6 +33,7 @@ import butterknife.ButterKnife;
 public class StartActivity extends AppCompatActivity implements OnStartDragListener {
     public static final String PROFIT_LOSS_KEY = "start_activity_profit_or_loss_key";
     public static final String CATEGORY_POSITION_KEY = "start_activity_category_position_key";
+    private static int MENU_ITEM_ID = 1000;
 
     @BindView(R.id.recycler_view_list)
     RecyclerView mRVList;
@@ -71,14 +77,29 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
 //        mItemTouchHelper.startDrag(viewHolder);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, MENU_ITEM_ID, 0, "Create category");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_ITEM_ID) {
+            CreateCategoryDialog.newInstance().show(getSupportFragmentManager(), StartActivity.class.getName());
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void popBackStack() {
         getSupportFragmentManager().popBackStack();
-        adapter.notifyDataSetChanged();
         notifyChanges();
     }
 
     private void notifyChanges() {
         List<CategoryData> dataList = mPresenter.getCategoryList();
+        adapter.notifyDataSetChanged();
         mPresenter.setData(dataList, mChart);
         mChart.setCenterText(mPresenter.totalBalance(dataList));
         mChart.notifyDataSetChanged();
@@ -112,5 +133,10 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             super.onBackPressed();
         }
+    }
+
+    public void createCategory(Intent intent) {
+        mPresenter.createCategory(intent);
+        notifyChanges();
     }
 }

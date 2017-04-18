@@ -1,5 +1,6 @@
 package com.example.alex.balance.dagger.presenters;
 
+import android.content.Intent;
 import android.graphics.Color;
 
 import com.example.alex.balance.custom.CategoryData;
@@ -20,8 +21,9 @@ import javax.inject.Inject;
 
 import io.realm.RealmResults;
 
-import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_ICON;
 import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_NAME;
+import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_COLOR;
+import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_NAME;
 
 public class StartActivityPresenter extends BasePresenter<StartActivity> {
     private RealmHelper mHelper;
@@ -101,12 +103,11 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
 
     private List<CategoryData> createCategoryData() {
         List<CategoryData> datas = new ArrayList<>();
-        final String[] imagesFile = {OTHER_CATEGORY_ICON, "mobile_home", "mouse_trap_mouse", "wardrobe", "washing_machine"};
         final String[] imagesName = {OTHER_CATEGORY_NAME, "Mobile Home", "Mouse Trap", "Wardrobe", "Washing Machine"};
         final String[] imagesColor = {"#00CC00", "#FFD300", "#0B61A4", "#D2006B", "#1E90FF"};
 
-        for (int i = 0; i < imagesFile.length && i < imagesName.length; i++) {
-            datas.add(mHelper.createCategoryData(imagesName[i], imagesFile[i], imagesColor[i]));
+        for (int i = 0; i < imagesName.length && i < imagesName.length; i++) {
+            datas.add(mHelper.createCategoryData(imagesName[i], Color.parseColor(imagesColor[i])));
         }
 
         return datas;
@@ -119,5 +120,9 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
 
     public RealmResults<CategoryData> getCategoryList() {
         return mHelper.getCategorySorted();
+    }
+
+    public void createCategory(Intent intent) {
+        mHelper.createCategoryData(intent.getStringExtra(CREATE_CATEGORY_NAME), intent.getIntExtra(CREATE_CATEGORY_COLOR, 0));
     }
 }

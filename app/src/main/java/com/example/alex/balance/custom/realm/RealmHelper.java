@@ -54,13 +54,12 @@ public class RealmHelper {
         mRealm.commitTransaction();
     }
 
-    public CategoryData createCategoryData(String name, String icon, String color) {
+    public CategoryData createCategoryData(String name, int color) {
         mRealm.beginTransaction();
         CategoryData categoryData = mRealm.createObject(CategoryData.class);
         categoryData.setName(name);
-        categoryData.setIconName(icon);
-        categoryData.setColor(Color.parseColor(color));
         categoryData.setTimeStamp(System.currentTimeMillis());
+        categoryData.setColor(color);
         mRealm.commitTransaction();
 
         return categoryData;

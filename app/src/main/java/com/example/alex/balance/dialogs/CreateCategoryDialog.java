@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.balance.R;
+import com.example.alex.balance.views.StartActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +73,7 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
         unbinder = ButterKnife.bind(this, view);
         Bundle args = getArguments();
 
-        if (args != null) {
+        if (args.containsKey(CREATE_CATEGORY_COLOR) && args.containsKey(CREATE_CATEGORY_NAME)) {
             mTvColor.setTextColor(args.getInt(CREATE_CATEGORY_COLOR));
             mETName.setText(args.getString(CREATE_CATEGORY_NAME));
         }
@@ -106,13 +107,14 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
     }
 
     private void putCategoryData(String name, int color) {
+        Intent intent = new Intent();
+        intent.putExtra(CREATE_CATEGORY_NAME, name);
+        intent.putExtra(CREATE_CATEGORY_COLOR, color);
+
         if (getTargetFragment() != null) {
-            Intent intent = new Intent();
-
-            intent.putExtra(CREATE_CATEGORY_NAME, name);
-            intent.putExtra(CREATE_CATEGORY_COLOR, color);
-
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+        } else if (getContext() instanceof StartActivity) {
+            ((StartActivity) getContext()).createCategory(intent);
         }
     }
 
