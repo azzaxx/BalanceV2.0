@@ -11,21 +11,26 @@ import com.example.alex.balance.views.DetailFragment;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_COLOR;
 import static com.example.alex.balance.dialogs.CreateCategoryDialog.CREATE_CATEGORY_NAME;
-
-/**
- * Created by alex on 14.04.17.
- */
 
 public class DetailFragmentPresenter extends BasePresenter<DetailFragment> {
     public static final String CATEGORY_POSITION_KEY = "detail_fragment_presenter_category_position_key";
     private static final int EDIT_CATEGORY_KEY = 1000;
     private CategoryData categoryData;
+    private RealmHelper helper;
+
+    @Inject
+    public DetailFragmentPresenter(DetailFragment fragment, RealmHelper helper) {
+        bindView(fragment);
+        this.helper = helper;
+    }
 
     public void initView() {
         Bundle args = mView.getArguments();
-        categoryData = RealmHelper.getInstance().getCategorySorted().get(args == null ? 0 : args.getInt(CATEGORY_POSITION_KEY));
+        categoryData = helper.getCategorySorted().get(args == null ? 0 : args.getInt(CATEGORY_POSITION_KEY));
         mView.setCatNameAndColor(categoryData.getName(), categoryData.getColor());
     }
 
@@ -39,7 +44,7 @@ public class DetailFragmentPresenter extends BasePresenter<DetailFragment> {
         if (requestCode == EDIT_CATEGORY_KEY) {
             final String newName = data.getStringExtra(CREATE_CATEGORY_NAME);
             final int newColor = data.getIntExtra(CREATE_CATEGORY_COLOR, 0);
-            RealmHelper.getInstance().editCategoryNameAndColor(categoryData, newName, newColor);
+            helper.editCategoryNameAndColor(categoryData, newName, newColor);
 
             mView.setCatNameAndColor(newName, newColor);
         }
@@ -50,6 +55,6 @@ public class DetailFragmentPresenter extends BasePresenter<DetailFragment> {
     }
 
     public List<BalanceData> getBalanceList() {
-        return RealmHelper.getInstance().getBalanceList(categoryData);
+        return helper.getBalanceList(categoryData);
     }
 }

@@ -104,7 +104,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        int viewId = view.getId();
+        final int viewId = view.getId();
 
         switch (viewId) {
             case R.id.b_clear:

@@ -14,15 +14,15 @@ import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.DetailRVAdapter;
+import com.example.alex.balance.dagger.components.DaggerDetailFragmentComponent;
+import com.example.alex.balance.dagger.modules.DetailFragmentModule;
 import com.example.alex.balance.dagger.presenters.DetailFragmentPresenter;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
-/**
- * Created by alex on 05.04.17.
- */
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
     private Unbinder mUnbinder;
@@ -35,7 +35,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.detail_fragment_tv_name)
     TextView mTvCatName;
 
-    private DetailFragmentPresenter mFragmentPresenter = new DetailFragmentPresenter();
+    @Inject
+    DetailFragmentPresenter mFragmentPresenter;
 
     @Nullable
     @Override
@@ -47,14 +48,12 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
-        mFragmentPresenter.bindView(this);
+        DaggerDetailFragmentComponent.builder().detailFragmentModule(new DetailFragmentModule(this)).build().inject(this);
         mFragmentPresenter.initView();
         view.findViewById(R.id.detail_fragment_edit_cat_rl).setOnClickListener(this);
-
         mTvTotal.setText(mFragmentPresenter.getTotal());
         mDetailRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        DetailRVAdapter adapter = new DetailRVAdapter(getContext(), mFragmentPresenter.getBalanceList());
-        mDetailRV.setAdapter(adapter);
+        mDetailRV.setAdapter(new DetailRVAdapter(getContext(), mFragmentPresenter.getBalanceList()));
     }
 
     @Override
