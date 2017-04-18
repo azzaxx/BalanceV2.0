@@ -22,6 +22,6 @@ public class BalanceFragmentModule {
 
     @Provides
     BalanceFragment provideView() {
-        return mView;
+        return this.mView;
     }
 }

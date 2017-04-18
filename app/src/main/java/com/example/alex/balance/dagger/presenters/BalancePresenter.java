@@ -22,12 +22,12 @@ public class BalancePresenter extends BasePresenter<BalanceFragment> {
     private static final String DOT = ".";
     private static final String ZERO = "0";
     private static final int MAX_SUM_LENGTH = 6;
-    private RealmHelper helper;
+    private RealmHelper mHelper;
 
     @Inject
     public BalancePresenter(BalanceFragment fragment, RealmHelper helper) {
         bindView(fragment);
-        this.helper = helper;
+        this.mHelper = helper;
     }
 
     public void setDate(@Nullable Intent date) {
@@ -96,8 +96,8 @@ public class BalancePresenter extends BasePresenter<BalanceFragment> {
             return;
         }
 
-        helper.createBalanceData(totalSum, day, month, year, comment, isProfit, categoryData);
-        helper.addCategoryProfitOrLose(totalSum, isProfit, categoryData);
-        helper.setLastCategoryDate(categoryData, day, month);
+        mHelper.createBalanceData(totalSum, day, month, year, comment, isProfit, categoryData);
+        mHelper.addCategoryProfitOrLose(totalSum, isProfit, categoryData);
+        mHelper.setLastCategoryDate(categoryData, day, month);
     }
 }

@@ -12,20 +12,18 @@ import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
 import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.SimpleItemTouchHelperCallback;
-import com.example.alex.balance.custom.realm.RealmHelper;
-import com.example.alex.balance.interfaces.OnStartDragListener;
+import com.example.alex.balance.dagger.components.DaggerStartActivityComponent;
+import com.example.alex.balance.dagger.modules.ActivityModule;
 import com.example.alex.balance.dagger.presenters.StartActivityPresenter;
+import com.example.alex.balance.interfaces.OnStartDragListener;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.RealmResults;
-
-/**
- * Created by alex on 13.03.17.
- */
 
 public class StartActivity extends AppCompatActivity implements OnStartDragListener {
     public static final String PROFIT_LOSS_KEY = "start_activity_profit_or_loss_key";
@@ -35,10 +33,11 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
     RecyclerView mRVList;
     @BindView(R.id.pie_chart)
     PieChart mChart;
-    private StartActivityPresenter mPresenter = new StartActivityPresenter();
     private ItemTouchHelper mItemTouchHelper;
     private List<CategoryData> list;
     private CategoryListAdapter adapter;
+    @Inject
+    StartActivityPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +47,10 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         ButterKnife.bind(this);
-        mPresenter.bindView(this);
+        DaggerStartActivityComponent.builder().activityModule(new ActivityModule(this)).build().inject(this);
 
-        RealmResults<CategoryData> realmResults = RealmHelper.getInstance().getCategorySorted();
-
-        list = realmResults.isEmpty() ? mPresenter.createCategoryData() : realmResults;
-
+        list = mPresenter.getCatList();
         adapter = new CategoryListAdapter(list, this, this);
-
         mRVList.setHasFixedSize(true);
         mRVList.setLayoutManager(new LinearLayoutManager(this));
         mRVList.setAdapter(adapter);
@@ -63,8 +58,7 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
         mPresenter.setData(list, mChart);
 
         mChart.setCenterText(mPresenter.totalBalance(list));
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter));
         mItemTouchHelper.attachToRecyclerView(mRVList);
     }
 
@@ -84,7 +78,7 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
     }
 
     private void notifyChanges() {
-        List<CategoryData> dataList = RealmHelper.getInstance().getCategorySorted();
+        List<CategoryData> dataList = mPresenter.getCategoryList();
         mPresenter.setData(dataList, mChart);
         mChart.setCenterText(mPresenter.totalBalance(dataList));
         mChart.notifyDataSetChanged();

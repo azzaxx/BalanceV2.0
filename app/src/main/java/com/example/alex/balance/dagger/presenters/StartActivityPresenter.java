@@ -15,14 +15,22 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import io.realm.RealmResults;
+
 import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_ICON;
 import static com.example.alex.balance.custom.CategoryData.OTHER_CATEGORY_NAME;
 
-/**
- * Created by alex on 15.03.17.
- */
-
 public class StartActivityPresenter extends BasePresenter<StartActivity> {
+    private RealmHelper mHelper;
+
+    @Inject
+    public StartActivityPresenter(StartActivity view, RealmHelper helper) {
+        bindView(view);
+        this.mHelper = helper;
+    }
+
     public void setupChart(PieChart mChart) {
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
@@ -90,16 +98,25 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         return "Balance: " + String.format("%.2f", calculateTotalBalance(datas));
     }
 
-    public List<CategoryData> createCategoryData() {
+    private List<CategoryData> createCategoryData() {
         List<CategoryData> datas = new ArrayList<>();
         final String[] imagesFile = {OTHER_CATEGORY_ICON, "mobile_home", "mouse_trap_mouse", "wardrobe", "washing_machine"};
         final String[] imagesName = {OTHER_CATEGORY_NAME, "Mobile Home", "Mouse Trap", "Wardrobe", "Washing Machine"};
         final String[] imagesColor = {"#00CC00", "#FFD300", "#0B61A4", "#D2006B", "#1E90FF"};
 
         for (int i = 0; i < imagesFile.length && i < imagesName.length; i++) {
-            datas.add(RealmHelper.getInstance().createCategoryData(imagesName[i], imagesFile[i], imagesColor[i]));
+            datas.add(mHelper.createCategoryData(imagesName[i], imagesFile[i], imagesColor[i]));
         }
 
         return datas;
+    }
+
+    public List<CategoryData> getCatList() {
+        RealmResults<CategoryData> realmResults = getCategoryList();
+        return realmResults.isEmpty() ? createCategoryData() : realmResults;
+    }
+
+    public RealmResults<CategoryData> getCategoryList() {
+        return mHelper.getCategorySorted();
     }
 }
