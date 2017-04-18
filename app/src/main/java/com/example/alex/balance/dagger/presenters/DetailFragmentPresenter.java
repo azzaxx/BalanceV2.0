@@ -10,6 +10,7 @@ import com.example.alex.balance.dialogs.CreateCategoryDialog;
 import com.example.alex.balance.views.DetailFragment;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -51,7 +52,7 @@ public class DetailFragmentPresenter extends BasePresenter<DetailFragment> {
     }
 
     public String getTotal() {
-        return String.format("%.2f", mCategoryData.getProfit() - mCategoryData.getLoss());
+        return String.format(Locale.US, "%.2f", mCategoryData.getProfit() - mCategoryData.getLoss());
     }
 
     public List<BalanceData> getBalanceList() {

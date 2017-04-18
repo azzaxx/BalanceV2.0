@@ -24,17 +24,7 @@ import static com.example.alex.balance.custom.CategoryData.CATEGORY_LOSS_NAME;
 
 @Module
 public class RealmHelper {
-    private static volatile RealmHelper mRealmHelper;
-    private static Realm mRealm;
-
-    public static RealmHelper getInstance() {
-        if (mRealmHelper == null) {
-            synchronized (RealmHelper.class) {
-                mRealmHelper = new RealmHelper();
-            }
-        }
-        return mRealmHelper;
-    }
+    private Realm mRealm;
 
     @Singleton
     @Provides

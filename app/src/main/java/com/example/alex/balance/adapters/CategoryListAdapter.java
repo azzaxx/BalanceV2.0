@@ -20,6 +20,7 @@ import com.example.alex.balance.views.DetailFragment;
 import com.example.alex.balance.views.StartActivity;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +52,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         final CategoryData data = list.get(position);
         holder.mCategoryColorView.setBackgroundColor(data.getColor());
         holder.textName.setText(data.getName());
-        holder.textBalance.setText(String.format("%.2f", (data.getProfit() - data.getLoss())));
+        holder.textBalance.setText(String.format(Locale.US, "%.2f", (data.getProfit() - data.getLoss())));
         holder.mTvCategoryDate.setText(data.getLastDate());
         holder.mRVMore.setOnClickListener(new View.OnClickListener() {
             @Override

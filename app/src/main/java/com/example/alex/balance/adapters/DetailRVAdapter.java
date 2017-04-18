@@ -69,18 +69,16 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             headerViewHolder.mTvHeaderDate.setText(balanceData.getDay() + " " + balanceData.getMonth() + " " + balanceData.getYear());
             headerViewHolder.mTvHeaderTotal.setText(calculateTotalByDay(balanceData.getDay(), position));
         } else if (holder instanceof BodyViewHolder) {
-            BodyViewHolder body = (BodyViewHolder) holder;
+            BodyViewHolder bodyViewHolder = (BodyViewHolder) holder;
 
             if (!balanceData.getComment().isEmpty()) {
-                body.mTvComment.setText(balanceData.getComment());
+                bodyViewHolder.mTvComment.setText(balanceData.getComment());
             }
-
-            String totalSum = String.format("%.2f", balanceData.getTotalSum());
-            body.mTvTotal.setText(balanceData.isProfit() ? "+" + totalSum : "-" + totalSum);
-            body.mIvProfit.setImageDrawable(mContext.getResources().getDrawable(
-                    balanceData.isProfit() ? R.drawable.ic_profit_colored : R.drawable.ic_loss_colored));
-
-            body.mUnderline.setVisibility(getItemViewType(position + 1) == BODY ? View.VISIBLE : View.GONE);
+            String totalSum = String.format(Locale.US, "%.2f", balanceData.getTotalSum());
+            bodyViewHolder.mTvTotal.setText(balanceData.isProfit() ? "+" + totalSum : "-" + totalSum);
+            bodyViewHolder.mIvProfit.setImageDrawable(
+                    mContext.getResources().getDrawable(balanceData.isProfit() ? R.drawable.ic_profit_colored : R.drawable.ic_loss_colored));
+            bodyViewHolder.mUnderline.setVisibility(getItemViewType(position + 1) == BODY ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -98,7 +96,7 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
 
-        final String total = String.format("%.2f", totalSum);
+        final String total = String.format(Locale.US, "%.2f", totalSum);
 
         return totalSum > 0 ? "+" + total : total;
     }
@@ -130,6 +128,7 @@ public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         });
 
+        Collections.reverse(old);
         return old;
     }
 

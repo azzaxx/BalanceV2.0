@@ -14,6 +14,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -95,7 +96,7 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
     }
 
     public String totalBalance(List<CategoryData> datas) {
-        return "Balance: " + String.format("%.2f", calculateTotalBalance(datas));
+        return "Balance: " + String.format(Locale.US, "%.2f", calculateTotalBalance(datas));
     }
 
     private List<CategoryData> createCategoryData() {
