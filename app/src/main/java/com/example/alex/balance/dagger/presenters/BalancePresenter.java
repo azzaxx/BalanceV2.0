@@ -1,4 +1,4 @@
-package com.example.alex.balance.presenters;
+package com.example.alex.balance.dagger.presenters;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -10,20 +10,25 @@ import com.example.alex.balance.views.BalanceFragment;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_DAY_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_MONTH_KEY;
 import static com.example.alex.balance.dialogs.DateDialog.DATE_DIALOG_YEAR_KEY;
 import static com.example.alex.balance.views.BalanceFragment.DATE_DIALOG_REQ_CODE;
 
-/**
- * Created by alex on 09.01.17.
- */
-
-public class DataPresenter extends BasePresenter<BalanceFragment> {
+public class BalancePresenter extends BasePresenter<BalanceFragment> {
     public static final String DEFAULT_VALUE = "0.00";
     private static final String DOT = ".";
     private static final String ZERO = "0";
     private static final int MAX_SUM_LENGTH = 6;
+    private RealmHelper helper;
+
+    @Inject
+    public BalancePresenter(BalanceFragment fragment, RealmHelper helper) {
+        bindView(fragment);
+        this.helper = helper;
+    }
 
     public void setDate(@Nullable Intent date) {
         Calendar calendar = Calendar.getInstance();
@@ -91,8 +96,8 @@ public class DataPresenter extends BasePresenter<BalanceFragment> {
             return;
         }
 
-        RealmHelper.getInstance().createBalanceData(totalSum, day, month, year, comment, isProfit, categoryData);
-        RealmHelper.getInstance().addCategoryProfitOrLose(totalSum, isProfit, categoryData);
-        RealmHelper.getInstance().setLastCategoryDate(categoryData, day, month);
+        helper.createBalanceData(totalSum, day, month, year, comment, isProfit, categoryData);
+        helper.addCategoryProfitOrLose(totalSum, isProfit, categoryData);
+        helper.setLastCategoryDate(categoryData, day, month);
     }
 }

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.DetailRVAdapter;
-import com.example.alex.balance.presenters.DetailFragmentPresenter;
+import com.example.alex.balance.dagger.presenters.DetailFragmentPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -8,6 +8,10 @@ import com.example.alex.balance.custom.CategoryData;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -18,10 +22,7 @@ import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_TIME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_IS_PROFIT_NAME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_LOSS_NAME;
 
-/**
- * Created by alex on 29.03.17.
- */
-
+@Module
 public class RealmHelper {
     private static volatile RealmHelper mRealmHelper;
     private static Realm mRealm;
@@ -29,11 +30,16 @@ public class RealmHelper {
     public static RealmHelper getInstance() {
         if (mRealmHelper == null) {
             synchronized (RealmHelper.class) {
-                if (mRealmHelper == null)
-                    mRealmHelper = new RealmHelper();
+                mRealmHelper = new RealmHelper();
             }
         }
         return mRealmHelper;
+    }
+
+    @Singleton
+    @Provides
+    RealmHelper helper() {
+        return new RealmHelper();
     }
 
     public RealmHelper() {

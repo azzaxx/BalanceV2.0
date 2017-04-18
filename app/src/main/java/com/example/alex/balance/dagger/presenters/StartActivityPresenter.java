@@ -1,4 +1,4 @@
-package com.example.alex.balance.presenters;
+package com.example.alex.balance.dagger.presenters;
 
 import android.graphics.Color;
 

@@ -1,4 +1,4 @@
-package com.example.alex.balance.presenters;
+package com.example.alex.balance.dagger.presenters;
 
 /**
  * Created by alex on 09.01.17.

@@ -14,7 +14,7 @@ import com.example.alex.balance.custom.CategoryData;
 import com.example.alex.balance.custom.SimpleItemTouchHelperCallback;
 import com.example.alex.balance.custom.realm.RealmHelper;
 import com.example.alex.balance.interfaces.OnStartDragListener;
-import com.example.alex.balance.presenters.StartActivityPresenter;
+import com.example.alex.balance.dagger.presenters.StartActivityPresenter;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.List;

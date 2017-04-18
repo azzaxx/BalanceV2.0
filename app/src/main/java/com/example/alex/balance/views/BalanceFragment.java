@@ -14,20 +14,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.balance.R;
+import com.example.alex.balance.dagger.components.DaggerBalanceFragmentComponent;
+import com.example.alex.balance.dagger.modules.BalanceFragmentModule;
+
 import com.example.alex.balance.dialogs.DateDialog;
-import com.example.alex.balance.presenters.DataPresenter;
+import com.example.alex.balance.dagger.presenters.BalancePresenter;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.example.alex.balance.presenters.DataPresenter.DEFAULT_VALUE;
+import static com.example.alex.balance.dagger.presenters.BalancePresenter.DEFAULT_VALUE;
 import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
 import static com.example.alex.balance.views.StartActivity.CATEGORY_POSITION_KEY;
-
-/**
- * Created by alex on 04.01.17.
- */
 
 public class BalanceFragment extends Fragment implements View.OnClickListener{
     public static final int DATE_DIALOG_REQ_CODE = 1001;
@@ -59,8 +60,9 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
             R.id.b_clear
     };
     private Unbinder mUnbinder;
-    private DataPresenter mPresenter = new DataPresenter();
     private boolean mIsProfit;
+    @Inject
+    BalancePresenter mPresenter;
 
     @Nullable
     @Override
@@ -72,7 +74,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
-        mPresenter.bindView(this);
+        DaggerBalanceFragmentComponent.builder().balanceFragmentModule(new BalanceFragmentModule(this)).build().inject(this);
         if (getArguments() != null) {
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
         }

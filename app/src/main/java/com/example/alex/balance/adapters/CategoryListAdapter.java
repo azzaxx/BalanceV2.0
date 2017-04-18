@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.alex.balance.presenters.DetailFragmentPresenter.CATEGORY_POSITION_KEY;
+import static com.example.alex.balance.dagger.presenters.DetailFragmentPresenter.CATEGORY_POSITION_KEY;
 
 /**
  * Created by alex on 14.03.17.
