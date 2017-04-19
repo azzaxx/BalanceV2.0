@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteWith"
+    android:orientation="horizontal">
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.7"
+        android:background="@color/grey" />
+
+    <View
+        android:background="@color/whiteWith"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/violet" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_profit"
+                    android:layout_width="32dp"
+                    android:layout_height="48dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_profit" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/middle_split_profit_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/rl_profit"
+                    android:gravity="center"
+                    android:text="@string/profit"
+                    android:textColor="@color/colorAccent" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_loss"
+                    android:layout_width="32dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_loss" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/middle_split_loss_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/rl_loss"
+                    android:gravity="center"
+                    android:text="@string/loss"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/category_name_middle_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/middle_split_loss_tv"
+                    android:layout_toRightOf="@id/middle_split_profit_tv"
+                    android:gravity="center"
+                    android:text="Swipe"
+                    android:textColor="@color/colorAccent" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/violet" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:background="@color/grey"
+                android:padding="1dp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

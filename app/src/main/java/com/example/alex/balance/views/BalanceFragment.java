@@ -16,9 +16,8 @@ import android.widget.TextView;
 import com.example.alex.balance.R;
 import com.example.alex.balance.dagger.components.DaggerBalanceFragmentComponent;
 import com.example.alex.balance.dagger.modules.BalanceFragmentModule;
-
-import com.example.alex.balance.dialogs.DateDialog;
 import com.example.alex.balance.dagger.presenters.BalancePresenter;
+import com.example.alex.balance.dialogs.DateDialog;
 
 import javax.inject.Inject;
 
@@ -27,11 +26,16 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.example.alex.balance.dagger.presenters.BalancePresenter.DEFAULT_VALUE;
-import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
 import static com.example.alex.balance.views.StartActivity.CATEGORY_POSITION_KEY;
+import static com.example.alex.balance.views.StartActivity.PROFIT_LOSS_KEY;
 
-public class BalanceFragment extends Fragment implements View.OnClickListener{
+public class BalanceFragment extends Fragment implements View.OnClickListener {
     public static final int DATE_DIALOG_REQ_CODE = 1001;
+    private static final String SAVE_COMMENT_KEY = "balance_fragment_save_comment_key";
+    private static final String SAVE_SUM_KEY = "balance_fragment_save_sum_key";
+    private static final String SAVE_DATE_DAY_KEY = "balance_fragment_save_date_day_key";
+    private static final String SAVE_DATE_MONTH_KEY = "balance_fragment_save_date_month_key";
+    private static final String SAVE_DATE_YEAR_KEY = "balance_fragment_save_date_year_key";
 
     @BindView(R.id.total_sum_tv)
     TextView mTvTotalSum;
@@ -79,7 +83,15 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
         }
         initButtons(view);
-        mPresenter.setDate(null);
+        if (savedInstanceState != null) {
+            setDate(savedInstanceState.getString(SAVE_DATE_DAY_KEY),
+                    savedInstanceState.getString(SAVE_DATE_MONTH_KEY),
+                    savedInstanceState.getString(SAVE_DATE_YEAR_KEY));
+            mEtComments.setText(savedInstanceState.getString(SAVE_COMMENT_KEY));
+            mTvTotalSum.setText(savedInstanceState.getString(SAVE_SUM_KEY));
+        } else {
+            mPresenter.setDate(null);
+        }
     }
 
     private void initButtons(View view) {
@@ -150,6 +162,16 @@ public class BalanceFragment extends Fragment implements View.OnClickListener{
 
     public StartActivity getAct() {
         return (StartActivity) getActivity();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(SAVE_COMMENT_KEY, mEtComments.getText().toString());
+        outState.putString(SAVE_SUM_KEY, mTvTotalSum.getText().toString());
+        outState.putString(SAVE_DATE_DAY_KEY, mTvDateDay.getText().toString());
+        outState.putString(SAVE_DATE_MONTH_KEY, mTvDateMonth.getText().toString());
+        outState.putString(SAVE_DATE_YEAR_KEY, mTvDateYear.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 
     @Override

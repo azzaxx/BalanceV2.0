@@ -48,9 +48,6 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
-        if (getResources().getBoolean(R.bool.portrait_only)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
         ButterKnife.bind(this);
         DaggerStartActivityComponent.builder().activityModule(new ActivityModule(this)).build().inject(this);
 
