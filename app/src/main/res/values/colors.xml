@@ -6,6 +6,7 @@
     <color name="colorPrimaryDark">#FF8E00</color>
     <color name="colorAccent">#5A7392</color>
     <color name="grey">#DDDEE1</color>
+    <color name="whiteWith">#EBF0F2</color>
     <color name="white">#FFFFFF</color>
     <color name="with_transparent">#DDFFFFFF</color>
     <color name="red">#FF0000</color>
@@ -20,4 +21,5 @@
     <color name="profitColor">#345E16</color>
     <color name="lossColor">#B0102D</color>
     <color name="blackTrans">#66000000</color>
+    <color name="click">#B0CDEB</color>
 </resources>

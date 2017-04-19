@@ -42,7 +42,7 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         mChart.setCenterTextSize(24f);
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColor(Color.TRANSPARENT);
-        mChart.setTransparentCircleColor(Color.WHITE);
+        mChart.setTransparentCircleColor(Color.BLUE);
         mChart.setTransparentCircleAlpha(110);
         mChart.setHoleRadius(82f);
         mChart.setTransparentCircleRadius(77f);
@@ -52,9 +52,9 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         mChart.setHighlightPerTapEnabled(false);
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         mChart.getLegend().setEnabled(false);
-        mChart.setEntryLabelColor(Color.WHITE);
+        mChart.setEntryLabelColor(Color.BLUE);
         mChart.setEntryLabelTextSize(12f);
-        mChart.setCenterTextColor(Color.WHITE);
+        mChart.setCenterTextColor(Color.BLUE);
     }
 
     public void setData(List<CategoryData> list, PieChart mChart) {

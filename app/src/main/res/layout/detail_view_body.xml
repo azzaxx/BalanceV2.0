@@ -36,7 +36,7 @@
             android:layout_margin="4dp"
             android:gravity="center_vertical"
             android:text="-33.76 $"
-            android:textColor="@color/white"
+            android:textColor="@color/colorAccent"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Comments"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
 
             <TextView
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -70,6 +70,6 @@
         android:layout_height="1dp"
         android:layout_below="@id/detail_view_body_ll_container"
         android:layout_toRightOf="@id/detail_view_body_rl_image"
-        android:background="@color/colorPrimary" />
+        android:background="@color/violet" />
 
 </RelativeLayout>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/stones3"
+    android:background="@color/whiteWith"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,13 +14,14 @@
         android:paddingRight="8dp">
 
         <TextView
+            android:textStyle="bold"
             android:id="@+id/detail_fragment_tv_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center|left"
             android:text="Some category"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="22sp" />
 
         <LinearLayout
@@ -35,7 +36,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Balance"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/detail_fragment_tv_balance"
@@ -45,7 +46,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="+2500"
-                android:textColor="@color/white"
+                android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
 
         </LinearLayout>

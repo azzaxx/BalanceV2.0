@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.alex.balance.R;
 import com.example.alex.balance.adapters.CategoryListAdapter;
@@ -48,7 +47,7 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start_activyty);
+        setContentView(R.layout.start_activity);
         if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
