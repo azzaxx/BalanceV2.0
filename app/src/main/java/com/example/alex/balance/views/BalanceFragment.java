@@ -76,6 +76,7 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
         DaggerBalanceFragmentComponent.builder().balanceFragmentModule(new BalanceFragmentModule(this)).build().inject(this);
         if (getArguments() != null) {
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;

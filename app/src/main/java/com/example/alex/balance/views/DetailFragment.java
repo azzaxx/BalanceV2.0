@@ -21,6 +21,7 @@ import com.example.alex.balance.dagger.presenters.DetailFragmentPresenter;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.detail_rv)
@@ -44,6 +45,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
         DaggerDetailFragmentComponent.builder().detailFragmentModule(new DetailFragmentModule(this)).build().inject(this);
         mFragmentPresenter.initView();
         view.findViewById(R.id.detail_fragment_edit_cat_rl).setOnClickListener(this);
