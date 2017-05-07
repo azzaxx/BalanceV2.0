@@ -18,12 +18,6 @@ import com.example.alex.balance.R;
 import com.example.alex.balance.views.StartActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
-/**
- * Created by alex on 14.04.17.
- */
 
 public class CreateCategoryDialog extends DialogFragment implements View.OnClickListener {
     public static final String CREATE_CATEGORY_NAME = "create_category_dialog_name_key";
@@ -45,7 +39,6 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
     TextView mTvColor;
     @BindView(R.id.create_category_dialog_et_cat_name)
     EditText mETName;
-    private Unbinder unbinder;
 
     public static CreateCategoryDialog newInstance() {
         Bundle args = new Bundle();
@@ -70,7 +63,6 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View view = LayoutInflater.from(getContext()).inflate(R.layout.create_category_dialog, null);
-        unbinder = ButterKnife.bind(this, view);
         Bundle args = getArguments();
 
         if (args.containsKey(CREATE_CATEGORY_COLOR) && args.containsKey(CREATE_CATEGORY_NAME)) {
@@ -116,11 +108,5 @@ public class CreateCategoryDialog extends DialogFragment implements View.OnClick
         } else if (getContext() instanceof StartActivity) {
             ((StartActivity) getContext()).createCategory(intent);
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

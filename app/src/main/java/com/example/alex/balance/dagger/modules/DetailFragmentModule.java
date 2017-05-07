@@ -1,7 +1,5 @@
 package com.example.alex.balance.dagger.modules;
 
-import com.example.alex.balance.custom.realm.RealmHelper;
-import com.example.alex.balance.dagger.presenters.DetailFragmentPresenter;
 import com.example.alex.balance.views.DetailFragment;
 
 import dagger.Module;
@@ -16,12 +14,7 @@ public class DetailFragmentModule {
     }
 
     @Provides
-    DetailFragmentPresenter providePresenter(RealmHelper helper) {
-        return new DetailFragmentPresenter(mView, helper);
-    }
-
-    @Provides
-    DetailFragment provideView() {
-        return mView;
+    DetailFragment providePresenter() {
+        return this.mView;
     }
 }

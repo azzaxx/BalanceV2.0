@@ -21,11 +21,8 @@ import com.example.alex.balance.dagger.presenters.DetailFragmentPresenter;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
-    private Unbinder mUnbinder;
     @BindView(R.id.detail_rv)
     RecyclerView mDetailRV;
     @BindView(R.id.detail_fragment_cat_color)
@@ -47,19 +44,12 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mUnbinder = ButterKnife.bind(this, view);
         DaggerDetailFragmentComponent.builder().detailFragmentModule(new DetailFragmentModule(this)).build().inject(this);
         mFragmentPresenter.initView();
         view.findViewById(R.id.detail_fragment_edit_cat_rl).setOnClickListener(this);
         mTvTotal.setText(mFragmentPresenter.getTotal());
         mDetailRV.setLayoutManager(new LinearLayoutManager(getContext()));
         mDetailRV.setAdapter(new DetailRVAdapter(getContext(), mFragmentPresenter.getBalanceList()));
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mUnbinder.unbind();
     }
 
     @Override

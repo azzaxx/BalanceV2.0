@@ -8,10 +8,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import com.example.alex.balance.interfaces.ItemTouchHelperAdapter;
 import com.example.alex.balance.interfaces.ItemTouchHelperViewHolder;
 
-/**
- * Created by alex on 14.03.17.
- */
-
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public static final float ALPHA_FULL = 1.0f;

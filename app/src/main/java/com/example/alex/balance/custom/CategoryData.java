@@ -4,10 +4,6 @@ import android.graphics.Color;
 
 import io.realm.RealmObject;
 
-/**
- * Created by alex on 19.01.17.
- */
-
 public class CategoryData extends RealmObject {
     public static final String CATEGORY_FIELD_NAME = "mName";
     public static final String CATEGORY_FIELD_COLOR = "mColor";

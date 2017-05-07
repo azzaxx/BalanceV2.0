@@ -27,10 +27,6 @@ import butterknife.ButterKnife;
 
 import static com.example.alex.balance.dagger.presenters.DetailFragmentPresenter.CATEGORY_POSITION_KEY;
 
-/**
- * Created by alex on 14.03.17.
- */
-
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryHolder> implements ItemTouchHelperAdapter {
     private Context mContext;
     private final OnStartDragListener mDragStartListener;

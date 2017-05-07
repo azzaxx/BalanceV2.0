@@ -22,10 +22,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by alex on 05.04.17.
- */
-
 public class DetailRVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<BalanceData> list;
     private static final int HEADER = 0;

@@ -63,7 +63,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
             R.id.b9,
             R.id.b_clear
     };
-    private Unbinder mUnbinder;
     private boolean mIsProfit;
     @Inject
     BalancePresenter mPresenter;
@@ -77,7 +76,6 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mUnbinder = ButterKnife.bind(this, view);
         DaggerBalanceFragmentComponent.builder().balanceFragmentModule(new BalanceFragmentModule(this)).build().inject(this);
         if (getArguments() != null) {
             mIsProfit = getArguments().getInt(PROFIT_LOSS_KEY) > 0;
@@ -172,11 +170,5 @@ public class BalanceFragment extends Fragment implements View.OnClickListener {
         outState.putString(SAVE_DATE_MONTH_KEY, mTvDateMonth.getText().toString());
         outState.putString(SAVE_DATE_YEAR_KEY, mTvDateYear.getText().toString());
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
     }
 }

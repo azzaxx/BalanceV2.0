@@ -11,10 +11,6 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-/**
- * Created by alex on 06.01.17.
- */
-
 public class DateDialog extends DialogFragment implements android.app.DatePickerDialog.OnDateSetListener {
     public static final String DATE_DIALOG_DAY_KEY = "date_dialog_day_key";
     public static final String DATE_DIALOG_MONTH_KEY = "date_dialog_month_key";

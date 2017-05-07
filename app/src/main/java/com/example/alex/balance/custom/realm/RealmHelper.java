@@ -1,7 +1,5 @@
 package com.example.alex.balance.custom.realm;
 
-import android.graphics.Color;
-
 import com.example.alex.balance.custom.BalanceData;
 import com.example.alex.balance.custom.CategoryData;
 
@@ -22,15 +20,8 @@ import static com.example.alex.balance.custom.CategoryData.CATEGORY_FIELD_TIME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_IS_PROFIT_NAME;
 import static com.example.alex.balance.custom.CategoryData.CATEGORY_LOSS_NAME;
 
-@Module
 public class RealmHelper {
     private Realm mRealm;
-
-    @Singleton
-    @Provides
-    RealmHelper helper() {
-        return new RealmHelper();
-    }
 
     public RealmHelper() {
         mRealm = Realm.getInstance(BalanceRealmConfig.getRealmConfiguration());

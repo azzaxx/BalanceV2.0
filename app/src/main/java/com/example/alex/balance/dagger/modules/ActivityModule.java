@@ -1,7 +1,5 @@
 package com.example.alex.balance.dagger.modules;
 
-import com.example.alex.balance.custom.realm.RealmHelper;
-import com.example.alex.balance.dagger.presenters.StartActivityPresenter;
 import com.example.alex.balance.views.StartActivity;
 
 import dagger.Module;
@@ -16,12 +14,7 @@ public class ActivityModule {
     }
 
     @Provides
-    StartActivityPresenter providePresenter(RealmHelper helper) {
-        return new StartActivityPresenter(mView, helper);
-    }
-
-    @Provides
-    StartActivity provideView() {
-        return this.mView;
+    StartActivity providePresenter() {
+        return mView;
     }
 }

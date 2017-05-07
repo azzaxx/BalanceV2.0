@@ -2,10 +2,6 @@ package com.example.alex.balance.custom;
 
 import io.realm.RealmObject;
 
-/**
- * Created by alex on 09.01.17.
- */
-
 public class BalanceData extends RealmObject {
     public static final String BALANCE_DATA_FIELD_TIME = "mTimeStamp";
     public static final String BALANCE_DATA_FIELD_IS_PROFIT = "mIsProfit";
