@@ -15,7 +15,6 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -57,7 +56,7 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         mChart.setCenterTextColor(Color.BLUE);
     }
 
-    public void setData(List<CategoryData> list, PieChart mChart) {
+    public PieData setData(List<CategoryData> list) {
         ArrayList<PieEntry> entries = new ArrayList<>();
         ArrayList<Integer> colors = new ArrayList<>();
 
@@ -80,14 +79,10 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         data.setValueTextColor(Color.GREEN);
         data.setDrawValues(false);
 
-        mChart.setData(data);
-        mChart.setDrawEntryLabels(false);
-        mChart.highlightValues(null);
-
-        mChart.invalidate();
+        return data;
     }
 
-    private float calculateTotalBalance(List<CategoryData> datas) {
+    public float calculateTotalBalance(List<CategoryData> datas) {
         float totalBalance = 0f;
 
         for (CategoryData data : datas) {
@@ -95,10 +90,6 @@ public class StartActivityPresenter extends BasePresenter<StartActivity> {
         }
 
         return totalBalance;
-    }
-
-    public String totalBalance(List<CategoryData> datas) {
-        return "Balance: " + String.format(Locale.US, "%.2f", calculateTotalBalance(datas));
     }
 
     private List<CategoryData> createCategoryData() {

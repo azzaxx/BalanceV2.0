@@ -22,6 +22,7 @@ import com.example.alex.balance.interfaces.OnStartDragListener;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -56,9 +57,11 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
         mRVList.setLayoutManager(new LinearLayoutManager(this));
         mRVList.setAdapter(adapter);
         mPresenter.setupChart(mChart);
-        mPresenter.setData(list, mChart);
-
-        mChart.setCenterText(mPresenter.totalBalance(list));
+        mChart.setData(mPresenter.setData(list));
+        mChart.setDrawEntryLabels(false);
+        mChart.highlightValues(null);
+        mChart.invalidate();
+        mChart.setCenterText("Balance: " + String.format(Locale.US, "%.2f", mPresenter.calculateTotalBalance(list)));
         mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter));
         mItemTouchHelper.attachToRecyclerView(mRVList);
     }
@@ -95,8 +98,8 @@ public class StartActivity extends AppCompatActivity implements OnStartDragListe
     private void notifyChanges() {
         List<CategoryData> dataList = mPresenter.getCategoryList();
         adapter.notifyDataSetChanged();
-        mPresenter.setData(dataList, mChart);
-        mChart.setCenterText(mPresenter.totalBalance(dataList));
+        mPresenter.setData(dataList);
+        mChart.setCenterText("Balance: " + String.format(Locale.US, "%.2f", mPresenter.calculateTotalBalance(dataList)));
         mChart.notifyDataSetChanged();
         mChart.invalidate();
     }
